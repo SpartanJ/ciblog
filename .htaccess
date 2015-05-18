@@ -1,0 +1,4 @@
+#any HTTP request other than those for index.php, assets, and robots.txt is treated as a request for your index.php file.
+RewriteEngine on
+RewriteCond $1 !^(index\.php|ckeditor|assets|tmp|downloads|robots\.txt)
+RewriteRule ^(.*)$ index.php/$1 [L]
