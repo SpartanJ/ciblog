@@ -17,9 +17,9 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=6
+current_page=1
 FILE_NAME_0=153;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2Fadmin.php;0;4
-FILE_NAME_1=1586;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fframe.php;0;4
+FILE_NAME_1=400;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fframe.php;0;4
 FILE_NAME_2=473;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fbar.php;0;4
 FILE_NAME_3=865;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fblog%2Fposts.php;0;4
 FILE_NAME_4=2002;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Fedit_post.php;0;4

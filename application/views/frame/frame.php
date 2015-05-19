@@ -3,6 +3,7 @@
 <head>
 	<title>ensoft<?=$page_title?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=480, user-scalable=no">
 	<link rel="shortcut icon" href="<?=base_url('assets/images/favicon.ico')?>" />
 	<link rel="icon" type="image/x-icon" href="<?=base_url('assets/images/favicon.ico')?>" />
 	<link rel="icon" type="image/png" href="<?=base_url('assets/images/favicon-32x32.png')?>" sizes="32x32">
