@@ -1,4 +1,5 @@
-@import url("../anim.css");
+@import url("anim.css");
+
 a:active, a:focus { outline:none; }
 .no_selection {
   -webkit-touch-callout:none;
@@ -77,21 +78,20 @@ input, button, textarea { font-family:inherit; }
 #bar .menu {
 	position: relative;
 	margin: 0 auto;
+	display: table;
 }
 
 #bar ul#links {
 	margin: 24px auto;
 	padding: 0px;
 	width: 480px;
+	display: table;
 }
 
 #bar #links li {
   list-style-type:none;
-  padding-left: 6px;
-  padding-right: 6px;
   display: table-cell;
   text-align: center;
-  width: 120px;
   box-sizing: border-box;
 }
 #bar #links li a {
