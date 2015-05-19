@@ -37,7 +37,7 @@ class  MY_Controller  extends  CI_Controller
 	//override to avoid auto_add, or to add more files
 	protected function auto_add()
 	{
-		$this->addless('assets/style.less');
+		//$this->addless('assets/style.less');
 		$this->addjs('assets/js/jquery-1.11.3.min.js');
 		$this->addjs('assets/js/jquery.color.js');
 		$this->addjs('assets/js/jquery.placeholder.min.js');
@@ -47,7 +47,8 @@ class  MY_Controller  extends  CI_Controller
 		$this->addjs('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js');
 		$this->addjs('assets/js/kajax.js');
 		$this->addjs('assets/js/site.js');
-		$this->addcss('ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css');
+		$this->addcss('assets/css/global.css');
+		$this->addcss('ckeditor/plugins/codesnippet/lib/highlight/styles/obsidian.css');
 		$this->addrss('/rss');
 	}
 

@@ -56,8 +56,10 @@ if(count($posts)>1)
 
 
 <script>
-	$( function(){
+	$( function()
+	{
 		highlight_init();
+		
 		minimap_init();
 	});
 </script>

@@ -2,9 +2,9 @@
 <form class="ajax" method="post" action="/admin/save">
 
 
-<div class="padded admin-editor">
+<div class="admin-editor">
 		<textarea name="title" class="title" placeholder="Título"><?=isset($title)?$title:''?></textarea>
-		<textarea name="body" class="body autoresize uploadarea" placeholder="Escribir algo"><?=isset($body)?$body:''?></textarea>
+		<textarea name="body" class="body autoresize uploadarea" placeholder="Escribir algo"><?=isset($body)?htmlspecialchars($body):''?></textarea>
 </div>
 
 <div id="save-success-msg">Guardado</div>
@@ -57,9 +57,10 @@
 <? } ?>
 
 <script>
-	$(function(){
-		$( 'textarea.body' ).ckeditor();
+	$(function()
+	{
+		editor_init();
 		
-		init_droparea();
+		//init_droparea();
 	});
 </script>

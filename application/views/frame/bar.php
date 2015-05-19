@@ -1,5 +1,5 @@
-<a href="<?=base_url('/')?>"><div id="logo"><div id="logo-fx"></div></div></a>
 
+<div class="menu">
 
 <ul	id="links">
 	<li><a class="ajax-link" href="<?=base_url('/portfolio')?>">portfolio</a></li>
@@ -12,6 +12,7 @@
 
 </ul>
 
+</div>
+<!--
 <div id="rss"><a href="<?=base_url('/rss')?>">RSS</a></div>
-
-
+-->
