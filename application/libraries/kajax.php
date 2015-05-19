@@ -200,6 +200,16 @@ class Kajax
 		$this->call( "kajax_load" . ( $clean ? '_clean' : '' ) . "( '$target', '$url' )" );
 	}
 	
+	public function fadeIn($target, $duration)
+	{
+		$this->buffer .= jmethod($target,'fadeIn',jstr($duration));
+	}
+
+	public function fadeOut($target, $duration)
+	{
+		$this->buffer .= jmethod($target,'fadeIn',jstr($duration));
+	}
+
 	public function fancy_alert( $text )
 	{
 		$this->call( "alertify.alert( " . jstr( $text ) . " ) " );

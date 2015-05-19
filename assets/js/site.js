@@ -1,6 +1,8 @@
 var is_mobile =  screen.width < 1000;
+var ckeditor_inst = null;
 
-$(function () {
+$(function ()
+{
 	init_site();
 });
 
@@ -15,9 +17,54 @@ function init_site()
 	mobile_init();
 }
 
+function editor_resize()
+{
+	var winh = $(window).height();
+	var adminbar = parseInt( $( '#admin-bar' ).outerHeight() );
+	var admineditormargin = parseInt( $('.admin-editor').css('margin-top') );
+	var admineditortitle = parseInt( $('.admin-editor .title').outerHeight() );
+	var occupied = adminbar + admineditormargin + admineditortitle;
+	var finh = winh - occupied - 24;
+	
+	ckeditor_inst.resize('100%', finh, false);
+}
+
+function editor_init()
+{
+	var config = {
+		extraPlugins: 'codesnippet',
+		codeSnippet_theme: 'obsidian'
+	};
+
+	$( 'textarea.body' ).ckeditor( config );
+	
+	CKEDITOR.on('instanceLoaded', function(e)
+	{
+		ckeditor_inst = e.editor;
+		editor_resize();
+	});
+	
+}
+
+$(window).resize(function()
+{
+	content_update();
+});
+
+function content_update()
+{
+	if ( $( 'textarea.body' ).length > 0 )
+	{
+		editor_resize();
+	}
+}
+
 function highlight_init()
 {
-	hljs.initHighlighting();
+	$('pre code').each(function(i, block)
+	{
+		hljs.highlightBlock(block);
+	});
 }
 
 function mobile_init()
@@ -67,8 +114,6 @@ function mailcheck_init()
 
 function minimap_init()
 {
-
-
 	if(is_mobile)
 	{
 		return;
@@ -159,8 +204,8 @@ function minimap_init()
 
 
 	$("#minimap").show();
+	
 	$(window).resize();
-
 }
 
 function fixmail(newmail)

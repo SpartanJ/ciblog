@@ -41,7 +41,6 @@ class Contacto extends MY_Controller
 	{
 		$arr = $this->input->post();
 
-
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('name', 'Nombre', 'required|min_length[2]' );
