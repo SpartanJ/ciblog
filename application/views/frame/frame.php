@@ -29,5 +29,13 @@
 
     ref: http://samsaffron.com/archive/2012/02/17/stop-paying-your-jquery-tax
 */?>
+
+<script type='text/javascript'>
+	$(function()
+	{
+		if ( typeof site_init == 'function' )
+			site_init( '<?=base_url()?>' );
+	});
+</script>
 </body>
 </html>

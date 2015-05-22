@@ -1,13 +1,11 @@
+var page_url = '';
 var is_mobile =  screen.width < 1000;
 var ckeditor_inst = null;
 
-$(function ()
+function site_init( base_url )
 {
-	init_site();
-});
-
-function init_site()
-{
+	page_url = base_url;
+	
 	autoresize_init();
 	
 	placeholder_init();
@@ -15,6 +13,8 @@ function init_site()
 	mailcheck_init();
 
 	mobile_init();
+	
+	editor_init();
 }
 
 function editor_resize()
@@ -31,19 +31,22 @@ function editor_resize()
 
 function editor_init()
 {
-	var config = {
-		extraPlugins: 'codesnippet',
-		codeSnippet_theme: 'obsidian'
-	};
-
-	$( 'textarea.body' ).ckeditor( config );
-	
-	CKEDITOR.on('instanceLoaded', function(e)
+	if ( page_url.length > 0 && $( 'textarea.body' ).length > 0 )
 	{
-		ckeditor_inst = e.editor;
-		editor_resize();
-	});
-	
+		var config = {
+			extraPlugins: 'codesnippet',
+			codeSnippet_theme: 'obsidian',
+			filebrowserBrowseUrl: page_url + 'fm/index.html'
+		};
+
+		$( 'textarea.body' ).ckeditor( config );
+		
+		CKEDITOR.on('instanceLoaded', function(e)
+		{
+			ckeditor_inst = e.editor;
+			editor_resize();
+		});
+	}
 }
 
 $(window).resize(function()

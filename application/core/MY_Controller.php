@@ -132,7 +132,7 @@ class  MY_Controller  extends  CI_Controller
 		$this->a_rss[] = $file;
 	}
 	
-	public function addjs($file, $add_version = true)
+	public function addjs($file, $add_version = false)
     {
         if($add_version && self::$JS_DEBUG)
         {
