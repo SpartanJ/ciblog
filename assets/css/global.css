@@ -245,8 +245,6 @@ input, button, textarea { font-family:inherit; }
 
 #bar #rss a:hover { background-color:red; }
 
-#content.smallscreen { left:180px !important; }
-
 #content {
 	padding:0px;
 	margin-top:64px;
@@ -541,4 +539,9 @@ a img { border:0; }
 .hljs {
 	overflow:auto;
 	font-size:12px;
+}
+
+@media only screen and (max-width: 800px)
+{
+
 }
