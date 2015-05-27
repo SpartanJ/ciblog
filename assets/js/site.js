@@ -124,8 +124,8 @@ function minimap_init()
 
 	var minimap = $('#minimap');
 	/*hides the minimap if window is too small*/
-	$(window).resize(function() {
-
+	$(window).resize(function()
+	{
 		var w = $(window).width();
 		var min = 980;
 		var delta_right = 150;
@@ -156,7 +156,7 @@ function minimap_init()
 	var anim_speed = 500;
 	var fadeout_time = 2500;
 
-	minimap.mouseenter( function()
+	minimap.mouseenter(function()
 	{
 		mouse_over = true;
 		minimap.stop().animate({opacity:full_opacity}, anim_speed)
@@ -167,16 +167,15 @@ function minimap_init()
 		}
 	});
 
-	minimap.mouseleave( function()
-		{
-			mouse_over = false;
-			minimap.stop().animate({opacity:min_opacity}, anim_speed)}
+	minimap.mouseleave(function()
+	{
+		mouse_over = false;
+		minimap.stop().animate({opacity:min_opacity}, anim_speed)}
 	);
 
 	/*marks the minimap tags if the div is visible*/
-	$(window).scroll(function() {
-
-
+	$(window).scroll(function()
+	{
 		var oneSelected = false;
 		$(".blog_post").each( function() {
 			name = $(this).attr('id');

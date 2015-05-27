@@ -1,15 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once(APPPATH.'third_party/markdown.php');
-
 class Contacto extends MY_Controller
 {
-	protected function auto_add()
-	{
-		parent::auto_add();
-		$this->addjs('assets/js/jquery.mailcheck.min.js');
-	}
-
 	public function index()
 	{
 		$data['page_title'] = 'contacto';

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once(APPPATH.'third_party/markdown.php');
 
-class Admin extends MY_Controller {
+class Admin extends MY_Controller
+{
 	protected $sess			= NULL;
 	protected $thumb_width	= 500;
 	protected $thumb_height	= 500;
@@ -11,73 +11,6 @@ class Admin extends MY_Controller {
 		parent::__construct();
 		
 		$this->load->model('post_model');
-	}
-
-	public function upload()
-	{
-		if ( $this->session_check() )
-		{
-			$config['upload_path']		= 'assets/blog/';
-			$config['allowed_types']	= 'gif|jpg|png';
-			$config['encrypt_name']		= FALSE;
-			
-			$this->load->library( 'upload', $config );
-
-			$form = $this->input->post();
-			
-			if ( ! $this->upload->do_upload('uploadfile') )
-			{
-				$ret = array('ok'=>false,'error'=>'error al enviar la imagen, chequee que sea un imagen válida');
-			}
-			else
-			{
-				$data = array( 'upload_data' => $this->upload->data() );
-
-				$data = $this->upload->data();
-				
-				$this->load->library('image_lib');
-				
-				$thumb = 0;
-				try
-				{
-					if ( $data['image_width'] > $this->thumb_width || $data['image_height'] > $this->thumb_height )
-					{
-						$thumb							= TRUE;
-						$config_il['maintain_ratio']	= TRUE;
-						$config_il['width']				= $this->thumb_width;
-						$config_il['height']			= $this->thumb_height;
-						$config_il['source_image']		= $data['full_path'];
-						$file_path_real					= $config['upload_path'] . 'thumbs/' . $data['file_name'];
-						$config_il['new_image']			= $file_path_real;
-
-						$this->load->library('Images', $config);
-						$this->images->resize( $data['full_path'], $file_path_real, $this->thumb_width, $this->thumb_height );
-
-						// Creates a jpg thumnail from the png thumbnail, and it keeps the png thumbnail alive ( so you can choose )
-						if ( 'png' == $data['image_type'] )
-						{
-							$config_il['source_image']		= $file_path_real;
-							$this->image_lib->initialize($config_il);
-							$this->image_lib->convert( 'jpg', FALSE, FALSE );
-						}
-					}
-					$ret = array('ok'=>true,'thumb'=>$thumb,'filename'=>$data['file_name']);
-
-				}
-				catch(Exception $e)
-				{
-					$ret = array('ok'=>false,'error'=>$e->getMessage);
-				}
-			}
-			echo  json_encode($ret);
-		}
-	}
-
-	protected function auto_add()
-	{
-		parent::auto_add();
-		$this->addjs('assets/js/jquery.filedrop.js');
-		$this->addjs('assets/js/admin.js');
 	}
 
 	private function genSlug($str) {
@@ -195,7 +128,7 @@ class Admin extends MY_Controller {
 	{
 		$this->session->sess_destroy();
 		
-		if ( $this->isKajaxRequest() )
+		if ( $this->is_kajax_request() )
 		{
 			$this->add_frame_view('admin/login');
 		}

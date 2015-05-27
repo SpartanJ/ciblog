@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
 <head>
 	<title>ensoft<?=$page_title?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -10,13 +10,15 @@
 	<link rel="icon" type="image/png" href="<?=base_url('assets/images/favicon-48x48.png')?>" sizes="48x48">
 	<link rel="icon" type="image/png" href="<?=base_url('assets/images/favicon-64x64.png')?>" sizes="64x64">
 	<script type='text/javascript'>window.q=[];window.$=function(f){q.push(f)};</script>
-<?=$rss?>
 <?/*MAGIC #1*/?>
+<?=$rss?>
+<?=$og?>
 <?=$css?>
 </head>
 <body>
+	<?if (isset($header)){echo $header;}?>
+
 	<div id="content"><?=$content?></div>
-	<div id="bar"><?=$bar?></div>
 <?=$js /*newest optimizationr recomendations, states that is best to load js at the end, so we do.*/?>
 <script type="text/javascript">$.each(q,function(i,f){$(f)});</script><?/*MAGIC #2*/?>
 <?/*
@@ -29,6 +31,8 @@
 
     ref: http://samsaffron.com/archive/2012/02/17/stop-paying-your-jquery-tax
 */?>
+	
+<?if (isset($footer)){echo $footer;}?>
 
 <script type='text/javascript'>
 	$(function()
