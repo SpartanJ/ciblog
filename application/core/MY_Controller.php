@@ -37,18 +37,23 @@ class MY_Controller extends CI_Controller
 	//override to avoid auto_add, or to add more files
 	protected function auto_add()
 	{
-		$this->add_js('assets/js/jquery-1.11.3.min.js');
-		$this->add_js('assets/js/jquery.color.js');
-		$this->add_js('assets/js/jquery.placeholder.min.js');
-		$this->add_js('assets/js/jquery.autosize-min.js');
-		$this->add_js('assets/js/jquery.mailcheck.min.js');
+		$this->add_js('assets/libs/jquery/jquery-1.11.3.min.js');
+		$this->add_js('assets/libs/jquery.color/jquery.color.js');
+		$this->add_js('assets/libs/jquery.placeholder/jquery.placeholder.min.js');
+		$this->add_js('assets/libs/jquery.mailcheck/jquery.mailcheck.min.js');
+		
 		$this->add_js('ckeditor/ckeditor.js');
 		$this->add_js('ckeditor/adapters/jquery.js');
 		$this->add_js('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js');
+		
 		$this->add_js('assets/js/kajax.js');
 		$this->add_js('assets/js/site.js');
+		
 		$this->add_css('assets/css/global.css');
+		$this->add_css('assets/css/font-awesome.min.css');
+		
 		$this->add_css('ckeditor/plugins/codesnippet/lib/highlight/styles/obsidian.css');
+		
 		$this->add_rss('/rss');
 	}
 
@@ -164,7 +169,7 @@ class MY_Controller extends CI_Controller
 		return array_reduce($this->a_og,'MY_Controller::og_tag');	
 	}
 
-	protected function add_css($file, $add_version = true)
+	protected function add_css($file, $add_version = FALSE)
 	{
 		if ( !in_array( $file, $this->a_css ) )
 		{
@@ -176,7 +181,7 @@ class MY_Controller extends CI_Controller
 		}
 	}
 
-	protected function add_js($file, $add_version = true)
+	protected function add_js($file, $add_version = FALSE)
 	{
 		if ( self::$JS_USE_CACHED && !strstr( $file, 'cache/' ) )
 		{
@@ -199,7 +204,7 @@ class MY_Controller extends CI_Controller
 	
 	private static function rss_tag($curr_rss, $file)
 	{
-		return $curr_rss."\t".'<link rel="alternate" type="application/rss+xml" title="ensoft RSS" href="'.base_url($file).'" />'."\n";
+		return $curr_rss."\t".'<link rel="alternate" type="application/rss+xml" title="' . PAGE_TITLE . ' RSS" href="'.base_url($file).'" />'."\n";
 	}
 	
 	private function render_rss()

@@ -6,8 +6,6 @@ function site_init( base_url )
 {
 	page_url = base_url;
 	
-	autoresize_init();
-	
 	placeholder_init();
 
 	mailcheck_init();
@@ -20,11 +18,12 @@ function site_init( base_url )
 function editor_resize()
 {
 	var winh = $(window).height();
+	var bar = parseInt( $( '#bar' ).outerHeight() );
 	var adminbar = parseInt( $( '#admin-bar' ).outerHeight() );
 	var admineditormargin = parseInt( $('.admin-editor').css('margin-top') );
 	var admineditortitle = parseInt( $('.admin-editor .title').outerHeight() );
 	var occupied = adminbar + admineditormargin + admineditortitle;
-	var finh = winh - occupied - 24;
+	var finh = winh - occupied - bar;
 	
 	ckeditor_inst.resize('100%', finh, false);
 }
@@ -77,15 +76,6 @@ function mobile_init()
 		$("#bar").addClass("smallscreen");
 		$("#content").addClass("smallscreen");
 	}
-}
-
-function autoresize_init()
-{
-	/*
-	makes textareas autoresize when typed inside
-	requires autoresize.jquery.js*/
-	
-	$('.autoresize').autosize();
 }
 
 function placeholder_init()

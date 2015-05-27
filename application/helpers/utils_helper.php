@@ -180,8 +180,7 @@ function json_enc( $data ) {
 	return json_pp( json_encode( $data ) );
 }
 
-
-function toBlogDate($time)
+function to_blog_date($time)
 {
 	$months = array ("", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 	$t = strtotime($time);

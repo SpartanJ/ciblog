@@ -2,10 +2,6 @@
 
 class Admin extends MY_Controller
 {
-	protected $sess			= NULL;
-	protected $thumb_width	= 500;
-	protected $thumb_height	= 500;
-
 	function __construct()
 	{
 		parent::__construct();
@@ -13,7 +9,14 @@ class Admin extends MY_Controller
 		$this->load->model('post_model');
 	}
 
-	private function genSlug($str) {
+	protected function auto_add()
+	{
+		parent::auto_add();
+		
+		$this->add_css('assets/css/admin.css');
+	}
+	
+	private function get_slug($str) {
 		$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $str);
 		$clean = strtolower(trim($clean, '-'));
 		$clean = preg_replace("/[\/_|+ -]+/", '-', $clean);
@@ -35,7 +38,7 @@ class Admin extends MY_Controller
 		{
 			$data =  $this->input->post();
 			$data['draft'] = isset($data['draft']) && $data['draft'] ? '1' : '0';
-			$slug = $this->genSlug($data['title']);
+			$slug = $this->get_slug($data['title']);
 
 			if(isset($data['post_id']))
 			{
@@ -106,7 +109,7 @@ class Admin extends MY_Controller
 			else
 			{
 				$this->kajax->fadeIn('.form-error',500);
-				$this->kajax->html( '.form-error', '<p>Usuario y/o contrase&ntilde;a incorrectos.</p>' );
+				$this->kajax->html( '.form-error', '<p>Username and/or password incorrect.</p>' );
 			}
 			
 			$this->kajax->out();
