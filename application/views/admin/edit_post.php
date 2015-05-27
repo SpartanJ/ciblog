@@ -60,7 +60,5 @@
 	$(function()
 	{
 		editor_init();
-		
-		//init_droparea();
 	});
 </script>

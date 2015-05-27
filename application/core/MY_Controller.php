@@ -3,18 +3,16 @@
 require_once(APPPATH.'third_party/cacheable.inc.php');
 require_once(APPPATH.'third_party/jsmin.php');
 
-
-class  MY_Controller  extends  CI_Controller
+class MY_Controller extends CI_Controller
 {
-	public static $JS_DEBUG = true; //false = compact in one file and minify
-
-	public static $JS_PATH = './';
+	public static $JS_CACHE			= FALSE; // TRUE = compact in one file and minify
+	public static $JS_CACHE_LIBS	= FALSE; // Only cache files on the libs path
+	public static $JS_USE_CACHED	= FALSE; // Loads the already cached site/libs
+	public static $JS_PATH			= './';
 
 	function __construct()
 	{
 		parent::__construct();
-		
-		$this->load->helper('file');
 		
 		$this->load->library('session');
 		
@@ -23,10 +21,12 @@ class  MY_Controller  extends  CI_Controller
 		$this->session_recover();
 	}
 
-	protected $a_css = array();
-	protected $a_js = array();
-	protected $a_rss = array();
-    protected $a_ext_js = array();
+	protected $a_css		= array();
+	protected $a_ext_css	= array();
+	protected $a_js			= array();
+	protected $a_ext_js		= array();
+	protected $a_og			= array();
+	protected $a_rss		= array();
 
 	public function error_404()
 	{
@@ -37,154 +37,235 @@ class  MY_Controller  extends  CI_Controller
 	//override to avoid auto_add, or to add more files
 	protected function auto_add()
 	{
-		//$this->addless('assets/style.less');
-		$this->addjs('assets/js/jquery-1.11.3.min.js');
-		$this->addjs('assets/js/jquery.color.js');
-		$this->addjs('assets/js/jquery.placeholder.min.js');
-		$this->addjs('assets/js/jquery.autosize-min.js');
-		$this->addjs('ckeditor/ckeditor.js');
-		$this->addjs('ckeditor/adapters/jquery.js');
-		$this->addjs('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js');
-		$this->addjs('assets/js/kajax.js');
-		$this->addjs('assets/js/site.js');
-		$this->addcss('assets/css/global.css');
-		$this->addcss('ckeditor/plugins/codesnippet/lib/highlight/styles/obsidian.css');
-		$this->addrss('/rss');
+		$this->add_js('assets/js/jquery-1.11.3.min.js');
+		$this->add_js('assets/js/jquery.color.js');
+		$this->add_js('assets/js/jquery.placeholder.min.js');
+		$this->add_js('assets/js/jquery.autosize-min.js');
+		$this->add_js('assets/js/jquery.mailcheck.min.js');
+		$this->add_js('ckeditor/ckeditor.js');
+		$this->add_js('ckeditor/adapters/jquery.js');
+		$this->add_js('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js');
+		$this->add_js('assets/js/kajax.js');
+		$this->add_js('assets/js/site.js');
+		$this->add_css('assets/css/global.css');
+		$this->add_css('ckeditor/plugins/codesnippet/lib/highlight/styles/obsidian.css');
+		$this->add_rss('/rss');
 	}
 
-	private static function get_file_hash($file)
+	protected static function get_file_hash($file)
 	{
 		$time_in = filemtime($file);
 		return hash('md5',$time_in);
 	}
 
-	private static function css_tag($curr_css, $file)
+	protected static function css_tag($curr_css, $file)
 	{
 		return $curr_css."\t".'<link rel="stylesheet" type="text/css" href="'.base_url($file).'" />'."\n";
 	}
 
-	private static function rss_tag($curr_rss, $file)
+	protected static function ext_css_tag($curr_css, $file)
 	{
-		return $curr_rss."\t".'<link rel="alternate" type="application/rss+xml" title="ensoft RSS" href="'.base_url($file).'" />'."\n";
+		return $curr_css."\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" />'."\n";
 	}
-	
-	private static function js_tag($curr_js, $file)
+
+	protected static function js_tag($curr_js, $file)
 	{
+		if ( self::$JS_CACHE_LIBS && strstr( $file, 'libs/' ) )
+		{
+			return $curr_js;
+		}
+		
 		return $curr_js.'<script type="text/javascript" src="'.base_url($file).'"></script>'."\n";
 	}
 
-    private static function ext_js_tag($curr_js, $file)
-    {
-        return $curr_js.'<script type="text/javascript" src="'.$file.'"></script>'."\n";
-    }
-
-	private static function js_combine($curr_js, $file)
+	protected static function ext_js_tag($curr_js, $file)
 	{
-		$buf = file_get_contents(self::$JS_PATH.$file);
-		if(!strstr($file,'min'))//not minified already
-		{
-			$buf = JSMin::minify($buf);
-		}
-		return $curr_js.' { '.$buf.' } ';
+		return $curr_js.'<script type="text/javascript" src="'.$file.'"></script>'."\n";
 	}
 
-	private function render_css()
+	protected static function og_tag($curr_og, $metadata)
+	{
+		return $curr_og."\t".'<meta property="' . $metadata['property'] . '" content="' . $metadata['content']. '" />'."\n";
+	}
+	
+	protected function add_ext_js( $file )
+	{
+		$this->a_ext_js[] = $file;
+	}
+
+	protected function add_ext_css( $file )
+	{
+		$this->a_ext_css[] = $file;
+	}
+
+	protected function add_og( $property, $content )
+	{
+		$this->a_og[] = array( 'property' => $property, 'content' => $content );
+	}
+
+	protected function add_less($file)
+	{
+		$this->load->library('less');
+		$this->add_css($this->less->parse($file), false);
+	}
+
+	protected static function js_combine($curr_js, $file)
+	{
+		if ( !self::$JS_CACHE_LIBS || ( self::$JS_CACHE_LIBS && strstr( $file, 'libs/' ) ) )
+		{
+			$buf = file_get_contents( self::$JS_PATH . $file );
+		
+			if( !strstr( $file, 'min' ) )//not minified already
+			{
+				$buf = JSMin::minify( $buf );
+			}
+		
+			return $curr_js . ' { '.$buf.' } ';
+		}
+		else
+		{
+			return $curr_js;
+		}
+	}
+
+	protected function render_css()
 	{
 		return array_reduce($this->a_css,'MY_Controller::css_tag');	
 	}
 
-	private function render_rss()
+	protected function render_ext_css()
 	{
-		return array_reduce($this->a_rss,'MY_Controller::rss_tag');	
+		return array_reduce($this->a_ext_css,'MY_Controller::ext_css_tag');	
 	}
-	
-	private function render_js()
+
+	protected function render_js()
 	{
-		if(self::$JS_DEBUG)
+		if(!self::$JS_CACHE||self::$JS_USE_CACHED)
 		{
 			return array_reduce($this->a_js,'MY_Controller::js_tag');
 		}
 		else
 		{
 			$all_js =  array_reduce($this->a_js,'MY_Controller::js_combine');
-			$filepath = 'assets/cache/site.js';
+			$filepath = 'assets/cache/' . ( self::$JS_CACHE_LIBS ? 'libs' : 'site' ) . '.js';
 			file_put_contents(self::$JS_PATH.$filepath, $all_js);
-			return self::js_tag('', $filepath);
+			$js_final = self::js_tag('', $filepath);
+			return $js_final . array_reduce($this->a_js,'MY_Controller::js_tag');
 		}
 	}
 
-    private function render_ext_js()
-    {
-        return array_reduce($this->a_ext_js,'MY_Controller::ext_js_tag');
-    }
-
-	public function addcss($file, $add_version = true)
+	protected function render_ext_js()
 	{
-		if($add_version)
-		{
-			$file = Cacheable::addversion($file);
-		}
-		$this->a_css[] = $file;
+		return array_reduce($this->a_ext_js,'MY_Controller::ext_js_tag');
 	}
 
-	public function addrss($file)
+	protected function render_og()
+	{
+		return array_reduce($this->a_og,'MY_Controller::og_tag');	
+	}
+
+	protected function add_css($file, $add_version = true)
+	{
+		if ( !in_array( $file, $this->a_css ) )
+		{
+			if($add_version)
+			{
+				$file = Cacheable::addversion($file);
+			}
+			$this->a_css[] = $file;
+		}
+	}
+
+	protected function add_js($file, $add_version = true)
+	{
+		if ( self::$JS_USE_CACHED && !strstr( $file, 'cache/' ) )
+		{
+			if ( !self::$JS_CACHE_LIBS || ( self::$JS_CACHE_LIBS && strstr( $file, 'libs/' ) ) )
+			{
+				return;
+			}
+		}
+		
+		if ( !in_array( $file, $this->a_js ) )
+		{
+			if($add_version && !self::$JS_CACHE)
+			{
+				$file = Cacheable::addversion($file);
+			}
+			
+			$this->a_js[] = $file;
+		}
+	}
+	
+	private static function rss_tag($curr_rss, $file)
+	{
+		return $curr_rss."\t".'<link rel="alternate" type="application/rss+xml" title="ensoft RSS" href="'.base_url($file).'" />'."\n";
+	}
+	
+	private function render_rss()
+	{
+		return array_reduce($this->a_rss,'MY_Controller::rss_tag');	
+	}
+	
+	protected function add_rss($file)
 	{
 		$this->a_rss[] = $file;
 	}
-	
-	public function addjs($file, $add_version = false)
-    {
-        if($add_version && self::$JS_DEBUG)
-        {
-            $file = Cacheable::addversion($file);
-        }
-        $this->a_js[] = $file;
-    }
 
-    public function addextjs($file)
-    {
-         $this->a_ext_js[] = $file;
-    }
-
-	public function addless($file)
+	protected function is_kajax_request()
 	{
-		$this->load->library('less');
-		$this->addcss($this->less->parse($file), false);
+		return $this->input->is_ajax_request() && $this->input->post('kajax') == true;
 	}
-
-    public function isKajaxRequest()
-    {
-        return $this->input->post('kajax') == true;
-    }
-
-	public function add_frame_view($content_view, $data = array())
+	
+	protected function add_frame_view( $content_view, $data = array(), $show_header = TRUE, $show_footer = TRUE, $return = FALSE )
 	{
-        if ( $this->isKajaxRequest()  )
-        {
-            $this->load->view($content_view, $data);
-        }
-        else
-        {
-            $frame_data = array();
-            $frame_data['content'] = $this->load->view($content_view, $data, true);
-            $frame_data['css'] = $this->render_css();
-            $frame_data['rss'] = $this->render_rss();
-            $frame_data['js'] = $this->render_ext_js(); //external js first, usuarlly local js depend on those
-            $frame_data['js'] .= $this->render_js();
-
-			$frame_data['page_title'] = isset($data['page_title']) ? ' - '.$data['page_title'] : '';
-            
-            $bar_data = array();
-            
-      		if ( $this->session_exists() )
-      		{
-				$bar_data['is_admin'] = TRUE;
+		if ( $this->is_kajax_request()  )
+		{
+			if ( !$return )
+			{
+				$this->load->view($content_view, $data);
+			}
+			else
+			{
+				return $this->load->view($content_view, $data, TRUE );
+			}
+		}
+		else
+		{
+			$frame_data = array();
+			$frame_data['content']		= $this->load->view($content_view, $data, true);
+			$frame_data['css']			= $this->render_css();
+			$frame_data['rss'] 			= $this->render_rss();
+			$frame_data['js']			= $this->render_ext_js() . $this->render_js(); //external js first, usuarlly local js depend on those
+			$frame_data['og']			= $this->render_og();
+			$frame_data['page_title']	= isset($data['page_title']) ? ' - '.$data['page_title'] : '';
+			
+			$hf_data = array();
+			
+			if ( $this->session_exists() )
+			{
+				$hf_data['is_admin'] = TRUE;
 			}
 			
-      		$frame_data['bar'] = $this->load->view('/frame/bar', $bar_data, TRUE);
-      		
-            $this->load->view('/frame/frame', $frame_data);
-        }
+			if ( $show_header )
+			{
+				$frame_data['header']	= $this->load->view('/frame/header', $hf_data, TRUE);
+			}
+			
+			if ( $show_footer )
+			{
+				$frame_data['footer']	= $this->load->view('/frame/footer', $hf_data, TRUE);
+			}
+			
+			if ( !$return )
+			{
+				$this->load->view('/frame/frame', $frame_data );
+			}
+			else
+			{
+				return $this->load->view('/frame/frame', $frame_data, TRUE );
+			}
+		}
 	}
 	
 	protected function session_exists()

@@ -1,4 +1,6 @@
 
+<div id="bar">
+
 <div class="menu">
 
 <ul	id="links">
@@ -16,3 +18,5 @@
 <!--
 <div id="rss"><a href="<?=base_url('/rss')?>">RSS</a></div>
 -->
+ 
+</div>

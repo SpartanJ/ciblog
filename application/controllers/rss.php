@@ -1,8 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once(APPPATH.'third_party/markdown.php');
-
-class Rss extends MY_Controller {
+class Rss extends MY_Controller
+{
 	protected function get_web_info()
 	{
 		return array(	'title' => 'ensoft',
