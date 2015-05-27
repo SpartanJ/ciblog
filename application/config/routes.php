@@ -42,7 +42,7 @@ $route['default_controller'] = 'blog/portfolio';
 $route['404_override'] = '';
 
 $route['portfolio'] = "blog/index/PORTFOLIO";
-$route['nosotros'] = "blog/index/START";
+$route['aboutus'] = "blog/index/START";
 $route['blog/(:any)'] = "blog/show/$1";
 
 /* End of file routes.php */

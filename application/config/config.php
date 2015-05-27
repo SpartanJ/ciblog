@@ -374,15 +374,14 @@ $config['proxy_ips'] = '';
 */
 function __autoload($class)
 {
-    if(strpos($class, 'CI_') !== 0)
-    {
-        @include_once( APPPATH . 'core/'. $class . EXT );
-    }
+	if(strpos($class, 'CI_') !== 0)
+	{
+		@include_once( APPPATH . 'core/'. $class . EXT );
+	}
 }
 
 /*timezone settings*/
 date_default_timezone_set('America/Argentina/Buenos_Aires');
-
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

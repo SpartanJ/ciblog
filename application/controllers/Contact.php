@@ -4,8 +4,8 @@ class Contact extends MY_Controller
 {
 	public function index()
 	{
-		$data['page_title'] = 'contacto';
-		$this->add_frame_view('contacto',$data);
+		$data['page_title'] = lang_line('contact');
+		$this->add_frame_view('contact',$data);
 	}
 	
 	protected function send_mail( $subject, $message, $name, $mail )
@@ -35,17 +35,17 @@ class Contact extends MY_Controller
 
 		$this->load->library('form_validation');
 		
-		$this->form_validation->set_rules('name', 'Nombre', 'required|min_length[2]' );
-		$this->form_validation->set_rules('mail', 'Email', 'required|valid_email' );
-		$this->form_validation->set_rules('message', 'Mensaje', 'required|min_length[3]' );
+		$this->form_validation->set_rules('name', lang_line('name'), 'required|min_length[2]' );
+		$this->form_validation->set_rules('mail', lang_line('email'), 'required|valid_email' );
+		$this->form_validation->set_rules('message', lang_line('message'), 'required|min_length[3]' );
 		
 		if ( $this->form_validation->run() )
 		{
-			$subject = PAGE_TITLE . ' email de ' . $arr['name'];
+			$subject = PAGE_TITLE . ' ' . lang_line('email_from') . ' ' . $arr['name'];
 			
 			$this->send_mail( $subject, $arr['message'], $arr['name'], $arr['mail'] );
 			
-			$this->kajax->html( '#contact-box', '<div style="padding:30px;"><strong><p>El email ha sido enviado con &eacute;xito</p><p>Gracias por contactarte con nosotros.</p><p>Nos prondremos en contacto con vos a la brevedad.</p></strong></div>' );
+			$this->kajax->html( '#contact-box', '<div style="padding:30px;"><strong><p>' . lang_line('mail_send_success') . '</p><p>' . lang_line('thanks_for_contacting_us') . '.</p><p>' . lang_line('in_touch_soon') . '</p></strong></div>' );
 			$this->kajax->out();
 		}
 		else

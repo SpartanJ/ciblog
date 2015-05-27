@@ -8,8 +8,6 @@ function site_init( base_url )
 	
 	placeholder_init();
 
-	mailcheck_init();
-
 	mobile_init();
 	
 	editor_init();
@@ -85,24 +83,6 @@ function placeholder_init()
 	requires jquery.placeholder.min.js
 	*/
 	$('input[placeholder], textarea[placeholder]').placeholder();
-}
-
-function mailcheck_init()
-{
-	/*suggests fixes for common mail typos
-	 requires jquery.mailcheck.min.js*/
-	var domains = ['hotmail.com', 'gmail.com', 'hotmail.com.ar', 'yahoo.com', 'yahoo.com.ar', 'copetel.com.ar', 'speedy.com.ar'];
-	$('.check-mail').change( function(){
-		$(this).mailcheck(domains, {
-			suggested: function(element, suggestion) {
-				$('#check-mail-target').html('Tal vez quizo decir: <a onclick="fixmail('+"'"+suggestion.full+"'"+');" href="#">'+suggestion.full+'</a>');
-				$('#check-mail-target').fadeIn();
-			},
-			empty: function(element) {
-				$('#check-mail-target').fadeOut();
-			}
-		})
-	});
 }
 
 function minimap_init()
@@ -198,12 +178,6 @@ function minimap_init()
 	$("#minimap").show();
 	
 	$(window).resize();
-}
-
-function fixmail(newmail)
-{
-	$('.check-mail').val(newmail);
-	$('#check-mail-target').fadeOut();
 }
 
 function isScrolledIntoView(elem)

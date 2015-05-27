@@ -455,19 +455,6 @@ a img { border:0; }
 
 .stylish-form input[type=submit]:hover { background-color:red; }
 
-#check-mail-target {
-	display:none;
-	text-align:right;
-	font-style:italic;
-	margin:0;
-}
-#check-mail-target a {
-	text-decoration:none;
-	color:#4183c4;
-}
-
-#check-mail-target a:hover { text-decoration:underline; }
-
 .placeholder { color:#808080; }
 
 .form-error {
