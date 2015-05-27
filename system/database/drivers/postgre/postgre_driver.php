@@ -5,8 +5,9 @@
  * An open source application development framework for PHP 5.1.6 or newer
  *
  * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc.
+ * @author		EllisLab Dev Team
+ * @copyright		Copyright (c) 2008 - 2014, EllisLab, Inc.
+ * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -25,7 +26,7 @@
  * @package		CodeIgniter
  * @subpackage	Drivers
  * @category	Database
- * @author		ExpressionEngine Dev Team
+ * @author		EllisLab Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_postgre_driver extends CI_DB {
@@ -325,43 +326,37 @@ class CI_DB_postgre_driver extends CI_DB {
 	 * @access	public
 	 * @return	integer
 	 */
-	public function insert_id()
+	function insert_id()
 	{
-		$v = pg_version($this->conn_id);
-		$v = isset($v['server']) ? $v['server'] : 0; // 'server' key is only available since PosgreSQL 7.4
+		$v = $this->_version();
+		$v = $v['server'];
 
-		$table  = (func_num_args() > 0) ? func_get_arg(0) : NULL;
-		$column = (func_num_args() > 1) ? func_get_arg(1) : NULL;
+		$table	= func_num_args() > 0 ? func_get_arg(0) : NULL;
+		$column	= func_num_args() > 1 ? func_get_arg(1) : NULL;
 
-		if ($table === NULL && $v >= '8.1')
+		if ($table == NULL && $v >= '8.1')
 		{
-			$sql = 'SELECT LASTVAL() AS ins_id';
+			$sql='SELECT LASTVAL() as ins_id';
 		}
-		elseif ($table !== NULL)
+		elseif ($table != NULL && $column != NULL && $v >= '8.0')
 		{
-			if ($column !== NULL && $v >= '8.0')
-			{
-				$sql = 'SELECT pg_get_serial_sequence(\''.$table."', '".$column."') AS seq";
-				$query = $this->query($sql);
-				$query = $query->row();
-				$seq = $query->seq;
-			}
-			else
-			{
-				// seq_name passed in table parameter
-				$seq = $table;
-			}
-
-			$sql = 'SELECT CURRVAL(\''.$seq."') AS ins_id";
+			$sql = sprintf("SELECT pg_get_serial_sequence('%s','%s') as seq", $table, $column);
+			$query = $this->query($sql);
+			$row = $query->row();
+			$sql = sprintf("SELECT CURRVAL('%s') as ins_id", $row->seq);
+		}
+		elseif ($table != NULL)
+		{
+			// seq_name passed in table parameter
+			$sql = sprintf("SELECT CURRVAL('%s') as ins_id", $table);
 		}
 		else
 		{
 			return pg_last_oid($this->result_id);
 		}
-
 		$query = $this->query($sql);
-		$query = $query->row();
-		return (int) $query->ins_id;
+		$row = $query->row();
+		return $row->ins_id;
 	}
 
 	// --------------------------------------------------------------------
