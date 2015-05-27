@@ -1,5 +1,5 @@
 <? if ( !isset( $only_admin_bar ) ) { ?>
-<form class="ajax" method="post" action="/admin/save">
+<form class="ajax" method="post" action="<?=base_url('/admin/save')?>">
 
 
 <div class="admin-editor">

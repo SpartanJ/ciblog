@@ -275,7 +275,7 @@ class MY_Controller extends CI_Controller
 	
 	protected function session_recover()
 	{
-		$this->sess = $this->session->all_userdata();
+		$this->sess = $this->session->userdata();
 	}
 	
 	protected function sess()
@@ -285,11 +285,11 @@ class MY_Controller extends CI_Controller
 
 	protected function create_session( $user, $pass )
 	{
-		$this->load->model( 'user_model' );
+		$this->load->model( 'User_model' );
 		
-		$user = $this->user_model->by_user( $user, $pass );
+		$user = $this->User_model->by_user( $user, $pass );
 		
-		if ( !empty( $user ) )
+		if ( isset( $user ) )
 		{
 			$data = array(
 				'id' => $user->id,

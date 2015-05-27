@@ -17,19 +17,17 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=8
-FILE_NAME_0=153;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2Fadmin.php;0;4
-FILE_NAME_1=1632;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fframe.php;0;4
-FILE_NAME_2=473;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fbar.php;0;4
-FILE_NAME_3=1994;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Fedit_post.php;0;4
-FILE_NAME_4=715;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fassets%2Fjs%2Fsite.js;0;4
-FILE_NAME_5=11025;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fglobal.css;0;4
-FILE_NAME_6=1222;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Ffm%2Fscripts%2Ffilemanager.config.js;0;4
-FILE_NAME_7=830;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Ffm%2Fconnectors%2Fphp%2Fdefault.config.php;0;4
-FILE_NAME_8=1117;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Ffm%2Fconnectors%2Fphp%2Ffilemanager.class.php;0;4
-FILE_NAME_9=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Ffm%2Fconnectors%2Fphp%2Ffilemanager.php;0;4
-FILE_NAME_10=20455;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Ffm%2Fscripts%2Ffilemanager.js;0;4
-FILE_NAME_11=0;None;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Ffm%2Fconnectors%2Fphp%2Flog.log;0;4
+current_page=4
+FILE_NAME_0=7429;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcore%2FMY_Controller.php;0;4
+FILE_NAME_1=860;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fframe.php;0;4
+FILE_NAME_2=110;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Fedit_post.php;0;4
+FILE_NAME_3=2363;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fassets%2Fjs%2Fsite.js;0;4
+FILE_NAME_4=1531;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fglobal.css;0;4
+FILE_NAME_5=2743;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
+FILE_NAME_6=1440;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fconfig%2Froutes.php;0;4
+FILE_NAME_7=593;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FBlog.php;0;4
+FILE_NAME_8=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fconfig%2Fconfig.php;0;4
+FILE_NAME_9=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fframe%2Fheader.php;0;4
 
 [gproject]
 source_patterns=*.php;*.js;*.css;*.xml;

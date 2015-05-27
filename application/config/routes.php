@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller'] = 'blog/index/PORTFOLIO';
-$route['404_override'] = 'errors/error_404';
+$route['default_controller'] = 'blog/portfolio';
+$route['404_override'] = '';
 
 $route['portfolio'] = "blog/index/PORTFOLIO";
 $route['nosotros'] = "blog/index/START";
