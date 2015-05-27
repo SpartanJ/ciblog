@@ -1,6 +1,6 @@
 <div id="contact-box" class="styled-box">
 
-<form class="ajax" id="form-contact" action="<?=base_url('/contacto/mail')?>" method="post" accept-charset="utf-8">
+<form class="ajax" id="form-contact" action="<?=base_url('/contact/mail')?>" method="post" accept-charset="utf-8">
 <ul class="stylish-form">
 	<li>
 		<h1 class="mail_icon">CONTACTANOS</h1>
@@ -22,7 +22,8 @@
 
 
 <script>
-	$( function(){
+	$(function()
+	{
 		mailcheck_init();
 	});
 </script>

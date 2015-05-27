@@ -4,9 +4,9 @@ class Rss extends MY_Controller
 {
 	protected function get_web_info()
 	{
-		return array(	'title' => 'ensoft',
-						'description' => 'Sitio de ensoft',
-						'lang' => 'es' );
+		return array(	'title' => PAGE_TITLE,
+						'description' => PAGE_DESCRIPTION,
+						'lang' => PAGE_LANG );
 	}
 	
 	protected function render( $web_info, $items, $image = NULL )
@@ -47,7 +47,7 @@ class Rss extends MY_Controller
 				$item['description']	= $post['body'];
 				$item['link']			= base_url('blog/'.$post['slug']);
 				$item['guid']			= $item['link'];
-				$item['pubDate']		= toBlogDate($post['timestamp']);
+				$item['pubDate']		= to_blog_date($post['timestamp']);
 				
 				$items[] = $item;
 			}

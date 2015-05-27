@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Contacto extends MY_Controller
+class Contact extends MY_Controller
 {
 	public function index()
 	{
@@ -41,7 +41,7 @@ class Contacto extends MY_Controller
 		
 		if ( $this->form_validation->run() )
 		{
-			$subject = 'ensoft email de ' . $arr['name'];
+			$subject = PAGE_TITLE . ' email de ' . $arr['name'];
 			
 			$this->send_mail( $subject, $arr['message'], $arr['name'], $arr['mail'] );
 			

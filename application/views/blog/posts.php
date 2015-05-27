@@ -38,7 +38,7 @@ if(count($posts)>1)
 
 <div class="blog_post" id="<?=$r['slug']?>">
 	<?if($i==0 && $show_date){?>
-	<div class="date">PUBLICADO el <?=toBlogDate($r['timestamp'])?></div>
+	<div class="date">PUBLICADO el <?=to_blog_date($r['timestamp'])?></div>
 	<?}?>
 
 		<h1>
@@ -52,8 +52,6 @@ if(count($posts)>1)
 <?
 		$i++;
 }?>
-
-
 
 <script>
 	$( function()

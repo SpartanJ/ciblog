@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xml:lang="en" lang="en">
+<html xml:lang="<?=PAGE_LANG?>" lang="<?=PAGE_LANG?>">
 <head>
-	<title>ensoft<?=$page_title?></title>
+	<title><?=PAGE_TITLE?><?=$page_title?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=480, user-scalable=no">
 	<link rel="shortcut icon" href="<?=base_url('assets/images/favicon.ico')?>" />
@@ -16,9 +16,12 @@
 <?=$css?>
 </head>
 <body>
-	<?if (isset($header)){echo $header;}?>
+<?if (isset($header)){echo $header;}?>
 
 	<div id="content"><?=$content?></div>
+
+<?if (isset($footer)){echo $footer;}?>
+
 <?=$js /*newest optimizationr recomendations, states that is best to load js at the end, so we do.*/?>
 <script type="text/javascript">$.each(q,function(i,f){$(f)});</script><?/*MAGIC #2*/?>
 <?/*
@@ -31,9 +34,6 @@
 
     ref: http://samsaffron.com/archive/2012/02/17/stop-paying-your-jquery-tax
 */?>
-	
-<?if (isset($footer)){echo $footer;}?>
-
 <script type='text/javascript'>
 	$(function()
 	{

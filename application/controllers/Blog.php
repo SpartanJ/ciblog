@@ -21,8 +21,9 @@ class Blog extends MY_Controller
 
 		switch($categ)
 		{
-			case 'BLOG': 	$data['page_title'] = 'blog'; break;
-			case 'PORTFOLIO': 	$data['page_title'] = 'portfolio';  break;
+			case 'START':		$data['page_title'] = 'nosotros';	break;
+			case 'BLOG': 		$data['page_title'] = 'blog';		break;
+			case 'PORTFOLIO': 	$data['page_title'] = 'portfolio';	break;
 		}
 		
 		$this->add_frame_view('blog/posts',$data);
