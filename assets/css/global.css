@@ -1,5 +1,121 @@
 @import url("anim.css");
 
+/***** KAJAX *****/
+@-webkit-keyframes kajax-loader-spinner
+{
+	0% {
+		-webkit-transform:rotate(0deg);
+		transform:rotate(0deg);
+	}
+	100%
+	{
+		-webkit-transform:rotate(360deg);
+		transform:rotate(360deg);
+	}
+}
+
+@-moz-keyframes kajax-loader-spinner
+{
+	0%
+	{
+		-moz-transform:rotate(0deg);
+		transform:rotate(0deg);
+	}
+	100%
+	{
+		-moz-transform:rotate(360deg);
+		transform:rotate(360deg);
+	}
+}
+
+@-o-keyframes kajax-loader-spinner
+{
+	0%
+	{
+		-o-transform:rotate(0deg);
+		transform:rotate(0deg);
+	}
+	100%
+	{
+		-o-transform:rotate(360deg);
+		transform:rotate(360deg);
+	}
+}
+
+@-ms-keyframes kajax-loader-spinner
+{
+	0%
+	{
+		-ms-transform:rotate(0deg);
+		transform:rotate(0deg);
+	}
+	100%
+	{
+		-ms-transform:rotate(360deg);
+		transform:rotate(360deg);
+	}
+}
+
+@keyframes kajax-loader-spinner
+{
+	0%
+	{
+		transform:rotate(0deg);
+	}
+	100%
+	{
+		transform:rotate(360deg);
+	}
+}
+
+#kajax-overlay
+{
+	background-color:rgba(0,0,0,0.7);
+	text-shadow:2px 2px #000000;
+	color:#ffffff;
+	left:0;
+	font-family:'Verdana';
+	padding:40px 100px 40px 100px;
+	position:absolute;
+	display:block;
+	top:0;
+	height:100%;
+	width:100%;
+	z-index:100000;
+}
+
+.kajax-loading, 
+.loading-spinner
+{
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+.kajax-loading .kajax-loading-image, 
+.loading-spinner .loading-spinner-image
+{
+	position:relative;
+	top: 50%;
+	transform: 			translateY(-50%);
+	margin:0px auto;
+	z-index:4000;
+	width:24px;
+	height:24px;
+	border:solid 2px transparent;
+	border-top-color:#282B2E;
+	border-left-color:#282B2E;
+	border-radius:20px;
+	-webkit-animation:kajax-loader-spinner 400ms linear infinite;
+	-moz-animation:kajax-loader-spinner 400ms linear infinite;
+	-ms-animation:kajax-loader-spinner 400ms linear infinite;
+	-o-animation:kajax-loader-spinner 400ms linear infinite;
+	animation:kajax-loader-spinner 400ms linear infinite;
+}
+/***** KAJAX *****/
+
 a:active, a:focus { outline:none; }
 
 .no_selection {
@@ -135,6 +251,7 @@ input, button, textarea { font-family:inherit; }
 
 #content {
 	padding:0px;
+	margin-top:64px;
 }
 
 #content >h1 {
@@ -148,33 +265,6 @@ input, button, textarea { font-family:inherit; }
 a img { border:0; }
 
 #ajax-target { position:relative; }
-
-.loading_corner {
-	position:fixed;
-	bottom:90px;
-	right:0px;
-	width:32px;
-	height:32px;
-	background:url("../images/loading.gif?v=3") no-repeat !important;
-}
-
-.kajax-loading .kajax-loading-image {
-	width:32px;
-	height:32px;
-	background:url("../images/loading.gif?v=3") no-repeat center white;
-}
-
-#content > .kajax-loading {
-	position:fixed;
-	top:10px;
-	left:190px;
-}
-
-.stylish-form > .kajax-loading {
-	position:absolute;
-	bottom:45px;
-	right:190px;
-}
 
 .blend_input {
 	display:block;
@@ -373,7 +463,6 @@ a img { border:0; }
 	box-sizing:border-box;
 	border:4px solid black;
 	border-top:none;
-	margin-top: 64px;
 }
 
 #admin-posts #published {
