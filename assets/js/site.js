@@ -8,8 +8,6 @@ function site_init( base_url )
 	
 	placeholder_init();
 
-	mobile_init();
-	
 	editor_init();
 }
 
@@ -65,15 +63,6 @@ function highlight_init()
 	{
 		hljs.highlightBlock(block);
 	});
-}
-
-function mobile_init()
-{
-	if(is_mobile)
-	{
-		$("#bar").addClass("smallscreen");
-		$("#content").addClass("smallscreen");
-	}
 }
 
 function placeholder_init()
