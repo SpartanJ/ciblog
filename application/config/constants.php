@@ -37,11 +37,12 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 define('EXT', '.php');
 
+define( 'ROOTPATH'			, dirname( realpath( __FILE__ ) ) . '/../../'  );
 define( 'SERVER_NAME'		, php_uname( 'n' ) );
 define( 'PAGE_HOST'			, isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '' );
-define( 'APP_DEBUG'			, true );
-define( 'PAGE_TITLE'		, 'ensoft' );
-define( 'PAGE_DESCRIPTION'	, 'Sitio de Ensoft' );
+define( 'DEBUG'				, TRUE );
+define( 'PAGE_TITLE'		, 'ciblog' );
+define( 'PAGE_DESCRIPTION'	, 'ciblog description' );
 define( 'PAGE_LANG'			, 'en' );
 
 /* End of file constants.php */

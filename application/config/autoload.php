@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','kajax');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','utils');
+$autoload['helper'] = array('date','url','utils');
 
 
 /*
@@ -96,7 +96,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array();
+$autoload['language'] = array('base');
 
 
 /*

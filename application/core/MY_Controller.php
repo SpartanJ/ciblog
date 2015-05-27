@@ -40,7 +40,6 @@ class MY_Controller extends CI_Controller
 		$this->add_js('assets/libs/jquery/jquery-1.11.3.min.js');
 		$this->add_js('assets/libs/jquery.color/jquery.color.js');
 		$this->add_js('assets/libs/jquery.placeholder/jquery.placeholder.min.js');
-		$this->add_js('assets/libs/jquery.mailcheck/jquery.mailcheck.min.js');
 		
 		$this->add_js('ckeditor/ckeditor.js');
 		$this->add_js('ckeditor/adapters/jquery.js');

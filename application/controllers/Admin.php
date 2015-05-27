@@ -109,7 +109,7 @@ class Admin extends MY_Controller
 			else
 			{
 				$this->kajax->fadeIn('.form-error',500);
-				$this->kajax->html( '.form-error', '<p>Username and/or password incorrect.</p>' );
+				$this->kajax->html( '.form-error', '<p>' . $this->lang->line('user_pass_incorrect') . '</p>' );
 			}
 			
 			$this->kajax->out();
