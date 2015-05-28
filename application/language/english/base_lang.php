@@ -1,9 +1,11 @@
 <?php
 
+$lang['blog'] = 'blog';
+$lang['standalone'] = 'standalone';
+
 $lang['user_pass_incorrect'] = 'Username and/or password incorrect.';
 $lang['portfolio'] = 'portfolio';
 $lang['about_us'] = 'about us';
-$lang['blog'] = 'blog';
 $lang['title'] = 'title';
 $lang['contact'] = 'contact';
 $lang['mail_send_success'] = 'The email has been sent.';

@@ -6,7 +6,8 @@ class Blog extends MY_Controller
 	{
 		parent::__construct();
 
-		$this->load->model('post_model');
+		$this->load->model('posts_model');
+		$this->load->model('Categories_model');
 	}
 
 	protected function auto_add()
@@ -14,35 +15,30 @@ class Blog extends MY_Controller
 		parent::auto_add();
 	}
 
-	public function index($categ = 'BLOG')
+	public function index($categ = 'blog')
 	{
-		$data['posts'] = $this->post_model->get_published($categ);
-		$data['show_date'] = false;
-
-		switch($categ)
+		$category			= $this->Categories_model->get_by_key( $categ );
+		$data['posts']		= $this->posts_model->get_published_by_category_key($categ);
+		$data['show_date']	= true;
+		
+		if ( isset( $category ) )
 		{
-			case 'START':		$data['page_title'] = lang_line('about_us');	break;
-			case 'BLOG': 		$data['page_title'] = lang_line('blog');		break;
-			case 'PORTFOLIO': 	$data['page_title'] = lang_line('portfolio');	break;
+			$data['page_title'] = lang_line_category_name( $category['cat_name'] );
+			$data['show_date']	= intval( $category['cat_show_dates'] ) != 0;
 		}
 		
 		$this->add_frame_view('blog/posts',$data);
 	}
 	
-	public function portfolio()
-	{
-		$this->index('PORTFOLIO');
-	}
-
 	public function show($slug)
 	{
-		$post = $this->post_model->get_slug($slug);
+		$post = $this->posts_model->get_slug($slug);
 
-		if($post)
+		if( isset( $post ) )
 		{
-			$data['posts'] = array($post);
-			$data['show_date'] = true;
-			$data['page_title'] = $post['title'];
+			$data['posts']		= array($post);
+			$data['show_date']	= intval( $post['cat_show_dates'] ) != 0;
+			$data['page_title']	= $post['post_title'];
 			
 			$this->add_frame_view('blog/posts',$data);
 		}

@@ -27,10 +27,10 @@ class Rss extends MY_Controller
 	
 	public function all()
 	{
-		$this->load->model('post_model');
+		$this->load->model('posts_model');
 		
 		$winfo	= $this->get_web_info();
-		$posts	= $this->post_model->get_rss();
+		$posts	= $this->posts_model->get_rss();
 		$items	= array();
 		$image	= array();
 		
@@ -43,11 +43,11 @@ class Rss extends MY_Controller
 			foreach ( $posts as $post )
 			{
 				$item					= array();
-				$item['title']			= $post['title'];
-				$item['description']	= $post['body'];
-				$item['link']			= base_url('blog/'.$post['slug']);
+				$item['title']			= $post['post_title'];
+				$item['description']	= $post['post_body'];
+				$item['link']			= base_url('blog/'.$post['post_slug']);
 				$item['guid']			= $item['link'];
-				$item['pubDate']		= to_blog_date($post['timestamp']);
+				$item['pubDate']		= to_blog_date($post['post_timestamp']);
 				
 				$items[] = $item;
 			}

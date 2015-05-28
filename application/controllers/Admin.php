@@ -6,7 +6,7 @@ class Admin extends MY_Controller
 	{
 		parent::__construct();
 		
-		$this->load->model('post_model');
+		$this->load->model('posts_model');
 	}
 
 	protected function auto_add()
@@ -20,7 +20,7 @@ class Admin extends MY_Controller
 	{
 		if ( $this->session_check() )
 		{
-			$this->post_model->delete($id);
+			$this->posts_model->delete($id);
 			redirect(base_url('/admin'));
 		}
 	}
@@ -38,7 +38,7 @@ class Admin extends MY_Controller
 				$id = $data['post_id'];
 				
 				// if already exists find a new one
-				if ( $this->post_model->slug_exists_and_not_me( $slug, $id ) )
+				if ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) )
 				{
 					$rslug = $slug;
 					$c = 0;
@@ -59,16 +59,16 @@ class Admin extends MY_Controller
 						$slug = $rslug . $slug_ext;
 						
 						$c++; 
-					} while ( $this->post_model->slug_exists_and_not_me( $slug, $id ) );
+					} while ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) );
 				}
 				
-				$this->post_model->update($data,$slug);
+				$this->posts_model->update($data,$slug);
 			}
 			else
 			{
 				$added		= TRUE;
 				$admin_id	= $this->sess['id'];
-				$id			= $this->post_model->add($data,$slug, $admin_id);
+				$id			= $this->posts_model->add($data,$slug, $admin_id);
 			}
 			
 			if ( $this->input->is_ajax_request() )
@@ -77,13 +77,13 @@ class Admin extends MY_Controller
 				
 				if ( isset( $added ) )
 				{
-					$bdata = $this->post_model->get($id);
+					$bdata = $this->posts_model->get($id);
 					$bdata['post_id']			= $id;
 					$bdata['only_admin_bar'] 	= TRUE;
 					
 					$view_data = $this->load->view( 'admin/edit_post', $bdata, TRUE );
 					
-					$this->kajax->html_safe( '#admin-bar', $view_data );
+					$this->kajax->html( '#admin-bar', $view_data );
 				}
 				else
 				{
@@ -105,7 +105,11 @@ class Admin extends MY_Controller
 		{
 			if($id != null)
 			{
-				$data = $this->post_model->get($id);
+				$this->load->model('Categories_model');
+				
+				$data = $this->posts_model->get($id);
+				$data['categories'] = $this->Categories_model->get_all();
+				
 				$this->add_frame_view('admin/edit_post',$data);
 			}
 		}
@@ -115,7 +119,10 @@ class Admin extends MY_Controller
 	{
 		if ( $this->session_check() )
 		{
-			$this->add_frame_view('admin/edit_post');
+			$this->load->model('Categories_model');
+			$data['categories'] = $this->Categories_model->get_all();
+			
+			$this->add_frame_view('admin/edit_post',$data);
 		}
 	}
 
@@ -168,8 +175,8 @@ class Admin extends MY_Controller
 	{
 		if ( $this->session_exists() )
 		{
-			$data['drafts'] = $this->post_model->get_drafts();
-			$data['published'] = $this->post_model->get_published();
+			$data['drafts'] = $this->posts_model->get_drafts();
+			$data['published'] = $this->posts_model->get_published();
 			$this->add_frame_view('admin/list',$data);
 		}
 		else

@@ -223,15 +223,25 @@ class MY_Controller extends CI_Controller
 	
 	protected function add_frame_view( $content_view, $data = array(), $show_header = TRUE, $show_footer = TRUE, $return = FALSE )
 	{
-		if ( $this->is_kajax_request()  )
+		if ( $this->is_kajax_request() )
 		{
+			$inject = '';
+			
+			if ( isset($data['page_title']) )
+			{
+				$this->kajax->text('title', PAGE_TITLE . ' - ' . $data['page_title'] );
+				
+				$inject = $this->kajax->out( TRUE, TRUE );
+			}
+			
 			if ( !$return )
 			{
 				$this->load->view($content_view, $data);
+				echo $inject;
 			}
 			else
 			{
-				return $this->load->view($content_view, $data, TRUE );
+				return $this->load->view($content_view, $data, TRUE ) . $inject;
 			}
 		}
 		else
