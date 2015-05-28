@@ -4,7 +4,7 @@ class Post_model extends CI_Model
 {
 	function add($data,$slug, $admin_id)
 	{
-		$this->db->query("INSERT INTO blog_posts (title, body, category, draft, slug, admin_id) VALUES (?,?,?,?,?,?,?)", array($data['title'], $data['body'], $data['category'], $data['draft'], $slug, $admin_id));
+		$this->db->query("INSERT INTO blog_posts (title, body, category, draft, slug, admin_id) VALUES (?,?,?,?,?,?)", array($data['title'], $data['body'], $data['category'], $data['draft'], $slug, $admin_id));
 		return $this->db->insert_id();
 	}
 
@@ -12,7 +12,7 @@ class Post_model extends CI_Model
 	{
 		//updates timestamp if draft flag changed
 		$this->db->query("UPDATE blog_posts SET timestamp = NOW() WHERE draft != ? and post_id = ?", array( $data['draft'], $data['post_id']));
-		$this->db->query("UPDATE blog_posts SET title = ?, body = ?, category = ?, draft = ?, slug =  ? WHERE post_id = ?", array($data['title'], $data['body'], $data['category'], $data['draft'], $slug, $data['post_id']));
+		$this->db->query("UPDATE blog_posts SET title = ?, body = ?, category = ?, draft = ?, slug = ? WHERE post_id = ?", array($data['title'], $data['body'], $data['category'], $data['draft'], $slug, $data['post_id']));
 	}
 
 	function get_drafts()
@@ -48,5 +48,10 @@ class Post_model extends CI_Model
 	function get_slug($slug)
 	{
 		return $this->db->query("SELECT * FROM blog_posts WHERE slug = ?",array($slug))->row_array();
+	}
+	
+	function slug_exists_and_not_me( $slug, $post_id )
+	{
+		return NULL != $this->db->query("SELECT 1 FROM blog_posts WHERE slug = ? AND post_id != ?", array( $slug, $post_id ) )->row_array();
 	}
 }

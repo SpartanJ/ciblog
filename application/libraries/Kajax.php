@@ -60,7 +60,7 @@ class Kajax
 		$this->buffer .=  sprintf('console.log("%s");', $text);
 	}
 
-	public function html($target, $content,$init_ajax=TRUE)
+	public function html( $target, $content, $init_ajax=TRUE )
 	{
 		$this->buffer .= jmethod($target,'html',jstr($content));
 		
@@ -70,7 +70,17 @@ class Kajax
 		}
 	}
 	
-	public function text($target, $content)
+	public function html_safe( $target, $content, $init_ajax=TRUE )
+	{
+		$this->buffer .= jmethod($target,'html',jstr( str_replace( "'", "\\'", $content ) ) );
+		
+		if ( TRUE == $init_ajax )
+		{
+			$this->call( "kajax_on_loaded_event($('".$target."'), '".current_url()."')" );
+		}
+	}
+	
+	public function text( $target, $content )
 	{
 		$this->buffer .= jmethod($target,'text',jstr($content));
 	}

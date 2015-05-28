@@ -136,7 +136,17 @@
 	position:absolute;
 	right:0px;
 	bottom:0px;
-	font-size:8px;
+	font-size:10px;
+	font-style: normal;
+	color:#a0a0a0;
+}
+
+#admin-posts li em.date {
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	font-size:10px;
+	font-style: normal;
 	color:#a0a0a0;
 }
 
@@ -154,6 +164,7 @@
 	box-sizing:border-box;
 	border:4px solid black;
 	border-top:none;
+	color: #a0a0a0;
 }
 
 #admin-posts #published {
@@ -161,7 +172,7 @@
 	width:100%;
 	padding:20px;
 	box-sizing:border-box;
-	color:#a0a0a0;
+	color:#000;
 }
 
 #admin-posts #logout {
