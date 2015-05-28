@@ -45,7 +45,7 @@
 					<label for="draft"><?=lang_line_ucwords('draft')?></label> <input <?=$draft_checked?>  id="draft" name="draft" type="checkbox"/>
 				</span>
 			<?if(isset($post_id)){?>
-				<a target="_blank" href="<?=base_url('/blog/'.$slug)?>"><?=lang_line_ucwords('preview')?></a>
+				<a id="preview_slug" target="_blank" href="<?=base_url('/blog/'.$slug)?>"><?=lang_line_ucwords('preview')?></a>
 			<?}?>
 			
 			<input type="submit" value="<?=lang_line_ucwords('save')?>"></input>
