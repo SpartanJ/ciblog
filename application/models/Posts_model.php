@@ -4,7 +4,7 @@ class Posts_model extends CI_Model
 {
 	function add( $data,$slug, $admin_id )
 	{
-		$this->db->query("INSERT INTO posts (post_title, post_body, post_category, post_draft, post_slug, post_admin_id) VALUES (?,?,?,?,?,?)", array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $admin_id ) );
+		$this->db->query("INSERT INTO posts (post_title, post_body, post_category, post_draft, post_slug, post_admin_id, post_created) VALUES (?,?,?,?,?,?, now())", array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $admin_id ) );
 		
 		return $this->db->insert_id();
 	}

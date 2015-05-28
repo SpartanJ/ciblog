@@ -32,7 +32,7 @@ foreach($posts as $r)
 ?>
 	<div class="blog_post" id="<?=$r['post_slug']?>">
 		<?if($i==0 && $show_date){?>
-		<div class="date"><?=to_blog_date($r['post_timestamp'])?></div>
+		<div class="date"><?=CiblogHelper::to_blog_date($r['post_timestamp'])?></div>
 		<?}?>
 
 		<h1>

@@ -41,9 +41,12 @@ define( 'ROOTPATH'			, dirname( realpath( __FILE__ ) ) . '/../../'  );
 define( 'SERVER_NAME'		, php_uname( 'n' ) );
 define( 'PAGE_HOST'			, isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '' );
 define( 'DEBUG'				, TRUE );
-define( 'PAGE_TITLE'		, 'ciblog' );
-define( 'PAGE_DESCRIPTION'	, 'ciblog description' );
-define( 'PAGE_LANG'			, 'en' );
+
+define( 'CIBLOG_DB_PASSWORD_SALT'	, 'ciblog_salt' );
+define( 'CIBLOG_ADMIN_LEVEL			', 1000  );
+define( 'PAGE_TITLE'				, 'ciblog' );
+define( 'PAGE_DESCRIPTION'			, 'ciblog description' );
+define( 'PAGE_LANG'					, 'en' );
 
 /* End of file constants.php */
 

@@ -771,32 +771,40 @@ function array_remove_value( &$arr, $del_val )
 	}
 }
 
-function to_blog_date($timestamp)
+class CiblogHelper
 {
-	return unix_to_human(strtotime($timestamp), FALSE, 'eu');
-}
-
-function slugify( $text )
-{ 
-	// replace non letter or digits by -
-	$text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-
-	// trim
-	$text = trim($text, '-');
-
-	// transliterate
-	$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-	// lowercase
-	$text = strtolower($text);
-
-	// remove unwanted characters
-	$text = preg_replace('~[^-\w]+~', '', $text);
-
-	if (empty($text))
+	public static function password_hash( $password )
 	{
-	return 'n-a';
+		return hash( 'sha256', CIBLOG_DB_PASSWORD_SALT . $password );
 	}
+	
+	public static function slugify( $text )
+	{ 
+		// replace non letter or digits by -
+		$text = preg_replace('~[^\\pL\d]+~u', '-', $text);
 
-	return $text;
+		// trim
+		$text = trim($text, '-');
+
+		// transliterate
+		$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+		// lowercase
+		$text = strtolower($text);
+
+		// remove unwanted characters
+		$text = preg_replace('~[^-\w]+~', '', $text);
+
+		if (empty($text))
+		{
+		return 'n-a';
+		}
+
+		return $text;
+	}
+	
+	public static function to_blog_date($timestamp)
+	{
+		return unix_to_human(strtotime($timestamp), FALSE, 'eu');
+	}
 }

@@ -4,7 +4,7 @@ function print_post($p)
 	<li>
 		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['post_title']?></a>
 		<em><?=lang_line_category_name_upper($p['cat_name'])?></em>
-		<em class="date"><?=to_blog_date($p["post_timestamp"])?></em>
+		<em class="date"><?=CiblogHelper::to_blog_date($p["post_timestamp"])?></em>
 		<span>
 			<a target="_blank" href="<?=base_url('/blog/'.$p['post_slug'])?>"><?=lang_line_upper('view')?></a>
 			<a onclick="return confirm('<?=lang_line('admin_confirm_delete_article')?>');" href="<?=base_url('/admin/delete/'.$p['post_id'])?>">X</a>
