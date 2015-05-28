@@ -282,6 +282,9 @@ class MY_Controller extends CI_Controller
 		}
 	}
 	
+	protected $sess					= NULL;
+	protected $user					= NULL;
+	
 	protected function session_exists()
 	{
 		return isset( $this->sess ) && isset( $this->sess['id'] );
@@ -299,17 +302,16 @@ class MY_Controller extends CI_Controller
 
 	protected function create_session( $user, $pass )
 	{
-		$this->load->model( 'User_model' );
+		$this->load->model( 'Users_model' );
 		
-		$user = $this->User_model->by_user( $user, $pass );
+		$user = $this->Users_model->by_user( $user, $pass );
 		
 		if ( isset( $user ) )
 		{
 			$data = array(
-				'id' => $user->id,
-				'name' => $user->name,
-				'token' => hash( 'sha256', time() + $user->id ),
-				'is_logged_in' => true
+				'id' => $user->user_id,
+				'name' => $user->user_name,
+				'token' => hash( 'sha256', time() + $user->user_id )
 			);
 			
 			$this->session->set_userdata( $data );

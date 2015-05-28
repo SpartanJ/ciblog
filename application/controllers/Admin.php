@@ -24,43 +24,50 @@ class Admin extends MY_Controller
 			redirect(base_url('/admin'));
 		}
 	}
+	
+	protected function slug_create( $id, $title )
+	{
+		$slug = CiblogHelper::slugify( $title );
+		
+		// if already exists find a new one
+		if ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) )
+		{
+			$rslug = $slug;
+			$c = 0;
+			
+			do
+			{
+				// try with the date
+				if ( 0 == $c )
+				{
+					$slug_ext = '-' . date( 'Y-m-d', time() );
+				}
+				else
+				{
+					// just count
+					$slug_ext = $c;
+				}
+					
+				$slug = $rslug . $slug_ext;
+				
+				$c++; 
+			} while ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) );
+		}
+		
+		return $slug;
+	}
 
 	public function save()
 	{
 		if ( $this->session_check() )
 		{
-			$data =  $this->input->post();
-			$data['draft'] = isset($data['draft']) && $data['draft'] ? '1' : '0';
-			$slug = slugify($data['title']);
-
+			$data			=  $this->input->post();
+			$data['draft']	= isset($data['draft']) && $data['draft'] ? '1' : '0';
+			
 			if( isset( $data['post_id'] ) )
 			{
-				$id = $data['post_id'];
-				
-				// if already exists find a new one
-				if ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) )
-				{
-					$rslug = $slug;
-					$c = 0;
-					
-					do
-					{
-						// try with the date
-						if ( 0 == $c )
-						{
-							$slug_ext = '-' . date( 'Y-m-d', time() );
-						}
-						else
-						{
-							// just count
-							$slug_ext = $c;
-						}
-							
-						$slug = $rslug . $slug_ext;
-						
-						$c++; 
-					} while ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) );
-				}
+				$id			= $data['post_id'];
+				$slug		= $this->slug_create( $id, $data['title'] );
 				
 				$this->posts_model->update($data,$slug);
 			}
@@ -132,8 +139,12 @@ class Admin extends MY_Controller
 		
 		if ( !empty( $post ) )
 		{
-			if( $this->create_session( $post['user'], $post['pass'] ) )
+			$admin = $this->Users_model->get_admin_user( $post['user'], $post['pass'] );
+			
+			if( isset( $admin ) )
 			{
+				$this->create_session( $post['user'], $post['pass'] );
+				
 				$this->kajax->redirect(base_url('/admin'));
 			}
 			else
