@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Admin extends MY_Controller
+class Admin extends SESSION_Controller
 {
 	function __construct()
 	{
@@ -21,6 +21,7 @@ class Admin extends MY_Controller
 		if ( $this->session_check() )
 		{
 			$this->posts_model->delete($id);
+			
 			redirect(base_url('/admin'));
 		}
 	}
@@ -69,7 +70,7 @@ class Admin extends MY_Controller
 				$id			= $data['post_id'];
 				$slug		= $this->slug_create( $id, $data['title'] );
 				
-				$this->posts_model->update($data,$slug);
+				$this->posts_model->update( $data, $slug );
 			}
 			else
 			{
@@ -106,11 +107,11 @@ class Admin extends MY_Controller
 		}
 	}
 
-	public function edit($id = null)
+	public function edit( $id = NULL )
 	{
 		if ( $this->session_check() )
 		{
-			if($id != null)
+			if( $id != null )
 			{
 				$this->load->model('Categories_model');
 				
@@ -143,7 +144,7 @@ class Admin extends MY_Controller
 			
 			if( isset( $admin ) )
 			{
-				$this->create_session( $post['user'], $post['pass'] );
+				$this->session_create( $post['user'], $post['pass'] );
 				
 				$this->kajax->redirect(base_url('/admin'));
 			}
@@ -170,7 +171,7 @@ class Admin extends MY_Controller
 	
 	public function logout()
 	{
-		$this->session->sess_destroy();
+		$this->session_destroy();
 		
 		if ( $this->is_kajax_request() )
 		{
@@ -184,7 +185,7 @@ class Admin extends MY_Controller
 
 	public function index()
 	{
-		if ( $this->session_exists() )
+		if ( $this->admin_session_exists() )
 		{
 			$data['drafts'] = $this->posts_model->get_drafts();
 			$data['published'] = $this->posts_model->get_published();
@@ -198,7 +199,7 @@ class Admin extends MY_Controller
 	
 	protected function session_check()
 	{
-		if ( $this->session_exists() )
+		if ( $this->admin_session_exists() )
 		{
 			return TRUE;
 		}
