@@ -16,13 +16,6 @@ class Admin extends MY_Controller
 		$this->add_css('assets/css/admin.css');
 	}
 	
-	private function get_slug($str) {
-		$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $str);
-		$clean = strtolower(trim($clean, '-'));
-		$clean = preg_replace("/[\/_|+ -]+/", '-', $clean);
-		return $clean;
-	}
-
 	public function delete($id)
 	{
 		if ( $this->session_check() )
@@ -38,20 +31,38 @@ class Admin extends MY_Controller
 		{
 			$data =  $this->input->post();
 			$data['draft'] = isset($data['draft']) && $data['draft'] ? '1' : '0';
-			$slug = $this->get_slug($data['title']);
+			$slug = slugify($data['title']);
 
 			if( isset( $data['post_id'] ) )
 			{
 				$id = $data['post_id'];
 				
-				if ( !$this->post_model->slug_exists_and_not_me( $slug, $id ) )
+				// if already exists find a new one
+				if ( $this->post_model->slug_exists_and_not_me( $slug, $id ) )
 				{
-					$this->post_model->update($data,$slug);
+					$rslug = $slug;
+					$c = 0;
+					
+					do
+					{
+						// try with the date
+						if ( 0 == $c )
+						{
+							$slug_ext = '-' . date( 'Y-m-d', time() );
+						}
+						else
+						{
+							// just count
+							$slug_ext = $c;
+						}
+							
+						$slug = $rslug . $slug_ext;
+						
+						$c++; 
+					} while ( $this->post_model->slug_exists_and_not_me( $slug, $id ) );
 				}
-				else
-				{
-					$this->kajax->alert('Slug Exists!');
-				}
+				
+				$this->post_model->update($data,$slug);
 			}
 			else
 			{
@@ -73,6 +84,10 @@ class Admin extends MY_Controller
 					$view_data = $this->load->view( 'admin/edit_post', $bdata, TRUE );
 					
 					$this->kajax->html_safe( '#admin-bar', $view_data );
+				}
+				else
+				{
+					$this->kajax->href('#preview_slug', base_url('blog/'.$slug) );
 				}
 				
 				$this->kajax->out();
