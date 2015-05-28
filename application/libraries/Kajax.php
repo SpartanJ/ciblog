@@ -70,16 +70,6 @@ class Kajax
 		}
 	}
 	
-	public function html_safe( $target, $content, $init_ajax=TRUE )
-	{
-		$this->buffer .= jmethod($target,'html',jstr( str_replace( "'", "\\'", $content ) ) );
-		
-		if ( TRUE == $init_ajax )
-		{
-			$this->call( "kajax_on_loaded_event($('".$target."'), '".current_url()."')" );
-		}
-	}
-	
 	public function text( $target, $content )
 	{
 		$this->buffer .= jmethod($target,'text',jstr($content));
@@ -242,7 +232,7 @@ class Kajax
 
 	public function out($print_tags = FALSE, $return = FALSE)
 	{
-		$out = $print_tags ? '<script type="text/javascript">$(function(){ ' . "\n"  . $this->buffer . "\n" . ' })</script>' : $this->buffer;
+		$out = $print_tags ? "<script type=\"text/javascript\">\n$(function(){\n"  . $this->buffer . "\n})</script>\n" : $this->buffer;
 		
 		if ( !$return )
 		{

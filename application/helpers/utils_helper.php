@@ -541,6 +541,23 @@ function lang_line_ucwords($line, $log_errors = TRUE)
 	return ucwords( lang_line( $line, $log_errors ) );
 }
 
+function lang_line_category_name( $name )
+{
+	$cat_name = lang_line( $name, FALSE );
+	
+	return isset( $cat_name ) ? $cat_name : $name;
+}
+
+function lang_line_category_name_upper( $name )
+{
+	return strtoupper( lang_line_category_name( $name ) );
+}
+
+function lang_line_category_name_ucwords( $name )
+{
+	return ucwords( lang_line_category_name( $name ) );
+}
+
 function pipe_exec( $cmd, $async = FALSE, $input='' )
 {
 	$cmd  = $cmd . ( TRUE == $async ? ' > /dev/null 2>/dev/null &' : '' );

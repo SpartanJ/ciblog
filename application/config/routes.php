@@ -38,12 +38,10 @@
 |
 */
 
-$route['default_controller'] = 'blog/portfolio';
-$route['404_override'] = '';
-
-$route['portfolio'] = "blog/index/PORTFOLIO";
-$route['aboutus'] = "blog/index/START";
-$route['blog/(:any)'] = "blog/show/$1";
+$route['default_controller']	= 'blog';
+$route['404_override']			= '';
+$route['blog/(:any)']			= "blog/show/$1";
+$route['section/(:any)']		= "blog/show/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
