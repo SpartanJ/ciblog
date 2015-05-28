@@ -4,9 +4,10 @@ function print_post($p)
 	<li>
 		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['title']?></a>
 		<em><?=$p["category"]?></em>
+		<em class="date"><?=to_blog_date($p["timestamp"])?></em>
 		<span>
-			<a target="_blank" href="<?=base_url('/blog/'.$p['slug'])?>">VIEW</a>
-			<a onclick="return confirm('¿Are you sure you wan't to delete the article?');" href="<?=base_url('/admin/delete/'.$p['post_id'])?>">X</a>
+			<a target="_blank" href="<?=base_url('/blog/'.$p['slug'])?>"><?=lang_line_upper('view')?></a>
+			<a onclick="return confirm('<?=lang_line('admin_confirm_delete_article')?>');" href="<?=base_url('/admin/delete/'.$p['post_id'])?>">X</a>
 		</span>
 	</li>
 <?}?>
@@ -19,9 +20,9 @@ function print_post($p)
 	</div>
 
 	<div id="drafts">
-		<h1>DRAFT</h1>
+		<h1><?=lang_line_upper('draft')?></h1>
 		
-		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>">NEW</a>
+		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('new')?></a>
 		
 		<ul>
 		<?foreach($drafts as $p){
@@ -31,9 +32,9 @@ function print_post($p)
 	</div>
 
 	<div id="published">
-		<h1>PUBLISHED</h1>
+		<h1><?=lang_line_upper('published')?></h1>
 		
-		<a class="ajax-link button square-button" href="<?=base_url('/blog')?>">BLOG</a>
+		<a class="ajax-link button square-button" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
 		
 		<ul>
 		<?foreach($published as $p){

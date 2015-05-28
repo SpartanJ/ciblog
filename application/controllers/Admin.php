@@ -40,10 +40,18 @@ class Admin extends MY_Controller
 			$data['draft'] = isset($data['draft']) && $data['draft'] ? '1' : '0';
 			$slug = $this->get_slug($data['title']);
 
-			if(isset($data['post_id']))
+			if( isset( $data['post_id'] ) )
 			{
 				$id = $data['post_id'];
-				$this->post_model->update($data,$slug);
+				
+				if ( !$this->post_model->slug_exists_and_not_me( $slug, $id ) )
+				{
+					$this->post_model->update($data,$slug);
+				}
+				else
+				{
+					$this->kajax->alert('Slug Exists!');
+				}
 			}
 			else
 			{
