@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 28, 2015 at 06:25 PM
--- Server version: 5.5.16
--- PHP Version: 5.3.8
+-- Generation Time: May 28, 2015 at 07:52 PM
+-- Server version: 5.5.8
+-- PHP Version: 5.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_password` varchar(64) NOT NULL,
   `user_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_level` int(11) NOT NULL DEFAULT '0',
-  `user_token` varchar(64) NOT NULL,
+  `user_session_token` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_registered`, `user_level`, `user_token`) VALUES
+INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_registered`, `user_level`, `user_session_token`) VALUES
 (1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', '0000-00-00 00:00:00', 1000, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -14,11 +14,7 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 		
-		$this->load->library('session');
-		
 		$this->auto_add();
-		
-		$this->session_recover();
 	}
 
 	protected $a_css		= array();
@@ -256,11 +252,6 @@ class MY_Controller extends CI_Controller
 			
 			$hf_data = array();
 			
-			if ( $this->session_exists() )
-			{
-				$hf_data['is_admin'] = TRUE;
-			}
-			
 			if ( $show_header )
 			{
 				$frame_data['header']	= $this->load->view('/frame/header', $hf_data, TRUE);
@@ -280,45 +271,5 @@ class MY_Controller extends CI_Controller
 				return $this->load->view('/frame/frame', $frame_data, TRUE );
 			}
 		}
-	}
-	
-	protected $sess					= NULL;
-	protected $user					= NULL;
-	
-	protected function session_exists()
-	{
-		return isset( $this->sess ) && isset( $this->sess['id'] );
-	}
-	
-	protected function session_recover()
-	{
-		$this->sess = $this->session->userdata();
-	}
-	
-	protected function sess()
-	{
-		return $this->sess;
-	}
-
-	protected function create_session( $user, $pass )
-	{
-		$this->load->model( 'Users_model' );
-		
-		$user = $this->Users_model->by_user( $user, $pass );
-		
-		if ( isset( $user ) )
-		{
-			$data = array(
-				'id' => $user->user_id,
-				'name' => $user->user_name,
-				'token' => hash( 'sha256', time() + $user->user_id )
-			);
-			
-			$this->session->set_userdata( $data );
-			
-			return TRUE;
-		}
-		
-		return FALSE;
 	}
 }
