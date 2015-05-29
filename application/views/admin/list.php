@@ -34,7 +34,7 @@ function print_post($p)
 	<div id="published">
 		<h1><?=lang_line_upper('published')?></h1>
 		
-		<a class="ajax-link button square-button" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
+		<a class="button square-button" target="_blank" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
 		
 		<ul>
 		<?foreach($published as $p){
