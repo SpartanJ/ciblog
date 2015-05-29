@@ -201,13 +201,15 @@ input, button, textarea { font-family:inherit; }
 	position: relative;
 	margin: 0 auto;
 	display: table;
+	width: 100%;
 }
 
 #bar ul#links {
 	margin: 24px auto;
 	padding: 0px;
-	width: 480px;
+	width: 100%;
 	display: table;
+	max-width: 480px;
 }
 
 #bar #links li {
