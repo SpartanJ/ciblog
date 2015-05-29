@@ -118,4 +118,18 @@ class SESSION_Controller extends MY_Controller
 				isset( $this->user->user_level ) && 
 				$this->user->user_level >= CIBLOG_ADMIN_LEVEL;
 	}
+	
+	protected function admin_session_restrict()
+	{
+		if ( $this->admin_is_logged() )
+		{
+			return TRUE;
+		}
+		
+		$this->session_destroy();
+		
+		$this->redirect(base_url('/admin/login'));
+		
+		return FALSE;
+	}
 }

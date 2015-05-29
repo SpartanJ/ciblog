@@ -15,17 +15,7 @@ class Admin extends SESSION_Controller
 		
 		$this->add_css('assets/css/admin.css');
 	}
-	
-	public function delete($id)
-	{
-		if ( $this->admin_session_check() )
-		{
-			$this->posts_model->delete($id);
-			
-			redirect(base_url('/admin'));
-		}
-	}
-	
+
 	protected function slug_get_temp( $original_slug, &$c )
 	{
 		// try with the date
@@ -77,81 +67,87 @@ class Admin extends SESSION_Controller
 
 	public function save()
 	{
-		if ( $this->admin_session_check() )
+		$this->admin_session_restrict();
+		
+		$data			=  $this->input->post();
+		$data['draft']	= isset($data['draft']) && $data['draft'] ? '1' : '0';
+		
+		if( isset( $data['post_id'] ) )
 		{
-			$data			=  $this->input->post();
-			$data['draft']	= isset($data['draft']) && $data['draft'] ? '1' : '0';
+			$id			= $data['post_id'];
+			$slug		= $this->slug_create( $data['title'], $id );
 			
-			if( isset( $data['post_id'] ) )
+			$this->posts_model->update( $data, $slug );
+		}
+		else
+		{
+			$added		= TRUE;
+			$slug		= $this->slug_create( $data['title'] );
+			$id			= $this->posts_model->add( $data, $slug, $this->user->user_id );
+		}
+		
+		if ( $this->is_kajax_request() )
+		{
+			$this->kajax->script("$('#save-success-msg').fadeIn(500).delay(500).fadeOut(500);");
+			
+			if ( isset( $added ) )
 			{
-				$id			= $data['post_id'];
-				$slug		= $this->slug_create( $data['title'], $id );
+				$bdata = $this->posts_model->get($id);
+				$bdata['post_id']			= $id;
+				$bdata['only_admin_bar'] 	= TRUE;
 				
-				$this->posts_model->update( $data, $slug );
+				$view_data = $this->load->view( 'admin/edit_post', $bdata, TRUE );
+				
+				$this->kajax->html( '#admin-bar', $view_data );
 			}
 			else
 			{
-				$added		= TRUE;
-				$slug		= $this->slug_create( $data['title'] );
-				$id			= $this->posts_model->add( $data, $slug, $this->user->user_id );
+				$this->kajax->href('#preview_slug', base_url('blog/'.$slug) );
 			}
 			
-			if ( $this->is_kajax_request() )
-			{
-				$this->kajax->script("$('#save-success-msg').fadeIn(500).delay(500).fadeOut(500);");
-				
-				if ( isset( $added ) )
-				{
-					$bdata = $this->posts_model->get($id);
-					$bdata['post_id']			= $id;
-					$bdata['only_admin_bar'] 	= TRUE;
-					
-					$view_data = $this->load->view( 'admin/edit_post', $bdata, TRUE );
-					
-					$this->kajax->html( '#admin-bar', $view_data );
-				}
-				else
-				{
-					$this->kajax->href('#preview_slug', base_url('blog/'.$slug) );
-				}
-				
-				$this->kajax->out();
-			}
-			else
-			{
-				redirect(base_url('/admin/edit/'.$id));
-			}
+			$this->kajax->out();
+		}
+		else
+		{
+			redirect(base_url('/admin/edit/'.$id));
 		}
 	}
 
 	public function edit( $id = NULL )
 	{
-		if ( $this->admin_session_check() )
-		{
-			if( $id != null )
-			{
-				$this->load->model('Categories_model');
-				
-				$data				= $this->posts_model->get($id);
-				$data['categories']	= $this->Categories_model->get_all();
-				
-				$this->add_frame_view('admin/edit_post',$data);
-			}
-		}
-	}
-
-	public function add()
-	{
-		if ( $this->admin_session_check() )
+		$this->admin_session_restrict();
+		
+		if( $id != NULL )
 		{
 			$this->load->model('Categories_model');
 			
-			$data['categories'] = $this->Categories_model->get_all();
+			$data				= $this->posts_model->get($id);
+			$data['categories']	= $this->Categories_model->get_all();
 			
 			$this->add_frame_view('admin/edit_post',$data);
 		}
 	}
 
+	public function add()
+	{
+		$this->admin_session_restrict();
+
+		$this->load->model('Categories_model');
+		
+		$data['categories'] = $this->Categories_model->get_all();
+		
+		$this->add_frame_view('admin/edit_post',$data);
+	}
+	
+	public function delete($id)
+	{
+		$this->admin_session_restrict();
+	
+		$this->posts_model->delete($id);
+		
+		redirect(base_url('/admin'));
+	}
+	
 	public function login()
 	{
 		$post = $this->input->post();
@@ -162,8 +158,6 @@ class Admin extends SESSION_Controller
 			
 			if( isset( $admin ) )
 			{
-				log_message( 'debug', "post:\n" . json_enc( $post ) );
-				
 				$this->session_create( $post['user'], $post['pass'], isset( $post['remember_me'] ) );
 				
 				$this->kajax->redirect(base_url('/admin'));
@@ -184,7 +178,7 @@ class Admin extends SESSION_Controller
 			}
 			else
 			{
-				$this->add_frame_view('admin/login');
+				$this->add_frame_view('admin/login', NULL, FALSE);
 			}
 		}
 	}
@@ -193,17 +187,10 @@ class Admin extends SESSION_Controller
 	{
 		$this->session_destroy();
 		
-		if ( $this->is_kajax_request() )
-		{
-			$this->add_frame_view('admin/login');
-		}
-		else
-		{
-			redirect(base_url('/admin/login'));
-		}
+		$this->redirect(base_url('/admin/login'));
 	}
 	
-	protected function admin_index()
+	protected function admin_posts()
 	{
 		$data['drafts']		= $this->posts_model->get_drafts();
 		
@@ -211,27 +198,32 @@ class Admin extends SESSION_Controller
 		
 		$this->add_frame_view('admin/list',$data);
 	}
+	
+	public function posts()
+	{
+		$this->admin_session_restrict();
+
+		$this->admin_posts();
+	}
+	
+	public function categories()
+	{
+		$this->admin_session_restrict();
+	}
+	
+	public function users()
+	{
+		$this->admin_session_restrict();
+	}
 
 	public function index()
 	{
-		if ( $this->admin_session_check() )
-		{
-			$this->admin_index();
-		}
+		$this->posts();
 	}
 	
-	protected function admin_session_check()
+	protected function add_frame_view( $content_view, $data = array(), $show_header = TRUE, $show_footer = TRUE, $return = FALSE, $hf_folder = 'admin' )
 	{
-		if ( $this->admin_is_logged() )
-		{
-			return TRUE;
-		}
-		
-		$this->session_destroy();
-		
-		$this->redirect( base_url('/admin/login') );
-		
-		return FALSE;
+		parent::add_frame_view( $content_view, $data, $show_header, $show_footer, $return, $hf_folder );
 	}
 	
 	public function filemanager()

@@ -38,3 +38,7 @@ $lang['save'] = 'save';
 $lang['category'] = 'category';
 $lang['preview'] = 'preview';
 $lang['remember_me'] = 'Keep me logged in';
+$lang['categories'] = 'categories';
+$lang['posts'] = 'posts';
+$lang['users'] = 'users';
+$lang['tags'] = 'tags';
