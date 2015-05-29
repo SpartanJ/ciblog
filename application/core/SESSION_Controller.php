@@ -29,7 +29,7 @@ class SESSION_Controller extends MY_Controller
 	{
 		parent::auto_add();
 		
-		//$this->add_js('assets/js/admin.js');
+		$this->add_js('assets/js/admin.js');
 		
 		$this->add_css('assets/css/admin.css');
 	}
