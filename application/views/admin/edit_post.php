@@ -26,7 +26,7 @@
 		<div class="left">
 			<a class="ajax-link" href="<?=base_url('/admin')?>">« <?=lang_line_ucwords('admin')?></a>
 			<?if(isset($post_id)){?>
-				<a class="ajax-confirm-link" data-text="<?=lang_line('admin_confirm_delete_article')?>" href="<?=base_url('/admin/delete/'.$post_id)?>">
+				<a class="ajax-fancy-confirm-link" data-text="<?=lang_line('admin_confirm_delete_article')?>" href="<?=base_url('/admin/delete/'.$post_id)?>">
 					<?=lang_line_ucwords('delete')?>
 				</a>
 			<?}?>
