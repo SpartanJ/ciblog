@@ -220,7 +220,7 @@ class MY_Controller extends CI_Controller
 		return $this->input->is_ajax_request() && $this->input->post('kajax') == true;
 	}
 	
-	protected function add_frame_view( $content_view, $data = array(), $show_header = TRUE, $show_footer = TRUE, $return = FALSE )
+	protected function add_frame_view( $content_view, $data = array(), $show_header = TRUE, $show_footer = TRUE, $return = FALSE, $hf_folder = 'frame' )
 	{
 		if ( $this->is_kajax_request() )
 		{
@@ -257,12 +257,12 @@ class MY_Controller extends CI_Controller
 			
 			if ( $show_header )
 			{
-				$frame_data['header']	= $this->load->view('/frame/header', $hf_data, TRUE);
+				$frame_data['header']	= $this->load->view('/' . $hf_folder . '/header', $hf_data, TRUE);
 			}
 			
 			if ( $show_footer )
 			{
-				$frame_data['footer']	= $this->load->view('/frame/footer', $hf_data, TRUE);
+				$frame_data['footer']	= $this->load->view('/' . $hf_folder . '/footer', $hf_data, TRUE);
 			}
 			
 			if ( !$return )
@@ -282,6 +282,7 @@ class MY_Controller extends CI_Controller
 		{
 			$this->kajax->redirect($uri);
 			$this->kajax->out( TRUE );
+			die();
 		}
 		else
 		{

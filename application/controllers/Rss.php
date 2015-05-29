@@ -47,7 +47,7 @@ class Rss extends MY_Controller
 				$item['description']	= $post['post_body'];
 				$item['link']			= base_url('blog/'.$post['post_slug']);
 				$item['guid']			= $item['link'];
-				$item['pubDate']		= CiblogHelper::to_blog_date($post['post_timestamp']);
+				$item['pubDate']		= CiblogHelper::to_blog_date($post['post_created']);
 				
 				$items[] = $item;
 			}
