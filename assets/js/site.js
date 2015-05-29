@@ -28,6 +28,8 @@ function editor_init()
 {
 	if ( page_url.length > 0 && $( 'textarea.body' ).length > 0 )
 	{
+		CKEDITOR.env.isCompatible = true;
+		
 		var config = {
 			extraPlugins: 'codesnippet',
 			codeSnippet_theme: 'obsidian',

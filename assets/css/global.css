@@ -167,6 +167,7 @@ input, button, textarea { font-family:inherit; }
 	right: 0px;
 	height: 64px;
 	background-color: #282B2E;
+	z-index: 1;
 }
 
 #bar #logo {
