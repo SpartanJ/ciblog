@@ -392,7 +392,7 @@ a img { border:0; }
 .styled-box {
 	border:5px solid black;
 	width:440px;
-	margin: 72px auto;
+	margin: 72px auto 0px;
 	padding:0px;
 }
 
@@ -557,7 +557,15 @@ a img { border:0; }
 	font-size:12px;
 }
 
-@media only screen and (max-width: 800px)
+@media only screen and (max-width: 480px)
 {
-
+	.styled-box
+	{
+		width: auto;
+	}
+	
+	.blog_post .markdown img
+	{
+		max-width: 320px;
+	}
 }

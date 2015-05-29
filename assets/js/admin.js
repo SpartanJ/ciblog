@@ -10,7 +10,14 @@ function editor_resize()
 	var occupied = adminbar + admineditormargin + admineditortitle;
 	var finh = winh - occupied - bar;
 	
-	ckeditor_inst.resize('100%', finh, false);
+	if ( screen.height <= 700 )
+	{
+		ckeditor_inst.resize('100%', finh * 2, false);
+	}
+	else
+	{
+		ckeditor_inst.resize('100%', finh, false);
+	}
 }
 
 function editor_init( _page_url )
