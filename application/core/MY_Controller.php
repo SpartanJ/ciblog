@@ -36,6 +36,7 @@ class MY_Controller extends CI_Controller
 		$this->add_js('assets/libs/jquery/jquery-1.11.3.min.js');
 		$this->add_js('assets/libs/jquery.color/jquery.color.js');
 		$this->add_js('assets/libs/jquery.placeholder/jquery.placeholder.min.js');
+		$this->add_js('assets/libs/alertify.js/alertify.min.js');
 		
 		$this->add_js('ckeditor/ckeditor.js');
 		$this->add_js('ckeditor/adapters/jquery.js');
@@ -46,6 +47,8 @@ class MY_Controller extends CI_Controller
 		
 		$this->add_css('assets/css/global.css');
 		$this->add_css('assets/css/font-awesome.min.css');
+		$this->add_css('assets/libs/alertify.js/alertify.core.css');
+		$this->add_css('assets/libs/alertify.js/alertify.default.css');
 		
 		$this->add_css('ckeditor/plugins/codesnippet/lib/highlight/styles/obsidian.css');
 		
