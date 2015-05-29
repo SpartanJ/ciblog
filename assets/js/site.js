@@ -1,49 +1,12 @@
-var page_url = '';
-var is_mobile =  screen.width < 1000;
-var ckeditor_inst = null;
+var page_url		= '';
+var is_mobile		= screen.width < 1000;
+var ckeditor_inst	= null;
 
 function site_init( base_url )
 {
 	page_url = base_url;
 	
 	placeholder_init();
-
-	editor_init();
-}
-
-function editor_resize()
-{
-	var winh = $(window).height();
-	var bar = parseInt( $( '#bar' ).outerHeight() );
-	var adminbar = parseInt( $( '#admin-bar' ).outerHeight() );
-	var admineditormargin = parseInt( $('.admin-editor').css('margin-top') );
-	var admineditortitle = parseInt( $('.admin-editor .title').outerHeight() );
-	var occupied = adminbar + admineditormargin + admineditortitle;
-	var finh = winh - occupied - bar;
-	
-	ckeditor_inst.resize('100%', finh, false);
-}
-
-function editor_init()
-{
-	if ( page_url.length > 0 && $( 'textarea.body' ).length > 0 )
-	{
-		CKEDITOR.env.isCompatible = true;
-		
-		var config = {
-			extraPlugins: 'codesnippet',
-			codeSnippet_theme: 'obsidian',
-			filebrowserBrowseUrl: page_url + 'fm/index.html'
-		};
-
-		$( 'textarea.body' ).ckeditor( config );
-		
-		CKEDITOR.on('instanceLoaded', function(e)
-		{
-			ckeditor_inst = e.editor;
-			editor_resize();
-		});
-	}
 }
 
 $(window).resize(function()
@@ -53,7 +16,7 @@ $(window).resize(function()
 
 function content_update()
 {
-	if ( $( 'textarea.body' ).length > 0 )
+	if ( $( 'textarea.body' ).length > 0 && 'function' == typeof editor_resize )
 	{
 		editor_resize();
 	}

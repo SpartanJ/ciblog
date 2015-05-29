@@ -59,6 +59,6 @@
 <script>
 	$(function()
 	{
-		editor_init();
+		editor_init("<?=base_url()?>");
 	});
 </script>
