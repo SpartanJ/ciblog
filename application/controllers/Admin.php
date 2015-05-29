@@ -233,4 +233,136 @@ class Admin extends SESSION_Controller
 		
 		return FALSE;
 	}
+	
+	public function filemanager()
+	{
+		require_once( ROOTPATH . 'fm/connectors/php/filemanager.class.php');
+		
+		$_SERVER['DOCUMENT_ROOT'] = substr( ROOTPATH, 0, strlen( ROOTPATH ) - 1 );
+		
+		$fm = new Filemanager();
+		
+		$response = '';
+
+		if(!$this->admin_is_logged()) {
+		  $fm->error($fm->lang('AUTHORIZATION_REQUIRED'));
+		}
+
+		if(!isset($_GET)) {
+		  $fm->error($fm->lang('INVALID_ACTION'));
+		} else {
+
+		  if(isset($_GET['mode']) && $_GET['mode']!='') {
+
+			switch($_GET['mode']) {
+				
+			  default:
+
+				$fm->error($fm->lang('MODE_ERROR'));
+				break;
+
+			  case 'getinfo':
+
+				if($fm->getvar('path')) {
+				  $response = $fm->getinfo();
+				}
+				break;
+
+			  case 'getfolder':
+					
+				if($fm->getvar('path')) {
+				  $response = $fm->getfolder();
+				}
+				break;
+
+			  case 'rename':
+
+				if($fm->getvar('old') && $fm->getvar('new')) {
+				  $response = $fm->rename();
+				}
+				break;
+
+			  case 'move':
+				// allow "../"
+				if($fm->getvar('old') && $fm->getvar('new') && $fm->getvar('root')) {
+				  $response = $fm->move();
+				}
+				break;
+
+			  case 'editfile':
+					 
+				if($fm->getvar('path')) {
+					$response = $fm->editfile();
+				}
+				break;
+				
+			  case 'delete':
+
+				if($fm->getvar('path')) {
+				  $response = $fm->delete();
+				}
+				break;
+
+			  case 'addfolder':
+
+				if($fm->getvar('path') && $fm->getvar('name')) {
+				  $response = $fm->addfolder();
+				}
+				break;
+
+			  case 'download':
+				if($fm->getvar('path')) {
+				  $fm->download();
+				}
+				break;
+				
+			  case 'preview':
+				if($fm->getvar('path')) {
+					if(isset($_GET['thumbnail'])) {
+						$thumbnail = true;
+					} else {
+						$thumbnail = false;
+					}
+				  $fm->preview($thumbnail);
+				}
+				break;
+			}
+
+		  } else if(isset($_POST['mode']) && $_POST['mode']!='') {
+
+			switch($_POST['mode']) {
+				
+			  default:
+
+				$fm->error($fm->lang('MODE_ERROR'));
+				break;
+					
+			  case 'add':
+
+				if($fm->postvar('currentpath')) {
+				  $fm->add();
+				}
+				break;
+
+				case 'replace':
+			
+					if($fm->postvar('newfilepath')) {
+						$fm->replace();
+					}
+					break;
+			
+				case 'savefile':
+					
+					if($fm->postvar('content', false) && $fm->postvar('path')) {
+						$response = $fm->savefile();
+					}
+					break;
+			}
+
+		  }
+		}
+
+		echo json_encode($response);
+		die();
+	}
 }

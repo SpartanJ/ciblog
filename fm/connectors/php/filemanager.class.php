@@ -33,13 +33,14 @@ class Filemanager {
 	protected $separator = 'userfiles'; // @todo fix keep it or not?
 
 	public function __construct($extraConfig = '') {
+		$this->root = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR;
 		
 		// getting default config file
-		$content = file_get_contents("../../scripts/filemanager.config.js.default");
+		$content = file_get_contents($this->root."scripts/filemanager.config.js.default");
 		$config_default = json_decode($content, true);
 		
 		// getting user config file
-		$content = file_get_contents("../../scripts/filemanager.config.js");
+		$content = file_get_contents($this->root."scripts/filemanager.config.js");
 		$config = json_decode($content, true);
 		
 		if(!$config) {
@@ -56,7 +57,7 @@ class Filemanager {
 		if(!isset($this->config['options']['logfile']))
 			$this->config['options']['logfile'] = sys_get_temp_dir(). '/filemanager.log';
 
-		$this->root = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR;
+		
 		$this->properties = array(
 				'Date Created'=>null,
 				'Date Modified'=>null,
@@ -1017,7 +1018,10 @@ class Filemanager {
 			if($this->item['filetype'] == 'svg') {
 				$this->item['preview'] = $current_path;
 			} else {
-				$this->item['preview'] = 'connectors/php/filemanager.php?mode=preview&path='. rawurlencode($current_path).'&'. time();
+				$this->item['preview'] = isset( $this->config['options']['fileConnector'] ) ? 
+										$this->config['options']['fileConnector'] . '?mode=preview&path='. rawurlencode($current_path).'&'. time() : 
+										'connectors/php/filemanager.php?mode=preview&path='. rawurlencode($current_path).'&'. time();
+										
 				if($thumbnail) $this->item['preview'] .= '&thumbnail=true';
 			}
 			//if(isset($get['getsize']) && $get['getsize']=='true') {
@@ -1314,7 +1318,7 @@ private function get_thumbnail_path($path) {
  */
 private function get_thumbnail($path) {
 	
-	require_once('./inc/wideimage/lib/WideImage.php');
+	require_once($this->root.'connectors/php/inc/wideimage/lib/WideImage.php');
 	
 	$thumbnail_fullpath = $this->get_thumbnail_path($path);
 	

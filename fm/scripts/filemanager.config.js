@@ -22,6 +22,7 @@
         "baseUrl": false,
         "logger": false,
         "capabilities": ["select", "download", "rename", "delete", "replace"],
+        "fileConnector": "../admin/filemanager",
         "plugins": []
     },
     "security": {
