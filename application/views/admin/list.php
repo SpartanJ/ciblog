@@ -7,7 +7,7 @@ function print_post($p)
 		<em class="date"><?=CiblogHelper::to_blog_date($p["post_timestamp"])?></em>
 		<span>
 			<a target="_blank" href="<?=base_url('/blog/'.$p['post_slug'])?>"><?=lang_line_upper('view')?></a>
-			<a onclick="return confirm('<?=lang_line('admin_confirm_delete_article')?>');" href="<?=base_url('/admin/delete/'.$p['post_id'])?>">X</a>
+			<a class="ajax-confirm-link" data-text="<?=lang_line('admin_confirm_delete_article')?>" href="<?=base_url('/admin/delete/'.$p['post_id'])?>">X</a>
 		</span>
 	</li>
 <?}?>
@@ -43,18 +43,3 @@ function print_post($p)
 		</ul>
 	</div>
 </div>
-
-<script>
-	$(function()
-	{
-		$('#admin-posts li').mouseenter(function()
-		{
-			$('span',this).show();
-		});
-
-		$('#admin-posts li').mouseleave(function()
-		{
-			$('span',this).hide();
-		});
-	});
-</script>

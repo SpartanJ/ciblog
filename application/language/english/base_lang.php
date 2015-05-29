@@ -37,3 +37,4 @@ $lang['delete'] = 'delete';
 $lang['save'] = 'save';
 $lang['category'] = 'category';
 $lang['preview'] = 'preview';
+$lang['remember_me'] = 'Keep me logged in';

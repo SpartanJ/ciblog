@@ -4,6 +4,14 @@ class SESSION_Controller extends MY_Controller
 {
 	protected $sess			= NULL;
 	protected $user 		= NULL;
+	protected $_config		= array(
+		'driver'			=> 'files',
+		'cookie_name'		=> 'ciblog_user_session',
+		'cookie_lifetime' 	=> 0, //60*60*24*365; // 0 expires the cookie until the session is closed ( seconds until expires )
+		'expiration'		=> 0, // 0 until the browser is closed the session lives
+		'match_ip'			=> FALSE,
+		'time_to_update' 	=> 300
+	);
 	
 	function __construct( $session_recover = TRUE )
 	{
@@ -28,32 +36,18 @@ class SESSION_Controller extends MY_Controller
 	
 	protected function session_recover( $expire_on_close = TRUE )
 	{
-		$config['sess_cookie_name']		= 'ciblog_user_session';
-		$config['sess_expiration']		= 0;
-		$config['sess_expire_on_close']	= $expire_on_close;
-		$config['sess_encrypt_cookie']	= TRUE;
-		$config['sess_use_database']	= FALSE;
-		$config['sess_table_name']		= 'ci_sessions';
-		$config['sess_match_ip']		= FALSE;
-		$config['sess_match_useragent']	= FALSE;
-		$config['sess_time_to_update']	= 300;
-		
-		$this->load->library( 'session', $config, 'session_user' );
+		$this->load->library( 'session', $this->_config, 'session_user' );
 		
 		$this->sess = $this->session_user->all_userdata();
 		
-		$this->load_user();
+		$this->user_load();
 	}
 	
-	protected function load_user()
+	protected function user_load()
 	{
 		if ( $this->session_exists() )
 		{
 			$this->user = $this->Users_model->by_session_token( $this->sess['token'] );
-		}
-		else
-		{
-			$this->session_destroy();
 		}
 	}
 	
@@ -62,25 +56,23 @@ class SESSION_Controller extends MY_Controller
 		return isset( $this->sess ) && isset( $this->sess['id'] ) && isset( $this->sess['token'] ) && '' != $this->sess['token'];
 	}
 	
-	public function session_destroy()
+	protected function session_destroy()
 	{
 		$this->session_user->sess_destroy();
 	}
 	
-	protected function session_create( $user, $pass )
+	protected function session_create( $user, $pass, $remember_me = FALSE )
 	{
-		$this->load->model( 'Users_model' );
-		
-		$user = $this->Users_model->by_user( $user, $pass );
+		$user = $this->Users_model->by_user( $user, $pass, $cookie_lifetime = 0 );
 		
 		if ( isset( $user ) )
 		{
 			$session_token = hash( 'sha256', time() + $user->user_id );
 			
 			$data = array(
-				'id' => $user->user_id,
-				'name' => $user->user_name,
-				'token' => $session_token
+				'id'	=> $user->user_id,
+				'name'	=> $user->user_name,
+				'token'	=> $session_token
 			);
 			
 			$this->session_user->set_userdata( $data );
@@ -91,19 +83,38 @@ class SESSION_Controller extends MY_Controller
 			$this->Users_model->update_session_token( $user->user_id, $session_token );
 			$this->user->user_session_token = $session_token;
 			
+			// update the cookie expiration time
+			if ( $remember_me )
+			{
+				setcookie(
+					$this->_config['cookie_name'],
+					session_id(),
+					time() + 60*60*24*365, // expire in a year
+					config_item('cookie_path'),
+					config_item('cookie_domain'),
+					config_item('cookie_secure'),
+					TRUE
+				);
+			}
+			
 			return TRUE;
 		}
 		
 		return FALSE;
 	}
 	
-	public function admin_session_exists()
+	protected function user_is_logged()
 	{
-		return 	$this->session_exists() && 
+		return	$this->session_exists() && 
 				isset( $this->user ) && 
-				isset( $this->user_session_token ) &&
+				isset( $this->user->user_session_token ) &&
 				isset( $this->sess['token'] ) &&
-				$this->user_session_token == $this->sess['token'] &&
+				$this->user->user_session_token == $this->sess['token'];
+	}
+	
+	protected function admin_is_logged()
+	{
+		return	$this->user_is_logged() &&
 				isset( $this->user->user_level ) && 
 				$this->user->user_level >= CIBLOG_ADMIN_LEVEL;
 	}

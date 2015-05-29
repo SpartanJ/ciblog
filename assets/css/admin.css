@@ -192,3 +192,11 @@
 	text-decoration:underline;
 	color: red; 
 }
+
+#admin-posts li span {
+	display: none;
+}
+
+#admin-posts li:hover span {
+	display: block;
+}

@@ -18,7 +18,7 @@ class Admin extends SESSION_Controller
 	
 	public function delete($id)
 	{
-		if ( $this->session_check() )
+		if ( $this->admin_session_check() )
 		{
 			$this->posts_model->delete($id);
 			
@@ -26,33 +26,50 @@ class Admin extends SESSION_Controller
 		}
 	}
 	
-	protected function slug_create( $id, $title )
+	protected function slug_get_temp( $original_slug, &$c )
 	{
-		$slug = CiblogHelper::slugify( $title );
+		// try with the date
+		if ( 0 == $c )
+		{
+			$slug_ext = '-' . date( 'Y-m-d', time() );
+		}
+		else
+		{
+			// just count
+			$slug_ext = $c;
+		}
+		
+		$c++;
+		
+		return $original_slug . $slug_ext;
+	}
+	
+	protected function slug_create( $title, $id = NULL )
+	{
+		$slug	= CiblogHelper::slugify( $title );
+		$rslug	= $slug;
+		$c		= 0;
 		
 		// if already exists find a new one
-		if ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) )
+		if ( NULL != $id )
 		{
-			$rslug = $slug;
-			$c = 0;
-			
-			do
+			if ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) )
 			{
-				// try with the date
-				if ( 0 == $c )
+				do
 				{
-					$slug_ext = '-' . date( 'Y-m-d', time() );
-				}
-				else
+					$slug = $this->slug_get_temp( $rslug, $c );
+				} while ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) );
+			}
+		}
+		else
+		{
+			if ( $this->posts_model->slug_exists( $slug ) )
+			{
+				do
 				{
-					// just count
-					$slug_ext = $c;
-				}
-					
-				$slug = $rslug . $slug_ext;
-				
-				$c++; 
-			} while ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) );
+					$slug = $this->slug_get_temp( $rslug, $c );
+				} while ( $this->posts_model->slug_exists( $slug ) );
+			}
 		}
 		
 		return $slug;
@@ -60,7 +77,7 @@ class Admin extends SESSION_Controller
 
 	public function save()
 	{
-		if ( $this->session_check() )
+		if ( $this->admin_session_check() )
 		{
 			$data			=  $this->input->post();
 			$data['draft']	= isset($data['draft']) && $data['draft'] ? '1' : '0';
@@ -68,18 +85,18 @@ class Admin extends SESSION_Controller
 			if( isset( $data['post_id'] ) )
 			{
 				$id			= $data['post_id'];
-				$slug		= $this->slug_create( $id, $data['title'] );
+				$slug		= $this->slug_create( $data['title'], $id );
 				
 				$this->posts_model->update( $data, $slug );
 			}
 			else
 			{
 				$added		= TRUE;
-				$admin_id	= $this->sess['id'];
-				$id			= $this->posts_model->add($data,$slug, $admin_id);
+				$slug		= $this->slug_create( $data['title'] );
+				$id			= $this->posts_model->add( $data, $slug, $this->user->user_id );
 			}
 			
-			if ( $this->input->is_ajax_request() )
+			if ( $this->is_kajax_request() )
 			{
 				$this->kajax->script("$('#save-success-msg').fadeIn(500).delay(500).fadeOut(500);");
 				
@@ -109,14 +126,14 @@ class Admin extends SESSION_Controller
 
 	public function edit( $id = NULL )
 	{
-		if ( $this->session_check() )
+		if ( $this->admin_session_check() )
 		{
 			if( $id != null )
 			{
 				$this->load->model('Categories_model');
 				
-				$data = $this->posts_model->get($id);
-				$data['categories'] = $this->Categories_model->get_all();
+				$data				= $this->posts_model->get($id);
+				$data['categories']	= $this->Categories_model->get_all();
 				
 				$this->add_frame_view('admin/edit_post',$data);
 			}
@@ -125,9 +142,10 @@ class Admin extends SESSION_Controller
 
 	public function add()
 	{
-		if ( $this->session_check() )
+		if ( $this->admin_session_check() )
 		{
 			$this->load->model('Categories_model');
+			
 			$data['categories'] = $this->Categories_model->get_all();
 			
 			$this->add_frame_view('admin/edit_post',$data);
@@ -138,13 +156,15 @@ class Admin extends SESSION_Controller
 	{
 		$post = $this->input->post();
 		
-		if ( !empty( $post ) )
+		if ( !empty( $post ) && isset( $post['user'] ) )
 		{
 			$admin = $this->Users_model->get_admin_user( $post['user'], $post['pass'] );
 			
 			if( isset( $admin ) )
 			{
-				$this->session_create( $post['user'], $post['pass'] );
+				log_message( 'debug', "post:\n" . json_enc( $post ) );
+				
+				$this->session_create( $post['user'], $post['pass'], isset( $post['remember_me'] ) );
 				
 				$this->kajax->redirect(base_url('/admin'));
 			}
@@ -158,7 +178,7 @@ class Admin extends SESSION_Controller
 		}
 		else
 		{
-			if ( $this->session_exists() )
+			if ( $this->admin_is_logged() )
 			{
 				redirect(base_url('/admin'));
 			}
@@ -182,36 +202,35 @@ class Admin extends SESSION_Controller
 			redirect(base_url('/admin/login'));
 		}
 	}
+	
+	protected function admin_index()
+	{
+		$data['drafts']		= $this->posts_model->get_drafts();
+		
+		$data['published']	= $this->posts_model->get_published();
+		
+		$this->add_frame_view('admin/list',$data);
+	}
 
 	public function index()
 	{
-		if ( $this->admin_session_exists() )
+		if ( $this->admin_session_check() )
 		{
-			$data['drafts'] = $this->posts_model->get_drafts();
-			$data['published'] = $this->posts_model->get_published();
-			$this->add_frame_view('admin/list',$data);
-		}
-		else
-		{
-			redirect(base_url('/admin/login'));
+			$this->admin_index();
 		}
 	}
 	
-	protected function session_check()
+	protected function admin_session_check()
 	{
-		if ( $this->admin_session_exists() )
+		if ( $this->admin_is_logged() )
 		{
 			return TRUE;
 		}
 		
-		if ( $this->input->is_ajax_request() )
-		{
-			$this->kajax->redirect(base_url('/admin/login'));
-			$this->kajax->out();
-		}
-		else
-		{
-			redirect(base_url('/admin/login'));
-		}
+		$this->session_destroy();
+		
+		$this->redirect( base_url('/admin/login') );
+		
+		return FALSE;
 	}
 }
