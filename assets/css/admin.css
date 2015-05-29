@@ -208,4 +208,32 @@
 		font-size: 22px;
 		height: 24px;
 	}
+
+	#admin-bar .container a, #admin-bar .container input[type=submit] {
+		padding: 8px;
+		margin: 23px 1px 14px 0;
+	}
+
+	#admin-bar .container span {
+		padding: 0px;
+		margin: 21px 5px 14px 8px;
+	}
+	
+	#admin-bar .container span label,
+	#admin-bar .container span select,
+	#admin-bar .container span input {
+		clear: both;
+		float: left;
+	}
+}
+
+@media only screen and (max-width: 480px)
+{
+	#admin-bar
+	{
+		position: relative;
+		float: left;
+		width: 100%;
+		height: auto;
+	}
 }
