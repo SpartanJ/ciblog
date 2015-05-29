@@ -195,6 +195,11 @@ class Kajax
 		$this->call( "kajax_load_target( '$url' )" );
 	}
 	
+	public function reload_target()
+	{
+		$this->call( "kajax_reload_target()" );
+	}
+	
 	public function load( $target, $url, $clean = FALSE )
 	{
 		$this->call( "kajax_load" . ( $clean ? '_clean' : '' ) . "( '$target', '$url' )" );

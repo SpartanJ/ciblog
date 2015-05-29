@@ -19,7 +19,7 @@ class Posts_model extends CI_Model
 	
 	function get_drafts()
 	{
-		return $this->db->query("SELECT * FROM posts WHERE post_draft = 1 ORDER BY post_timestamp DESC")->result_array();
+		return $this->db->query("SELECT * FROM posts INNER JOIN categories ON post_category = cat_id WHERE post_draft = 1 ORDER BY post_timestamp DESC")->result_array();
 	}
 
 	function get_published( $category = NULL )
@@ -73,6 +73,11 @@ class Posts_model extends CI_Model
 	
 	function slug_exists_and_not_me( $slug, $post_id )
 	{
-		return NULL != $this->db->query("SELECT 1 FROM posts WHERE post_slug = ? AND post_id != ?", array( $slug, $post_id ) )->row_array();
+		return NULL != $this->db->query("SELECT 1 FROM posts WHERE post_slug = ? AND post_id != ? LIMIT 1", array( $slug, $post_id ) )->row_array();
+	}
+	
+	function slug_exists( $slug )
+	{
+		return NULL != $this->db->query("SELECT 1 FROM posts WHERE post_slug = ? LIMIT 1", array( $slug ) )->row_array();
 	}
 }

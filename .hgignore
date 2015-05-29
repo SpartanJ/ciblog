@@ -4,3 +4,4 @@ syntax: glob
 assets/cache/**
 assets/photos/**
 assets/blog/**
+application/logs/log*

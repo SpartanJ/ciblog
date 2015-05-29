@@ -432,7 +432,6 @@ a img { border:0; }
 .stylish-form input[type=password]:focus, .stylish-form input[type=text]:focus, .stylish-form textarea:focus { border-left:4px solid red; }
 
 .stylish-form input[type=submit] {
-	display:block;
 	float:left;
 	padding:15px;
 	margin:14px 5px 14px 0;
@@ -452,6 +451,20 @@ a img { border:0; }
 }
 
 .stylish-form input[type=submit]:hover { background-color:red; }
+
+.stylish-form input[type=checkbox] {
+	cursor:pointer;
+}
+
+.stylish-form label {
+	cursor:pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
 
 .placeholder { color:#808080; }
 

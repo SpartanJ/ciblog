@@ -272,4 +272,17 @@ class MY_Controller extends CI_Controller
 			}
 		}
 	}
+	
+	protected function redirect( $uri )
+	{
+		if ( $this->input->is_ajax_request() )
+		{
+			$this->kajax->redirect($uri);
+			$this->kajax->out( TRUE );
+		}
+		else
+		{
+			redirect($uri);
+		}
+	}
 }

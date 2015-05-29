@@ -8,7 +8,10 @@
 		<li><input name="user" type="text" placeholder="<?=lang_line_ucwords('username')?>"/></li>
 		<li><input name="pass" type="password" placeholder="<?=lang_line_ucwords('password')?>"/></li>
 		<li class="form-error"></li>
-		<li><input type="submit" value="<?=lang_line('admin_login_but')?>"/></li>
+		<li>
+			<input type="submit" value="<?=lang_line('admin_login_but')?>"/>
+			<input type="checkbox" id="remember_me" name="remember_me" value="1" /><label for="remember_me"><?=lang_line('remember_me')?></label>
+		</li>
 	</ul>
 </form>
 

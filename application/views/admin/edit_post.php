@@ -26,7 +26,7 @@
 		<div class="left">
 			<a class="ajax-link" href="<?=base_url('/admin')?>">« <?=lang_line_ucwords('admin')?></a>
 			<?if(isset($post_id)){?>
-				<a onclick="return confirm('<?=lang_line('admin_confirm_delete_article')?>');" href="<?=base_url('/admin/delete/'.$post_id)?>">
+				<a class="ajax-confirm-link" data-text="<?=lang_line('admin_confirm_delete_article')?>" href="<?=base_url('/admin/delete/'.$post_id)?>">
 					<?=lang_line_ucwords('delete')?>
 				</a>
 			<?}?>
@@ -36,7 +36,7 @@
 					<label for="category"><?=lang_line_ucwords('category')?></label>
 					<select id="category" name="category">
 					<?foreach ( $categories as $cat ){ ?>
-						<option <?=isset($post_category) && $post_category == $cat['cat_id']?$selected:''?> value="<?=$cat['cat_key']?>"><?=lang_line_category_name_ucwords($cat['cat_name'])?></option>
+						<option <?=isset($post_category) && $post_category == $cat['cat_id']?$selected:''?> value="<?=$cat['cat_id']?>"><?=lang_line_category_name_ucwords($cat['cat_name'])?></option>
 					<?}?>
 					</select>
 				</span>
