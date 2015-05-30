@@ -264,6 +264,9 @@
 {
 	color: #fff;
 	text-decoration: none;
+	display: table;
+	width: 28px;
+	height: 28px;
 }
 
 .table_pager .digit:hover, .table_pager .next:hover, .table_pager .prev:hover, .table_pager .first:hover, .table_pager .last:hover
