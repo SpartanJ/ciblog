@@ -1,4 +1,5 @@
-<?php
+<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 define('OBJECT','OBJECT',true);
 define('ARRAY_A','ARRAY_A',true);
 
@@ -22,7 +23,7 @@ class MY_DB_postgre_driver extends CI_DB_postgre_driver
 		$q = parent::query( $sql, $binds != FALSE ? $binds : $this->query_data, $return_object );
 		
 		$this->query_data	= FALSE;
-		$this->num_rows		= is_object( $q ) ? $q->num_rows() : 0;
+		$this->num_rows		= is_object( $q->result_id ) ? $q->num_rows() : 0;
 		
 		return $q;
 	}
@@ -37,9 +38,6 @@ class MY_DB_postgre_driver extends CI_DB_postgre_driver
 			$arr	= array_values( $q->row_array() );
 			$r		= $arr[$x];
 		}
-		
-		$this->query_data	= FALSE;
-		$this->num_rows		= is_object( $q ) ? $q->num_rows() : 0;
 		
 		return $r;
 	}
@@ -65,9 +63,6 @@ class MY_DB_postgre_driver extends CI_DB_postgre_driver
 				}
 			}
 		}
-		
-		$this->query_data	= FALSE;
-		$this->num_rows		= is_object( $q ) ? $q->num_rows() : 0;
 		
 		return $r;
 	}
@@ -95,9 +90,6 @@ class MY_DB_postgre_driver extends CI_DB_postgre_driver
 				}
 			}
 		}
-		
-		$this->query_data	= FALSE;
-		$this->num_rows		= is_object( $q ) ? $q->num_rows() : 0;
 		
 		return $r;
 	}

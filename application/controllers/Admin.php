@@ -6,7 +6,7 @@ class Admin extends SESSION_Controller
 	{
 		parent::__construct();
 		
-		$this->load->model('posts_model');
+		$this->load->model('Posts_model');
 	}
 
 	protected function auto_add()
@@ -43,22 +43,22 @@ class Admin extends SESSION_Controller
 		// if already exists find a new one
 		if ( NULL != $id )
 		{
-			if ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) )
+			if ( $this->Posts_model->slug_exists_and_not_me( $slug, $id ) )
 			{
 				do
 				{
 					$slug = $this->slug_get_temp( $rslug, $c );
-				} while ( $this->posts_model->slug_exists_and_not_me( $slug, $id ) );
+				} while ( $this->Posts_model->slug_exists_and_not_me( $slug, $id ) );
 			}
 		}
 		else
 		{
-			if ( $this->posts_model->slug_exists( $slug ) )
+			if ( $this->Posts_model->slug_exists( $slug ) )
 			{
 				do
 				{
 					$slug = $this->slug_get_temp( $rslug, $c );
-				} while ( $this->posts_model->slug_exists( $slug ) );
+				} while ( $this->Posts_model->slug_exists( $slug ) );
 			}
 		}
 		
@@ -77,13 +77,13 @@ class Admin extends SESSION_Controller
 			$id			= $data['post_id'];
 			$slug		= $this->slug_create( $data['title'], $id );
 			
-			$this->posts_model->update( $data, $slug );
+			$this->Posts_model->update( $data, $slug );
 		}
 		else
 		{
 			$added		= TRUE;
 			$slug		= $this->slug_create( $data['title'] );
-			$id			= $this->posts_model->add( $data, $slug, $this->user->user_id );
+			$id			= $this->Posts_model->add( $data, $slug, $this->user->user_id );
 		}
 		
 		if ( $this->is_kajax_request() )
@@ -92,7 +92,7 @@ class Admin extends SESSION_Controller
 			
 			if ( isset( $added ) )
 			{
-				$bdata = $this->posts_model->get($id);
+				$bdata = $this->Posts_model->get($id);
 				$bdata['post_id']			= $id;
 				$bdata['only_admin_bar'] 	= TRUE;
 				
@@ -121,7 +121,7 @@ class Admin extends SESSION_Controller
 		{
 			$this->load->model('Categories_model');
 			
-			$data				= $this->posts_model->get($id);
+			$data				= $this->Posts_model->get($id);
 			$data['categories']	= $this->Categories_model->get_all();
 			
 			$this->add_frame_view('admin/edit_post',$data);
@@ -143,7 +143,7 @@ class Admin extends SESSION_Controller
 	{
 		$this->admin_session_restrict();
 	
-		$this->posts_model->delete($id);
+		$this->Posts_model->delete($id);
 		
 		$this->kajax->load_target(base_url('/admin'));
 		$this->kajax->out();
@@ -152,8 +152,8 @@ class Admin extends SESSION_Controller
 	public function draft_it( $id )
 	{
 		$this->admin_session_restrict();
-	
-		$this->posts_model->draft_it($id);
+		
+		$this->Posts_model->draft_it($id);
 		
 		$this->kajax->load_target(base_url('/admin'));
 		$this->kajax->out();
@@ -163,7 +163,7 @@ class Admin extends SESSION_Controller
 	{
 		$this->admin_session_restrict();
 	
-		$this->posts_model->publish_it($id);
+		$this->Posts_model->publish_it($id);
 		
 		$this->kajax->load_target(base_url('/admin'));
 		$this->kajax->out();
@@ -213,20 +213,47 @@ class Admin extends SESSION_Controller
 		$this->redirect(base_url('/admin/login'));
 	}
 	
-	protected function admin_posts()
+	protected function build_filters()
 	{
-		$data['drafts']		= $this->posts_model->get_drafts();
+		$filter = array(
+			array(
+				'field_name'	=>	'cat_key',
+				'filter_val'	=>	get_var( 'cat_key' ),
+				'filter_type'	=>	SQLFilterType::ILIKE
+			),
+			array(
+				'field_name'	=>	'loc_desc',
+				'filter_val'	=>	get_var( 'loc_desc' ),
+				'filter_type'	=>	SQLFilterType::ILIKE
+			),
+			array(
+				'order_by'		=> get_var_def( 'order_by', 'post_created' ),
+				'order_fields'	=> array( 'post_id', 'post_created', 'post_updated', 'cat_key' ),
+				'order_dir'		=> get_var_def( 'order_dir', 'DESC' )
+			)
+		);
 		
-		$data['published']	= $this->posts_model->get_published();
-		
-		$this->add_frame_view('admin/list',$data);
+		return SQL::build_query_filter( $filter );
 	}
 	
 	public function posts()
 	{
 		$this->admin_session_restrict();
 
-		$this->admin_posts();
+		$this->load->library('pagination');
+		
+		$page					= get_var_def( 'page_num', 1 );
+		$config					= pagination_config();
+		$query_filter			= $this->build_filters();
+		$config['total_rows']	= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
+		$data['posts']			= $this->Posts_model->get_all( NULL, $query_filter, $config['per_page'], $page );
+		$config['base_url']		= base_url( '/admin/posts/?' . http_build_query_pagination() );
+		
+		$this->pagination->initialize($config);
+		
+		$data['pagination']		= $this->pagination->create_links();
+		
+		$this->add_frame_view( 'admin/list', $data );
 	}
 	
 	public function categories()

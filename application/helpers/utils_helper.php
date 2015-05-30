@@ -663,15 +663,22 @@ function text_plain_create_header( $filename )
 	header('Content-Transfer-Encoding: binary');
 }
 
-function pagination_config()
+function config_item_def( $item, $def = NULL )
+{
+	$conf = config_item( $item );
+	
+	return ( NULL == $conf ) ? $def : $conf;
+}
+
+function pagination_config( $per_page = 10 )
 {
 	$config							= array();
 	$config['full_tag_open']		= '<div class="table_pager">';
 	$config['full_tag_close']		= '</div>';
 	$config['num_links']			= 5;
-	$config['per_page']				= defined('LIGHTWEIGHT_RESULTS') && TRUE == LIGHTWEIGHT_RESULTS ? 50 : 500;
+	$config['per_page']				= config_item_def('results_per_page', $per_page );
 	$config['use_page_numbers'] 	= TRUE;
-	$config['anchor_class']			= 'class="ajax-link" ';
+	$config['attributes']			= array('class' => 'ajax-paging-link');
 	$config['first_link']			= '&lt;&lt;';
 	$config['first_tag_open']		= '<div class="first">';
 	$config['first_tag_close']		= '</div>';

@@ -157,17 +157,15 @@
 	box-sizing:border-box;
 }
 
-#admin-posts #drafts {
-	float:left;
-	width:100%;
-	padding:20px;
-	box-sizing:border-box;
-	border:4px solid black;
-	border-top:none;
+#admin-posts li.draft {
 	color: #a0a0a0;
 }
 
-#admin-posts #published {
+#admin-posts li.draft:hover {
+	color: #666;
+}
+
+#admin-posts #posts {
 	float:left;
 	width:100%;
 	padding:20px;
@@ -226,6 +224,53 @@
 		float: left;
 	}
 }
+
+.table_pager
+{
+	display: table;
+	font-weight: bold;
+	padding-right: 10px;
+	padding-bottom: 8px;
+	padding-top: 8px;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+
+.table_pager span
+{
+	width: 28px;
+	height: 28px;
+	background-color: #000;
+	float: left;
+	margin-left: 3px;
+	line-height: 30px;
+	text-align: center;
+	color: #fff;
+}
+
+.table_pager .digit, .table_pager .next, .table_pager .prev, .table_pager .first, .table_pager .last
+{
+	width: 28px;
+	height: 28px;
+	background-color: #9A9A9A;
+	float: left;
+	margin-left: 3px;
+	line-height: 30px;
+	text-align: center;
+	transition: all 0.3s ease-in-out 0s;
+}
+
+.table_pager .digit a, .table_pager .next a, .table_pager .prev a, .table_pager .first a, .table_pager .last a
+{
+	color: #fff;
+	text-decoration: none;
+}
+
+.table_pager .digit:hover, .table_pager .next:hover, .table_pager .prev:hover, .table_pager .first:hover, .table_pager .last:hover
+{
+	background-color: #FF0000;
+}
+
 
 @media only screen and (max-width: 480px)
 {

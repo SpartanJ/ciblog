@@ -368,7 +368,7 @@ $config['proxy_ips'] = '';
 |  Native Auto-load
 | -------------------------------------------------------------------
 |
-| Nothing to do with cnfig/autoload.php, this allows PHP autoload to work
+| Nothing to do with config/autoload.php, this allows PHP autoload to work
 | for base controllers and some third-party libraries.
 |
 */
@@ -382,6 +382,11 @@ function __autoload($class)
 
 /*timezone settings*/
 date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+/* CIBLOG CONFIG */
+$config['log_error_print_backtrace'] = TRUE;
+
+/* CIBLOG CONFIG */
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

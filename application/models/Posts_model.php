@@ -95,4 +95,44 @@ class Posts_model extends CI_Model
 	{
 		$this->db->query("UPDATE {$this->table_name} SET post_draft = 0 WHERE post_id = ?", array( $id ) );
 	}
+	
+	/** could be an array of categories or just a cat_id */
+	public static function get_category_filter( $filter_categories = NULL, $field_name = 'post_category' )
+	{
+		return SQL::get_or_filter( $filter_categories, $field_name );
+	}
+	
+	public function get_all( $filter_category = NULL, $filter = NULL, $per_page = NULL, $page_num = 1, $fields_get = '*' )
+	{
+		$where		= self::get_category_filter( $filter_category );
+		$is_count	= -1 != str_starts_with( 'COUNT', $fields_get );
+		
+		SQL::prepare_filter( $where, $filter, $is_count );
+		
+		$sql = 'SELECT ' . $fields_get . ' 
+				FROM ' . $this->table_name . ' 
+					INNER JOIN ' . $this->db->dbprefix . 'users ON user_id = post_admin_id 
+					INNER JOIN ' . $this->db->dbprefix . 'categories ON cat_id = post_category ' . 
+				$where;
+		
+		if ( NULL != $per_page )
+		{
+			$sql .= ' LIMIT '. (string)intval( $per_page ) .
+					' OFFSET '.(string)intval( ($page_num-1)*$per_page );
+		}
+		
+		if ( $is_count )
+		{
+			return $this->db->get_var( $sql );
+		}
+		else
+		{
+			return $this->db->get_results( $sql, ARRAY_A );
+		}
+	}
+	
+	public function count( $filter_category, $filter = '' )
+	{
+		return $this->get_all( $filter_category, $filter, NULL, 1, 'COUNT(*)' );
+	}
 }

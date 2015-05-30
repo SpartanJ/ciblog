@@ -240,7 +240,7 @@ function kajax_reload_target( push_state )
 
 function kajax_load_paging( load_url, push_state )
 {
-	kajax_load( '#ajax-paging', load_url, push_state );
+	kajax_load( '.ajax-paging', load_url, push_state );
 }
 
 function kajax_confirm_click(el,button_id)
