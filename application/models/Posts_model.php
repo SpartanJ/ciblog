@@ -85,4 +85,14 @@ class Posts_model extends CI_Model
 	{
 		return NULL != $this->db->query("SELECT 1 FROM {$this->table_name} WHERE post_slug = ? LIMIT 1", array( $slug ) )->row_array();
 	}
+	
+	function draft_it( $id )
+	{
+		$this->db->query("UPDATE {$this->table_name} SET post_draft = 1 WHERE post_id = ?", array( $id ) );
+	}
+	
+	function publish_it( $id )
+	{
+		$this->db->query("UPDATE {$this->table_name} SET post_draft = 0 WHERE post_id = ?", array( $id ) );
+	}
 }

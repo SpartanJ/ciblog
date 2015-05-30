@@ -145,7 +145,28 @@ class Admin extends SESSION_Controller
 	
 		$this->posts_model->delete($id);
 		
-		redirect(base_url('/admin'));
+		$this->kajax->load_target(base_url('/admin'));
+		$this->kajax->out();
+	}
+	
+	public function draft_it( $id )
+	{
+		$this->admin_session_restrict();
+	
+		$this->posts_model->draft_it($id);
+		
+		$this->kajax->load_target(base_url('/admin'));
+		$this->kajax->out();
+	}
+	
+	public function publish_it( $id )
+	{
+		$this->admin_session_restrict();
+	
+		$this->posts_model->publish_it($id);
+		
+		$this->kajax->load_target(base_url('/admin'));
+		$this->kajax->out();
 	}
 	
 	public function login()
@@ -159,6 +180,8 @@ class Admin extends SESSION_Controller
 			if( isset( $admin ) )
 			{
 				$this->session_create( $post['user'], $post['pass'], isset( $post['remember_me'] ) );
+				
+				$this->Users_model->update_last_login( $admin->user_id );
 				
 				$this->kajax->redirect(base_url('/admin'));
 			}
