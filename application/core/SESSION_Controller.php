@@ -119,9 +119,9 @@ class SESSION_Controller extends MY_Controller
 				$this->user->user_level >= CIBLOG_ADMIN_LEVEL;
 	}
 	
-	protected function admin_session_restrict()
+	protected function admin_session_restrict( $min_level = CIBLOG_ADMIN_LEVEL )
 	{
-		if ( $this->admin_is_logged() )
+		if ( $this->admin_is_logged() && $this->user->user_level >= $min_level )
 		{
 			return TRUE;
 		}

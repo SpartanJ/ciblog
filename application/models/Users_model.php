@@ -34,4 +34,9 @@ class Users_model extends CI_Model
 	{
 		$this->db->query( "UPDATE {$this->table_name} SET user_session_token = ? WHERE user_id = ?", array( $token, $id ) );
 	}
+	
+	public function update_last_login( $id )
+	{
+		$this->db->query( "UPDATE {$this->table_name} SET user_lastlogin = NOW() WHERE user_id = ?", array( $id ) );
+	}
 }
