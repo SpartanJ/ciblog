@@ -1,14 +1,14 @@
 <?
-function print_post($p, $is_draft)
+function print_post($p)
 {?>
-	<li>
+	<li id="post_<?=$p['post_id']?>" class="<?=$p['post_draft']==1?'draft':'published'?>">
 		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['post_title']?></a>
 		<em><?=lang_line_category_name_upper($p['cat_name'])?></em>
 		<em class="date"><?=CiblogHelper::to_blog_date($p["post_created"])?></em>
 		<span>
 			<a target="_blank" href="<?=base_url('/blog/'.$p['post_slug'])?>"><?=lang_line_upper('view')?></a>
 			
-			<? if ( $is_draft ) { ?>
+			<? if ( 1==$p['post_draft'] ) { ?>
 			<a class="ajax-eval-fancy-confirm-link" data-text="<?=lang_line('admin_confirm_publish_article')?>" href="<?=base_url('/admin/publish_it/'.$p['post_id'])?>"><?=lang_line_upper('publish')?></a>
 			<? } else { ?>
 			<a class="ajax-eval-fancy-confirm-link" data-text="<?=lang_line('admin_confirm_draft_article')?>" href="<?=base_url('/admin/draft_it/'.$p['post_id'])?>"><?=lang_line_upper('draft')?></a>
@@ -19,34 +19,24 @@ function print_post($p, $is_draft)
 	</li>
 <?}?>
 
-<div id="admin-posts">
+<div id="admin-posts" class="ajax-paging">
 	<div id="logout">
 		<a class="ajax-link" href="<?=base_url('/admin/logout')?>">
 			<i class="fa fa-sign-out"></i>
 		</a>
 	</div>
 
-	<div id="drafts">
-		<h1><?=lang_line_upper('draft')?></h1>
-		
-		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('new')?></a>
-		
-		<ul>
-		<?foreach($drafts as $p){
-			print_post($p,TRUE);
-		}?>
-		</ul>
-	</div>
-
-	<div id="published">
-		<h1><?=lang_line_upper('published')?></h1>
+	<div id="posts">
+		<h1><?=lang_line_upper('posts')?></h1>
 		
 		<a class="button square-button" target="_blank" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
 		
 		<ul>
-		<?foreach($published as $p){
-			print_post($p,FALSE);
-		}?>
+		<?if(isset($posts)){foreach($posts as $p){
+			print_post($p);
+		}}?>
 		</ul>
+		
+		<?=$pagination?>
 	</div>
 </div>
