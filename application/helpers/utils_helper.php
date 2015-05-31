@@ -778,6 +778,21 @@ function array_remove_value( &$arr, $del_val )
 	}
 }
 
+function log_error( $message )
+{
+	log_message( 'error', $message );
+}
+
+function log_debug( $message )
+{
+	log_message( 'debug', $message );
+}
+
+function log_info( $message )
+{
+	log_message( 'info', $message );
+}
+
 class CiblogHelper
 {
 	public static function password_hash( $password )
