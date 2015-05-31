@@ -17,14 +17,17 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=6
-FILE_NAME_0=5695;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
-FILE_NAME_1=3414;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fmodels%2FPosts_model.php;0;4
-FILE_NAME_2=1589;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Flist.php;0;4
-FILE_NAME_3=3978;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fadmin.css;0;4
+current_page=2
+FILE_NAME_0=5768;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
+FILE_NAME_1=3495;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fmodels%2FPosts_model.php;0;4
+FILE_NAME_2=2564;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Flist.php;0;4
+FILE_NAME_3=4584;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fadmin.css;0;4
 FILE_NAME_4=12820;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fconfig%2Fconfig.php;0;4
 FILE_NAME_5=1824;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fconfig%2Fconstants.php;0;4
 FILE_NAME_6=1057;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcore%2FSESSION_Controller.php;0;4
+FILE_NAME_7=4912;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Fsql_helper.php;0;4
+FILE_NAME_8=1856;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Flanguage%2Fenglish%2Fbase_lang.php;0;4
+FILE_NAME_9=16172;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Futils_helper.php;0;4
 
 [gproject]
 source_patterns=*.php;*.js;*.css;*.xml;
