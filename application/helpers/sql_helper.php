@@ -300,7 +300,7 @@ class SQL
 		return array( 'filter' => $qf, 'order' => $or, 'join' => $join );
 	}
 	
-	public static function make_insert( $table, $fields, $arr_ignore = '', $field_prefix = '', $no_slashes = FALSE )
+	public static function make_insert( $table, $fields, $field_prefix = '', $arr_ignore = '', $no_slashes = FALSE )
 	{
 		$k		= array_keys( $fields );
 		$v		= array_values( $fields );
@@ -342,7 +342,7 @@ class SQL
 		return 'INSERT INTO '.$table.' ( '.$keys.' ) VALUES ( '.$values.' )';
 	}
 
-	public static function make_insert_pdo( $table, $fields, $arr_ignore='', $field_prefix='' )
+	public static function make_insert_pdo( $table, $fields, $field_prefix='', $arr_ignore='' )
 	{
 		$a = array();
 		
@@ -357,7 +357,7 @@ class SQL
 		return self::make_insert( $table, $a, $arr_ignore, $field_prefix );
 	}
 
-	public static function make_update( $table, $fields, $field_id_name, $arr_ignore='', $field_prefix = '' )
+	public static function make_update( $table, $fields, $field_id_name, $field_prefix = '', $arr_ignore='' )
 	{
 		if ( !is_array( $fields ) )
 		{
@@ -421,7 +421,7 @@ class SQL
 		}
 	}
 
-	public static function make_update_pdo( $table, $fields, $field_id_name, $arr_ignore='', $field_prefix='' )
+	public static function make_update_pdo( $table, $fields, $field_id_name, $field_prefix='', $arr_ignore='' )
 	{
 		$a = array();
 		
