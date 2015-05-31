@@ -17,7 +17,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=10
+current_page=0
 FILE_NAME_0=1004;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcore%2FSESSION_Controller.php;0;4
 FILE_NAME_1=5768;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
 FILE_NAME_2=3495;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fmodels%2FPosts_model.php;0;4
@@ -28,8 +28,6 @@ FILE_NAME_6=1824;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplicat
 FILE_NAME_7=4912;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Fsql_helper.php;0;4
 FILE_NAME_8=1856;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Flanguage%2Fenglish%2Fbase_lang.php;0;4
 FILE_NAME_9=18187;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Futils_helper.php;0;4
-FILE_NAME_10=3104;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fsystem%2Flibraries%2FSession%2FSession.php;0;4
-FILE_NAME_11=6418;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fsystem%2Flibraries%2FSession%2Fdrivers%2FSession_files_driver.php;0;4
 
 [gproject]
 source_patterns=*.php;*.js;*.css;*.xml;

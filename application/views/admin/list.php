@@ -1,10 +1,20 @@
-<?
+<?php
+$sel = 'selected="selected"';
+function posts_build_link( $query = array() )
+{
+	return base_url( '/admin/posts/?' ) . http_build_query_merge( $query, TRUE );
+}
+
 function print_post($p)
 {?>
 	<li id="post_<?=$p['post_id']?>" class="<?=$p['post_draft']==1?'draft':'published'?>">
 		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['post_title']?></a>
-		<em><?=lang_line_category_name_upper($p['cat_name'])?></em>
-		<em class="date"><?=CiblogHelper::to_blog_date($p["post_created"])?> <?=lang_line('by') . ' ' . ( ( NULL != $p['user_display_name'] ) ? $p['user_display_name'] : $p['user_name'] )?></em>
+		<em class="date"><?=CiblogHelper::to_blog_date($p["post_created"])?> <?=lang_line('by')?> 
+			<a class="ajax-link" href="<?=base_url('/admin/posts?user_id='.$p['user_id'])?>"><?=( ( NULL != $p['user_display_name'] ) ? $p['user_display_name'] : $p['user_name'] )?></a>
+		</em>
+		<em>
+			<a class="ajax-link" href="<?=base_url('/admin/posts/?cat_id='.$p['cat_id'])?>"><?=lang_line_category_name_upper($p['cat_name'])?></a>
+		</em>
 		<span>
 			<a target="_blank" href="<?=base_url('/blog/'.$p['post_slug'])?>"><?=lang_line_upper('view')?></a>
 			
@@ -18,23 +28,16 @@ function print_post($p)
 		</span>
 	</li>
 <?}?>
-<?php
-$sel = 'selected="selected"';
-function posts_build_link( $query = array() )
-{
-	return base_url( '/admin/posts/?' ) . http_build_query_merge( $query );
-}
-?>
 
-<div id="admin-posts" class="ajax-paging">
-	<div id="logout">
+<div class="admin-posts ajax-paging">
+	<div class="logout">
 		<a class="ajax-link" href="<?=base_url('/admin/logout')?>">
 			<i class="fa fa-sign-out"></i>
 		</a>
 	</div>
 
-	<div id="posts">
-		<h1><?=lang_line_upper('posts')?></h1>
+	<div class="posts">
+		<h1><a class="ajax-link" href="<?=base_url('/admin/posts')?>"><?=lang_line_upper('posts')?></a></h1>
 		
 		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('new')?></a>
 		

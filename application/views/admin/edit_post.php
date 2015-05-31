@@ -8,7 +8,7 @@
 
 <div id="save-success-msg"><?=lang_line_ucwords('saved')?></div>
 
-<div id="admin-bar">
+<div class="admin-bar">
 	<? } ?>
 <?
 	$selected='selected="selected"';

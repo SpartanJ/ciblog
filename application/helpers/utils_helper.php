@@ -700,8 +700,13 @@ function pagination_config( $per_page = 10 )
 	return $config;
 }
 
-function http_build_query_merge( $query_strings )
+function http_build_query_merge( $query_strings, $remove_page_num = FALSE )
 {
+	if ( isset( $_GET['page_num'] ) )
+	{
+		unset( $_GET['page_num'] );
+	}
+	
 	return http_build_query( array_merge( $_GET, $query_strings ) );
 }
 
