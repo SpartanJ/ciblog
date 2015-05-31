@@ -35,7 +35,7 @@
 	font-size:inherit;
 }
 
-#admin-bar {
+.admin-bar {
 	position:fixed;
 	bottom:0px;
 	left:0px;
@@ -45,15 +45,15 @@
 	z-index:2;
 }
 
-#admin-bar .container {
+.admin-bar .container {
 	margin:0 auto;
 }
 
-#admin-bar .container .left { float:left; }
+.admin-bar .container .left { float:left; }
 
-#admin-bar .container .right { float: right; }
+.admin-bar .container .right { float: right; }
 
-#admin-bar .container span {
+.admin-bar .container span {
 	display:block;
 	float:left;
 	padding:15px;
@@ -65,7 +65,7 @@
 	cursor:pointer;
 }
 
-#admin-bar .container a, #admin-bar .container input[type=submit] {
+.admin-bar .container a, .admin-bar .container input[type=submit] {
 	display:block;
 	float:left;
 	padding:15px;
@@ -84,20 +84,29 @@
 	color:white !important;
 }
 
-#admin-bar .container a:hover, #admin-bar .container input[type=submit]:hover { background-color:red; }
+.admin-bar .container a:hover, .admin-bar .container input[type=submit]:hover { background-color:red; }
 
-#admin-posts {
+.admin-posts {
 	width:98%;
 	margin:0 auto;
 }
 
-#admin-posts h1 {
+.admin-posts h1 {
 	float:left;
 	margin-top: 0px;
 	margin-bottom: 8px;
 }
 
-#admin-posts .button {
+.admin-posts h1 a {
+	color: #000;
+	text-decoration: none;
+}
+
+.admin-posts h1 a:hover {
+	color: red;
+}
+
+.admin-posts .button {
 	float:right;
 	padding:10px;
 	font-size:12px;
@@ -105,39 +114,45 @@
 	margin-bottom: 8px;
 }
 
-#admin-posts ul {
+.admin-posts ul {
 	padding:0;
 	margin:0;
 	clear:both;
 }
 
-#admin-posts li {
+.admin-posts li {
 	position:relative;
 	list-style-type:none;
 	padding:18px 0 20px 0;
 	border-bottom:1px solid #e0e0e0;
 }
 
-#admin-posts li a {
+.admin-posts li:hover {
+	background-color: #F4F4F4;
+}
+
+.admin-posts li a {
 	color:inherit;
 	font-weight:bold;
 	text-decoration:none;
 }
 
-#admin-posts li a:hover { color:red; }
+.admin-posts li a:hover { 
+	color:red;
+}
 
-#admin-posts li span {
+.admin-posts li span {
 	float:right;
 	display:none;
 }
 
-#admin-posts li span a {
+.admin-posts li span a {
 	color:#a0a0a0;
 	margin-left:10px;
 	font-size:12px;
 }
 
-#admin-posts li em {
+.admin-posts li em {
 	position:absolute;
 	right:0px;
 	bottom:0px;
@@ -146,7 +161,7 @@
 	color:#a0a0a0;
 }
 
-#admin-posts li em.date {
+.admin-posts li em.date {
 	position:absolute;
 	left:0px;
 	bottom:0px;
@@ -155,22 +170,30 @@
 	color:#a0a0a0;
 }
 
-#admin-posts .post_block {
+.admin-posts .post_block {
 	float:left;
 	width:100%;
 	padding:20px;
 	box-sizing:border-box;
 }
 
-#admin-posts li.draft {
+.admin-posts li.draft {
 	color: #a0a0a0;
 }
 
-#admin-posts li.draft:hover {
+.admin-posts li:hover,
+.admin-posts li:hover em,
+.admin-posts li:hover a
+{
 	color: #666;
 }
 
-#admin-posts #posts {
+.admin-posts li:hover a:hover
+{
+	color: red;
+}
+
+.admin-posts .posts {
 	float:left;
 	width:100%;
 	padding:20px;
@@ -178,7 +201,7 @@
 	color:#000;
 }
 
-#admin-posts #logout {
+.admin-posts .logout {
 	font-weight: bold;
 	font-size: 24px;
 	position: fixed;
@@ -187,47 +210,22 @@
 	z-index: 2;
 }
 
-#admin-posts #logout a {
+.admin-posts .logout a {
 	text-decoration:none;
 	color:#FFF;
 }
 
-#admin-posts #logout a:hover { 
+.admin-posts .logout a:hover { 
 	text-decoration:underline;
 	color: red; 
 }
 
-#admin-posts li span {
+.admin-posts li span {
 	display: none;
 }
 
-#admin-posts li:hover span {
+.admin-posts li:hover span {
 	display: block;
-}
-
-@media only screen and (max-width: 800px)
-{
-	.admin-editor .title {
-		font-size: 22px;
-		height: 24px;
-	}
-
-	#admin-bar .container a, #admin-bar .container input[type=submit] {
-		padding: 8px;
-		margin: 23px 1px 14px 0;
-	}
-
-	#admin-bar .container span {
-		padding: 0px;
-		margin: 21px 5px 14px 8px;
-	}
-	
-	#admin-bar .container span label,
-	#admin-bar .container span select,
-	#admin-bar .container span input {
-		clear: both;
-		float: left;
-	}
 }
 
 .table_pager
@@ -317,9 +315,34 @@
 	font-weight: bold;
 }
 
+@media only screen and (max-width: 800px)
+{
+	.admin-editor .title {
+		font-size: 22px;
+		height: 24px;
+	}
+
+	.admin-bar .container a, .admin-bar .container input[type=submit] {
+		padding: 8px;
+		margin: 23px 1px 14px 0;
+	}
+
+	.admin-bar .container span {
+		padding: 0px;
+		margin: 21px 5px 14px 8px;
+	}
+	
+	.admin-bar .container span label,
+	.admin-bar .container span select,
+	.admin-bar .container span input {
+		clear: both;
+		float: left;
+	}
+}
+
 @media only screen and (max-width: 480px)
 {
-	#admin-bar
+	.admin-bar
 	{
 		position: relative;
 		float: left;

@@ -221,6 +221,10 @@ class Admin extends SESSION_Controller
 				'filter_val'	=>	get_var( 'cat_id' )
 			),
 			array(
+				'field_name'	=>	'user_id',
+				'filter_val'	=>	get_var( 'user_id' )
+			),
+			array(
 				'field_name'	=>	'post_title',
 				'filter_val'	=>	get_var( 'post_title' ),
 				'filter_type'	=>	SQLFilterType::ILIKE
@@ -253,8 +257,10 @@ class Admin extends SESSION_Controller
 		$data['posts']			= $this->Posts_model->get_all( NULL, $query_filter, $config['per_page'], $page );
 		$config['base_url']		= base_url( '/admin/posts/?' . http_build_query_pagination() );
 		$data['stats']			= $this->Posts_model->get_counts();
-		$data['post_draft']		= get_var('post_draft');
 		$data['categories']		= $this->Categories_model->get_all();
+		$data['post_draft']		= get_var('post_draft');
+		$data['user_id']		= get_var('user_id');
+		$data['cat_id']			= get_var('cat_id');
 		
 		$this->pagination->initialize($config);
 		
