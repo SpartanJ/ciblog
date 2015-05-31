@@ -45,3 +45,6 @@ $lang['categories'] = 'categories';
 $lang['posts'] = 'posts';
 $lang['users'] = 'users';
 $lang['tags'] = 'tags';
+$lang['all'] = 'all';
+$lang['by'] = 'by';
+$lang['order_by'] = 'order by';

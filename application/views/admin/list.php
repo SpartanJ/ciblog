@@ -4,7 +4,7 @@ function print_post($p)
 	<li id="post_<?=$p['post_id']?>" class="<?=$p['post_draft']==1?'draft':'published'?>">
 		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['post_title']?></a>
 		<em><?=lang_line_category_name_upper($p['cat_name'])?></em>
-		<em class="date"><?=CiblogHelper::to_blog_date($p["post_created"])?></em>
+		<em class="date"><?=CiblogHelper::to_blog_date($p["post_created"])?> <?=lang_line('by') . ' ' . ( ( NULL != $p['user_display_name'] ) ? $p['user_display_name'] : $p['user_name'] )?></em>
 		<span>
 			<a target="_blank" href="<?=base_url('/blog/'.$p['post_slug'])?>"><?=lang_line_upper('view')?></a>
 			
@@ -18,6 +18,13 @@ function print_post($p)
 		</span>
 	</li>
 <?}?>
+<?php
+$sel = 'selected="selected"';
+function posts_build_link( $query = array() )
+{
+	return base_url( '/admin/posts/?' ) . http_build_query_merge( $query );
+}
+?>
 
 <div id="admin-posts" class="ajax-paging">
 	<div id="logout">
@@ -29,7 +36,23 @@ function print_post($p)
 	<div id="posts">
 		<h1><?=lang_line_upper('posts')?></h1>
 		
+		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('new')?></a>
+		
 		<a class="button square-button" target="_blank" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
+		
+		<div class="posts_filter">
+			<div class="status_filter">
+				<a class="ajax-link<?=$post_draft===NULL?' active':''?>" href="<?=posts_build_link( array( 'post_draft' => NULL ) )?>">
+					<?=lang_line_ucwords('all')?> <span>(<?=$stats['posts_count']?>)</span>
+				</a> | 
+				<a class="ajax-link<?=$post_draft==='0'?' active':''?>" href="<?=posts_build_link( array( 'post_draft' => 0 ) )?>">
+					<?=lang_line_ucwords('published')?> <span>(<?=$stats['posts_published']?>)</span>
+				</a> | 
+				<a class="ajax-link<?=$post_draft==='1'?' active':''?>" href="<?=posts_build_link( array( 'post_draft' => 1 ) )?>">
+					<?=lang_line_ucwords('draft')?> <span>(<?=$stats['posts_draft']?>)</span>
+				</a>
+			</div>
+		</div>
 		
 		<ul>
 		<?if(isset($posts)){foreach($posts as $p){

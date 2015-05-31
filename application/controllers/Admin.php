@@ -217,14 +217,17 @@ class Admin extends SESSION_Controller
 	{
 		$filter = array(
 			array(
-				'field_name'	=>	'cat_key',
-				'filter_val'	=>	get_var( 'cat_key' ),
+				'field_name'	=>	'cat_id',
+				'filter_val'	=>	get_var( 'cat_id' )
+			),
+			array(
+				'field_name'	=>	'post_title',
+				'filter_val'	=>	get_var( 'post_title' ),
 				'filter_type'	=>	SQLFilterType::ILIKE
 			),
 			array(
-				'field_name'	=>	'loc_desc',
-				'filter_val'	=>	get_var( 'loc_desc' ),
-				'filter_type'	=>	SQLFilterType::ILIKE
+				'field_name'	=>	'post_draft',
+				'filter_val'	=>	get_var( 'post_draft' )
 			),
 			array(
 				'order_by'		=> get_var_def( 'order_by', 'post_created' ),
@@ -241,6 +244,7 @@ class Admin extends SESSION_Controller
 		$this->admin_session_restrict();
 
 		$this->load->library('pagination');
+		$this->load->model('Categories_model');
 		
 		$page					= get_var_def( 'page_num', 1 );
 		$config					= pagination_config();
@@ -248,6 +252,9 @@ class Admin extends SESSION_Controller
 		$config['total_rows']	= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
 		$data['posts']			= $this->Posts_model->get_all( NULL, $query_filter, $config['per_page'], $page );
 		$config['base_url']		= base_url( '/admin/posts/?' . http_build_query_pagination() );
+		$data['stats']			= $this->Posts_model->get_counts();
+		$data['post_draft']		= get_var('post_draft');
+		$data['categories']		= $this->Categories_model->get_all();
 		
 		$this->pagination->initialize($config);
 		

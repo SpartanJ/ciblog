@@ -3,6 +3,23 @@
 class Posts_model extends CI_Model
 {
 	protected $table_name = 'posts';
+	protected $get_all_basic_fields = '
+		post_id,
+		post_admin_id,
+		post_title,
+		post_slug,
+		post_created,
+		post_updated,
+		post_category,
+		post_draft,
+		user_id,
+		user_name,
+		user_email,
+		user_display_name,
+		cat_id,
+		cat_key,
+		cat_name
+	';
 	
 	public function __construct()
 	{
@@ -102,8 +119,9 @@ class Posts_model extends CI_Model
 		return SQL::get_or_filter( $filter_categories, $field_name );
 	}
 	
-	public function get_all( $filter_category = NULL, $filter = NULL, $per_page = NULL, $page_num = 1, $fields_get = '*' )
+	public function get_all( $filter_category = NULL, $filter = NULL, $per_page = NULL, $page_num = 1, $fields_get = NULL )
 	{
+		$fields_get = NULL == $fields_get ? $this->get_all_basic_fields : $fields_get;
 		$where		= self::get_category_filter( $filter_category );
 		$is_count	= -1 != str_starts_with( 'COUNT', $fields_get );
 		
@@ -133,6 +151,16 @@ class Posts_model extends CI_Model
 	
 	public function count( $filter_category, $filter = '' )
 	{
-		return $this->get_all( $filter_category, $filter, NULL, 1, 'COUNT(*)' );
+		return $this->get_all( $filter_category, $filter, NULL, 1, 'COUNT(post_id)' );
+	}
+	
+	public function get_counts()
+	{
+		$sql = "SELECT 
+					( SELECT COUNT(post_id) FROM {$this->table_name} ) AS posts_count,
+					( SELECT COUNT(post_id) FROM {$this->table_name} WHERE post_draft = 0 ) AS posts_published,
+					( SELECT COUNT(post_id) FROM {$this->table_name} WHERE post_draft = 1 ) AS posts_draft";
+			
+		return $this->db->query($sql)->row_array();
 	}
 }
