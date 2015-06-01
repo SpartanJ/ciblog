@@ -4,7 +4,7 @@ function editor_resize()
 {
 	var winh = $(window).height();
 	var bar = parseInt( $( '#bar' ).outerHeight() );
-	var adminbar = parseInt( $( '#admin-bar' ).outerHeight() );
+	var adminbar = parseInt( $( '.admin-bar' ).outerHeight() );
 	var admineditormargin = parseInt( $('.admin-editor').css('margin-top') );
 	var admineditortitle = parseInt( $('.admin-editor .title').outerHeight() );
 	var occupied = adminbar + admineditormargin + admineditortitle;

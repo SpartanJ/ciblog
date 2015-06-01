@@ -40,7 +40,7 @@
 					<?}?>
 					</select>
 				</span>
-				<span>
+				<span class="draft_check">
 					<label for="draft"><?=lang_line_ucwords('draft')?></label><input <?=$draft_checked?> id="draft" name="draft" type="checkbox"/>
 				</span>
 			<?if(isset($post_id)){?>

@@ -1,33 +1,14 @@
 <?php
-$sel = 'selected="selected"';
+$sel = ' selected="selected"';
 function posts_build_link( $query = array() )
 {
 	return base_url( '/admin/posts/?' ) . http_build_query_merge( $query, TRUE );
 }
 
 function print_post($p)
-{?>
-	<li id="post_<?=$p['post_id']?>" class="<?=$p['post_draft']==1?'draft':'published'?>">
-		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['post_title']?></a>
-		<em class="date"><?=CiblogHelper::to_blog_date($p["post_created"])?> <?=lang_line('by')?> 
-			<a class="ajax-link" href="<?=base_url('/admin/posts?user_id='.$p['user_id'])?>"><?=( ( NULL != $p['user_display_name'] ) ? $p['user_display_name'] : $p['user_name'] )?></a>
-		</em>
-		<em>
-			<a class="ajax-link" href="<?=base_url('/admin/posts/?cat_id='.$p['cat_id'])?>"><?=lang_line_category_name_upper($p['cat_name'])?></a>
-		</em>
-		<span>
-			<a target="_blank" href="<?=base_url('/blog/'.$p['post_slug'])?>"><?=lang_line_upper('view')?></a>
-			
-			<? if ( 1==$p['post_draft'] ) { ?>
-			<a class="ajax-eval-fancy-confirm-link" data-text="<?=lang_line('admin_confirm_publish_article')?>" href="<?=base_url('/admin/publish_it/'.$p['post_id'])?>"><?=lang_line_upper('publish')?></a>
-			<? } else { ?>
-			<a class="ajax-eval-fancy-confirm-link" data-text="<?=lang_line('admin_confirm_draft_article')?>" href="<?=base_url('/admin/draft_it/'.$p['post_id'])?>"><?=lang_line_upper('draft')?></a>
-			<? } ?>
-			
-			<a class="ajax-eval-fancy-confirm-link" data-text="<?=lang_line('admin_confirm_delete_article')?>" href="<?=base_url('/admin/delete/'.$p['post_id'])?>">X</a>
-		</span>
-	</li>
-<?}?>
+{
+	include('post.php');
+}?>
 
 <div class="admin-posts ajax-paging">
 	<div class="logout">
@@ -54,6 +35,23 @@ function print_post($p)
 				<a class="ajax-link<?=$post_draft==='1'?' active':''?>" href="<?=posts_build_link( array( 'post_draft' => 1 ) )?>">
 					<?=lang_line_ucwords('draft')?> <span>(<?=$stats['posts_draft']?>)</span>
 				</a>
+			</div>
+			
+			<div class="general_filter">
+				<form class="ajax-get-form">
+				
+				<select name="cat_id">
+					<option value=""><?=lang_line_ucwords('filter_categories')?></option>
+					<? if(isset($categories)){foreach($categories as $cat) {?>
+						<option value="<?=$cat['cat_id']?>"<?=$cat_id==$cat['cat_id']?$sel:''?>><?=lang_line_ucwords($cat['cat_name'])?></option>
+					<? }} ?>
+				</select>
+				
+				<input type="text" name="post_title" placeholder="<?=lang_line_ucwords('search_title')?>" value="<?=$post_title?>" />
+				
+				<input type="submit" value="<?=lang_line_upper('filter')?>" />
+				
+				</form>
 			</div>
 		</div>
 		
