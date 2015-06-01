@@ -591,6 +591,7 @@ input[type="checkbox"] + label:before
 	line-height: 16px;
 	transition: all 0.2s ease-in-out 0s;
 	cursor: pointer;
+	text-indent: 0px;
 }
 
 input[type="checkbox"]:checked + label:before

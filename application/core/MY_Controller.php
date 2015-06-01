@@ -289,4 +289,73 @@ class MY_Controller extends CI_Controller
 			redirect($uri);
 		}
 	}
+	
+	protected function kajax_validation_set_input_states( $rules, $id, $rows_extra = NULL, $row_name = '#row_' )
+	{
+		if ( !empty( $rules ) )
+		{
+			$rows = array( $row_name . ( intval( $id ) == 0 ? 'new' : $id ) );
+			
+			if ( NULL != $rows_extra )
+			{
+				if ( is_array( $rows_extra ) && !empty( $rows_extra ) )
+				{
+					foreach ( $rows_extra as $re )
+					{
+						array_push( $rows, $re . ( intval( $id ) == 0 ? 'new' : $id ) );
+					}
+				}
+				else if ( is_string( $rows_extra ) )
+				{
+					array_push( $rows, $rows_extra . ( intval( $id ) == 0 ? 'new' : $id ) );
+				}
+			}
+			
+			foreach ( $rows as $row_id )
+			{
+				$this->kajax_validate_inputs( $rules, $row_id );
+			}
+		}
+	}
+	
+	protected function kajax_validate_inputs( $rules, $id = '' )
+	{
+		if ( !empty( $rules ) )
+		{
+			foreach ( $rules as $r )
+			{
+				$field	= $r['field'];
+				
+				if ( isset( $r['type'] ) && 'textarea' == $r['type'] )
+				{
+					$target	= ( '' != $id ? $id . ' ' : '' ) . 'textarea[name="' . $field . '"]';
+				}
+				else
+				{
+					$target	= ( '' != $id ? $id . ' ' : '' ) . 'input[name="' . $field . '"]';
+				}
+				
+				if ( '' != form_error( $field ) )
+				{
+					$this->kajax->addClass( $target, 'error' );
+				}
+				else
+				{
+					$this->kajax->removeClass( $target, 'error' );
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @param $id Is the new id of the elements
+	 * @param $elements_base_name is an array of elements base names, this means: if element is called 'row_new', the base name is 'row_'
+	 * */
+	protected function kajax_replace_new_ids( $id, $elements_base_name )
+	{
+		foreach( $elements_base_name as $el )
+		{
+			$this->kajax->attr( '#' . $el . 'new', 'id', $el . $id );
+		}
+	}
 }

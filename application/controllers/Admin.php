@@ -322,6 +322,93 @@ class Admin extends SESSION_Controller
 		parent::add_frame_view( $content_view, $data, $show_header, $show_footer, $return, $hf_folder );
 	}
 	
+	public function category_update()
+	{
+		$this->admin_session_restrict();
+		
+		$post = $this->input->post();
+		
+		$this->load->model('Categories_model');
+		$this->load->library('form_validation');
+		
+		$rules	= array(
+			array(
+				'field'   => 'key', 
+				'label'   => lang_line_ucwords('key'), 
+				'rules'   => 'trim|required|max_length[64]'
+			),
+			array(
+				'field'   => 'name',
+				'label'   => lang_line_ucwords('name'), 
+				'rules'   => 'trim|required|max_length[64]'
+			)
+		);
+		
+		$this->form_validation->set_rules( $rules );
+		
+		$id = isset( $post['id'] ) ? intval( $post['id'] ) : 0;
+		
+		if ( $this->form_validation->run() != FALSE )
+		{
+			if ( $id == 0 )
+			{
+				$id = $this->Categories_model->add( $post['key'], $post['name'], isset($post['show_dates']) ? 1 : 0 );
+				
+				$this->kajax_replace_new_ids( $id, array( 'row_', 'row_hidden_', 'row_show_dates_' ) );
+				
+				$this->kajax->call( 'table_row_new_convert_to_id( ' . $id . ', "id", "' . 
+									base_url('/admin/category_delete/'.$id) . '", "' . 
+									lang_line('admin_confirm_delete_category') . '", "' . 
+									lang_line_upper('delete') . '" )'
+				);
+				
+				$this->kajax->fancy_log_success( lang_line_ucwords('category') . " '" . $post['name'] . "' " . lang_line('added_successfuly') . '.' );
+			}
+			else
+			{
+				if ( $this->Categories_model->exists( $id )  )
+				{
+					$this->Categories_model->update( $id, $post['key'], $post['name'], isset($post['show_dates']) ? 1 : 0 );
+					
+					$this->kajax->fancy_log_success( lang_line_ucwords('category') . " '" . $post['name'] . "' " . lang_line('saved') . '.' );
+				}
+				else
+				{
+					$this->kajax->fancy_log_error( lang_line_ucwords('category') . " '" . $post['name'] . "' " . lang_line('doesnt_exists') . '.' );
+				}
+			}
+		}
+		else
+		{
+			$this->kajax->fancy_log_error( validation_errors() );
+		}
+		
+		$this->kajax_validation_set_input_states( $rules, $post['id'] );
+		
+		$this->kajax->out();
+	}
+	
+	public function category_delete( $id )
+	{
+		$this->admin_session_restrict();
+		
+		$this->load->model('Categories_model');
+		
+		if ( $this->Categories_model->delete( $id ) )
+		{
+			$this->kajax->fancy_log_success( lang_line_ucwords('category') . ' ' . lang_line('deleted_successfuly') . '.' );
+			
+			$this->kajax->remove( '#row_hidden_' . $id );
+			$this->kajax->remove( '#row_' . $id );
+		}
+		else
+		{
+			$this->kajax->fancy_log_error( lang_line('cant_delete_category') );
+		}
+		
+		$this->kajax->out();
+	}
+	
 	public function filemanager()
 	{
 		require_once( ROOTPATH . 'fm/connectors/php/filemanager.class.php');
