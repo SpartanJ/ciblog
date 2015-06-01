@@ -8,7 +8,7 @@
 
 <div id="save-success-msg"><?=lang_line_ucwords('saved')?></div>
 
-<div class="admin-bar">
+<div class="bar bar-edit">
 	<? } ?>
 <?
 	$selected='selected="selected"';
@@ -41,7 +41,8 @@
 					</select>
 				</span>
 				<span class="draft_check">
-					<label for="draft"><?=lang_line_ucwords('draft')?></label><input <?=$draft_checked?> id="draft" name="draft" type="checkbox"/>
+					<input <?=$draft_checked?> id="draft" name="draft" type="checkbox"/>
+					<label for="draft"><?=lang_line_ucwords('draft')?></label>
 				</span>
 			<?if(isset($post_id)){?>
 				<a id="preview_slug" target="_blank" href="<?=base_url('/blog/'.$post_slug)?>"><?=lang_line_ucwords('preview')?></a>
