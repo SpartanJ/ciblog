@@ -10,14 +10,8 @@ function print_post($p)
 	include('post.php');
 }?>
 
-<div class="admin-posts ajax-paging">
-	<div class="logout">
-		<a class="ajax-link" href="<?=base_url('/admin/logout')?>">
-			<i class="fa fa-sign-out"></i>
-		</a>
-	</div>
-
-	<div class="posts">
+<div class="admin-content ajax-paging">
+	<div class="inner">
 		<h1><a class="ajax-link" href="<?=base_url('/admin/posts')?>"><?=lang_line_upper('posts')?></a></h1>
 		
 		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('new')?></a>

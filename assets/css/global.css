@@ -153,7 +153,12 @@ body {
 
 input, button, textarea { font-family:inherit; }
 
-#bar {
+.hidden
+{
+	display: none;
+}
+
+.bar {
 	-webkit-touch-callout:none;
 	-webkit-user-select:none;
 	-khtml-user-select:none;
@@ -170,14 +175,14 @@ input, button, textarea { font-family:inherit; }
 	z-index: 1;
 }
 
-#bar #logo {
+.bar #logo {
 	margin:40px 0px 0px 50px;
 	height:144px;
 	width:100px;
 	background:url('../images/logo.png') no-repeat center;
 }
 
-#bar #logo #logo-fx {
+.bar #logo #logo-fx {
 	position:absolute;
 	top:-27px;
 	left:-14px;
@@ -197,14 +202,14 @@ input, button, textarea { font-family:inherit; }
 	-moz-animation-timing-function:linear;
 }
 
-#bar .menu {
+.bar .menu {
 	position: relative;
 	margin: 0 auto;
 	display: table;
 	width: 100%;
 }
 
-#bar ul#links {
+.bar ul.links {
 	margin: 24px auto;
 	padding: 0px;
 	width: 100%;
@@ -212,29 +217,30 @@ input, button, textarea { font-family:inherit; }
 	max-width: 480px;
 }
 
-#bar #links li {
+.bar .links li {
 	list-style-type:none;
 	display: table-cell;
 	text-align: center;
 	box-sizing: border-box;
+	vertical-align: middle;
 }
 
-#bar #links li a {
+.bar .links li a {
 	text-decoration:none;
 	color: #EAEAEA;
 }
 
-#bar #links li a:hover {
+.bar .links li a:hover {
 	color:red;
 }
 
-#bar #rss {
+.bar #rss {
 	position: absolute;
 	top: 26px;
 	right: 4px;
 }
 
-#bar #rss a {
+.bar #rss a {
 	padding:3px 12px 3px 12px;
 	text-decoration:none;
 	font-size:16px;
@@ -246,7 +252,7 @@ input, button, textarea { font-family:inherit; }
 	color:white;
 }
 
-#bar #rss a:hover { background-color:red; }
+.bar #rss a:hover { background-color:red; }
 
 #content {
 	padding:0px;

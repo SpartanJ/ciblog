@@ -1,7 +1,7 @@
 
-<div id="bar">
+<div class="bar">
 	<div class="menu">
-		<ul	id="links">
+		<ul	class="links">
 			<li><a class="ajax-link" href="<?=base_url('/que-podemos-hacer-por-vos')?>"><?=lang_line('about_us')?></a></li>
 			<li><a class="ajax-link" href="<?=base_url('/blog')?>"><?=lang_line('blog')?></a></li>
 			<li><a class="ajax-link" href="<?=base_url('/contact')?>"><?=lang_line('contact')?></a></li>

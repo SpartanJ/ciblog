@@ -52,3 +52,6 @@ $lang['filter'] = 'filter';
 $lang['filter_categories'] = 'filter categories';
 $lang['search_title'] = 'search title';
 $lang['page_not_found'] = 'Page not found.';
+$lang['key'] = 'key';
+$lang['accept'] = 'accept';
+$lang['cancel'] = 'cancel';

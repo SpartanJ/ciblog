@@ -213,7 +213,7 @@ class Admin extends SESSION_Controller
 		$this->redirect(base_url('/admin/login'));
 	}
 	
-	protected function build_filters()
+	protected function build_posts_filters()
 	{
 		$filter = array(
 			array(
@@ -252,7 +252,7 @@ class Admin extends SESSION_Controller
 		
 		$page						= get_var_def( 'page_num', 1 );
 		$config						= pagination_config();
-		$query_filter				= $this->build_filters();
+		$query_filter				= $this->build_posts_filters();
 		$config['total_rows']		= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
 		$data['posts']				= $this->Posts_model->get_all( NULL, $query_filter, $config['per_page'], $page );
 		$config['base_url']			= base_url( '/admin/posts/?' . http_build_query_pagination() );
@@ -270,9 +270,41 @@ class Admin extends SESSION_Controller
 		$this->add_frame_view( 'admin/posts', $data );
 	}
 	
+	protected function build_categories_filters()
+	{
+		$filter = array(
+			array(
+				'field_name'	=>	'cat_key',
+				'filter_val'	=>	get_var( 'cat_key' )
+			),
+			array(
+				'order_by'		=> get_var_def( 'order_by', 'cat_name' ),
+				'order_fields'	=> array( 'cat_id', 'cat_key', 'cat_name' ),
+				'order_dir'		=> get_var_def( 'order_dir', 'ASC' )
+			)
+		);
+		
+		return SQL::build_query_filter( $filter );
+	}
+	
 	public function categories()
 	{
 		$this->admin_session_restrict();
+		$this->load->library('pagination');
+		$this->load->model('Categories_model');
+		
+		$page						= get_var_def( 'page_num', 1 );
+		$config						= pagination_config();
+		$query_filter				= $this->build_categories_filters();
+		$config['total_rows']		= $data['categories_count']	= $this->Categories_model->count( $query_filter );
+		$config['base_url']			= base_url( '/admin/categories/?' . http_build_query_pagination() );
+		$data['categories']			= $this->Categories_model->get_all( $query_filter, $config['per_page'], $page );
+
+		$this->pagination->initialize($config);
+		
+		$data['pagination']		= $this->pagination->create_links();
+		
+		$this->add_frame_view( 'admin/categories', $data );
 	}
 	
 	public function users()

@@ -34,7 +34,7 @@ class MY_Controller extends CI_Controller
 	protected function auto_add()
 	{
 		$this->add_js('assets/libs/jquery/jquery-1.11.3.min.js');
-		$this->add_js('assets/libs/jquery.color/jquery.color.js');
+		$this->add_js('assets/libs/jquery.scrollTo/jquery.scrollTo.min.js');
 		$this->add_js('assets/libs/jquery.placeholder/jquery.placeholder.min.js');
 		$this->add_js('assets/libs/alertify.js/alertify.min.js');
 		
