@@ -1,1 +1,1 @@
-<h1 class="padded">Error 404: No se encuentra la página</h1>
+<h1 class="padded"><?=lang_line('page_not_found')?></h1>

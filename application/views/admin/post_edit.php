@@ -2,7 +2,7 @@
 <form class="ajax" method="post" action="<?=base_url('/admin/save')?>">
 
 <div class="admin-editor">
-	<textarea name="title" class="title" placeholder="<?=lang_line_ucwords('title')?>"><?=isset($post_title)?$post_title:''?></textarea>
+	<input type="text" name="title" class="title" placeholder="<?=lang_line_ucwords('title')?>" value="<?=isset($post_title)?$post_title:''?>">
 	<textarea name="body" class="body" placeholder="<?=lang_line('write_something')?>"><?=isset($post_body)?htmlspecialchars($post_body):''?></textarea>
 </div>
 

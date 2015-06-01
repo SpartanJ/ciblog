@@ -10,7 +10,7 @@ class SESSION_Controller extends MY_Controller
 		'cookie_lifetime' 	=> 0, //60*60*24*365; // 0 expires the cookie until the session is closed ( seconds until expires )
 		'expiration'		=> 0, // 0 until the browser is closed the session lives
 		'match_ip'			=> FALSE,
-		'time_to_update' 	=> 300
+		'time_to_update' 	=> 0
 	);
 	
 	function __construct( $session_recover = TRUE )
