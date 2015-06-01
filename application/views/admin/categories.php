@@ -15,9 +15,12 @@ function categories_build_link( $order_by )
 				<td>
 					<input type="text" name="name" />
 				</td>
+				<td>
+					<input class="row_show_dates_new" type="checkbox" name="show_dates"><label for="row_show_dates_new">&nbsp;</label>
+				</td>
 			</tr>
 			<tr class="form_buttons hidden" class="row_hidden_new">
-				<td colspan="2" align="center">
+				<td colspan="3" align="center">
 					<button class="submit_btn_table cancel_btn" value="cancel"><span><?=lang_line_upper('cancel')?></span></button>
 					
 					<button class="submit_btn_table save_btn" value="submit"><span><?=lang_line_upper('save')?></span></button>
@@ -41,6 +44,7 @@ function categories_build_link( $order_by )
 					<tr>
 						<th class="ajax-el-link" data-href="<?=categories_build_link( 'cat_key' )?>"><?=lang_line_ucwords('key')?></th>
 						<th class="ajax-el-link" data-href="<?=categories_build_link( 'cat_name' )?>"><?=lang_line_ucwords('name')?></th>
+						<th><?=lang_line_ucwords('show_dates')?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -53,9 +57,18 @@ function categories_build_link( $order_by )
 						<td>
 							<input type="text" name="name" value="<?=$cat['cat_name']?>" />
 						</td>
+						<td>
+							<input id="row_show_dates_<?=$cat['cat_id']?>" type="checkbox" name="show_dates" <?=isset($cat['cat_show_dates'])&&intval($cat['cat_show_dates']!=0)?' checked="checked"':''?>><label for="row_show_dates_<?=$cat['cat_id']?>">&nbsp;</label>
+						</td>
 					</tr>
 					<tr class="form_buttons hidden" id="row_hidden_<?=$cat['cat_id']?>">
-						<td colspan="2" align="center">
+						<td colspan="3" align="center">
+							<button class="submit_btn_table delete_btn" 
+									data-text="<?=lang_line('admin_confirm_delete_category')?>"
+									data-href="<?=base_url('/admin/category_delete/'.$cat['cat_id'])?>">
+								<span><?=lang_line_upper('delete')?></span>
+							</button>
+							
 							<button class="submit_btn_table cancel_btn" value="cancel"><span><?=lang_line_upper('cancel')?></span></button>
 							
 							<button class="submit_btn_table save_btn" value="submit"><span><?=lang_line_upper('save')?></span></button>
@@ -78,6 +91,8 @@ function categories_build_link( $order_by )
 		{
 			var trs = $('.hidden table tbody tr').clone();
 			trs.first().attr('id','row_new').removeClass('row_new');
+			trs.first().find('.row_show_dates_new').attr('id', 'row_show_dates_new');
+			trs.first().find('.row_show_dates_new').removeClass('row_show_dates_new');
 			trs.last().attr('id','row_hidden_new').removeClass('row_hidden_new');
 			
 			$('#categories_list_table').prepend( trs );

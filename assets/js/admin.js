@@ -264,7 +264,7 @@ function table_cancel_click_register( t )
 	}
 }
 
-function table_row_new_convert_to_id( id, id_field_name, url, val )
+function table_row_new_convert_to_id( id, id_field_name, delete_url, delete_val, delete_text )
 {
 	var row_new		= $('#row_new');
 	var row			= ( row_new.length > 0 ) ? row_new : $('#row_'+id);
@@ -281,9 +281,9 @@ function table_row_new_convert_to_id( id, id_field_name, url, val )
 	cancel_but.unbind('click');
 	cancel_but.bind('click', function() { table_cancel_click_register( cancel_but ); } );
 	
-	if ( 'undefined' != typeof url && '' != url )
+	if ( 'undefined' != typeof delete_url && '' != delete_url )
 	{
-		row_hidden.find('td').prepend( '<button data-href="' + url + '" class="submit_btn_table delete_btn" data-text="' + val + '"><span>Eliminar</span></button>' );
+		row_hidden.find('td').prepend( '<button data-href="' + delete_url + '" class="submit_btn_table delete_btn" data-text="' + delete_val + '"><span>' + delete_text + '</span></button>' );
 		
 		var delete_but = row_hidden.find('button.delete_btn');
 		delete_but.unbind('click');

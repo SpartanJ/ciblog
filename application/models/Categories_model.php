@@ -10,16 +10,38 @@ class Categories_model extends CI_Model
 		$this->table_name = $this->db->dbprefix . $this->table_name;
 	}
 	
-	function add( $key, $name )
+	function add( $key, $name, $show_dates )
 	{
-		$this->db->query("INSERT INTO {$this->table_name} (cat_key, cat_name) VALUES (?,?)", array( $key, $name ) );
+		$this->db->query("INSERT INTO {$this->table_name} (cat_key, cat_name, cat_show_dates) VALUES (?,?,?)", array( $key, $name, $show_dates ) );
 		
 		return $this->db->insert_id();
 	}
 	
-	function update( $key, $name, $id )
+	function update( $id, $key, $name, $show_dates )
 	{
-		$this->db->query("UPDATE {$this->table_name} SET cat_key = ?, cat_name = ? WHERE cat_id = ?", array( $key, $name, $id ) );
+		$this->db->query("UPDATE {$this->table_name} SET cat_key = ?, cat_name = ?, cat_show_dates = ? WHERE cat_id = ?", array( $key, $name, $show_dates, $id ) );
+	}
+	
+	function can_delete( $id )
+	{
+		return 0 == intval( $this->db->get_var( "SELECT COUNT(*) FROM {$this->db->dbprefix}posts WHERE post_category = ?", array( $id ) ) );
+	}
+	
+	function delete( $id )
+	{
+		if ( $this->can_delete( $id ) )
+		{
+			$this->db->query( "DELETE FROM {$this->table_name} WHERE cat_id = ?", array( $id ) );
+			
+			return TRUE;
+		}
+		
+		return FALSE;
+	}
+	
+	function exists( $id )
+	{
+		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE cat_id = ? LIMIT 1", array( $id ) );
 	}
 	
 	function get_all( $filter = NULL, $per_page = NULL, $page_num = 1, $fields_get = '*' )
