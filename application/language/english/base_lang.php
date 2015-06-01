@@ -48,3 +48,6 @@ $lang['tags'] = 'tags';
 $lang['all'] = 'all';
 $lang['by'] = 'by';
 $lang['order_by'] = 'order by';
+$lang['filter'] = 'filter';
+$lang['filter_categories'] = 'filter categories';
+$lang['search_title'] = 'search title';

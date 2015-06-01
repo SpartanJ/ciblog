@@ -56,13 +56,16 @@
 .admin-bar .container span {
 	display:block;
 	float:left;
-	padding:15px;
-	margin:14px 5px 14px 0;
+	margin: 22px 6px 0px 0;
 	font-weight:bold;
 	text-decoration:none;
 	color:#ffffff;
 	border:none;
 	cursor:pointer;
+}
+
+.admin-bar .container span.draft_check {
+	padding-top: 8px;
 }
 
 .admin-bar .container a, .admin-bar .container input[type=submit] {
@@ -112,6 +115,8 @@
 	font-size:12px;
 	margin-top:0px;
 	margin-bottom: 8px;
+	margin-right: 0px;
+	margin-left: 5px;
 }
 
 .admin-posts ul {
@@ -289,6 +294,7 @@
 .status_filter
 {
 	float: left;
+	padding-top: 12px;
 }
 
 .status_filter a
@@ -315,6 +321,76 @@
 	font-weight: bold;
 }
 
+.general_filter
+{
+	float: right;
+}
+
+.admin-posts input[type="submit"],
+.admin-posts input[type="button"]
+{
+	padding: 10px;
+	margin: 0px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #ffffff;
+	border: none;
+	cursor: pointer;
+	background-color: black;
+	border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	font-size: 12px;
+}
+
+.admin-posts input[type="submit"]:hover,
+.admin-posts input[type="button"]:hover
+{
+	background-color: red;
+}
+
+.admin-posts input[type="text"]
+{
+	font-size: 12px;
+	padding: 9px;
+	background-color: #F2F2F2;
+	border: 1px solid #A9A9A9;
+}
+
+.admin-posts select,
+.admin-bar select
+{
+	background-color: #F2F2F2;
+	padding: 8px;
+	font-size: 12px
+}
+
+.admin-posts select:hover,
+.admin-bar select:hover,
+.admin-posts input[type="text"]:focus,
+.admin-posts input[type="button"]:focus
+{
+	background-color: #FCFCFC;
+	border-color: #CD2A2A;
+}
+
+.admin-posts ::-webkit-input-placeholder {
+	color: #000;
+}
+
+.admin-posts :-moz-placeholder { /* Firefox 18- */
+	color: #000;
+}
+
+.admin-posts ::-moz-placeholder {  /* Firefox 19+ */
+	color: #000;
+}
+
+.admin-posts :-ms-input-placeholder {  
+	color: #000;
+}
+
 @media only screen and (max-width: 800px)
 {
 	.admin-editor .title {
@@ -329,7 +405,12 @@
 
 	.admin-bar .container span {
 		padding: 0px;
-		margin: 21px 5px 14px 8px;
+		margin: 12px 5px 14px 8px;
+	}
+	
+	.admin-bar .container span.draft_check
+	{
+		padding-top: 12px;
 	}
 	
 	.admin-bar .container span label,

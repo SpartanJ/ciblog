@@ -133,7 +133,7 @@ class SQL
 			case SQLFilterType::LIKE:
 			case SQLFilterType::ILIKE:
 			{
-				$like	= SQLFilterType::LIKE == $filter_type ? 'LIKE' : 'ILIKE';
+				$like	= SQLFilterType::LIKE == $filter_type ? 'LIKE' : ( self::is_using_postgresql() ? 'ILIKE' : 'LIKE' );
 				$val	= self::cast_to_field_type( $field_type, $filter_val, $filter_type );
 				
 				if ( !empty( $val ) )
@@ -448,6 +448,7 @@ class SQL
 	
 	public static function is_using_postgresql()
 	{
+		global $db;
 		return $db['default']['dbdriver'] == 'postgre' || ( isset( $db['default']['dsn'] ) && FALSE !== strpos( $db['default']['dsn'], 'pgsql' ) );
 	}
 	

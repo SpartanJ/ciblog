@@ -96,7 +96,7 @@ class Admin extends SESSION_Controller
 				$bdata['post_id']			= $id;
 				$bdata['only_admin_bar'] 	= TRUE;
 				
-				$view_data = $this->load->view( 'admin/edit_post', $bdata, TRUE );
+				$view_data = $this->load->view( 'admin/post_edit', $bdata, TRUE );
 				
 				$this->kajax->html( '#admin-bar', $view_data );
 			}
@@ -124,7 +124,7 @@ class Admin extends SESSION_Controller
 			$data				= $this->Posts_model->get($id);
 			$data['categories']	= $this->Categories_model->get_all();
 			
-			$this->add_frame_view('admin/edit_post',$data);
+			$this->add_frame_view('admin/post_edit',$data);
 		}
 	}
 
@@ -136,7 +136,7 @@ class Admin extends SESSION_Controller
 		
 		$data['categories'] = $this->Categories_model->get_all();
 		
-		$this->add_frame_view('admin/edit_post',$data);
+		$this->add_frame_view('admin/post_edit',$data);
 	}
 	
 	public function delete($id)
@@ -250,23 +250,24 @@ class Admin extends SESSION_Controller
 		$this->load->library('pagination');
 		$this->load->model('Categories_model');
 		
-		$page					= get_var_def( 'page_num', 1 );
-		$config					= pagination_config();
-		$query_filter			= $this->build_filters();
-		$config['total_rows']	= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
-		$data['posts']			= $this->Posts_model->get_all( NULL, $query_filter, $config['per_page'], $page );
-		$config['base_url']		= base_url( '/admin/posts/?' . http_build_query_pagination() );
-		$data['stats']			= $this->Posts_model->get_counts();
-		$data['categories']		= $this->Categories_model->get_all();
-		$data['post_draft']		= get_var('post_draft');
-		$data['user_id']		= get_var('user_id');
-		$data['cat_id']			= get_var('cat_id');
+		$page						= get_var_def( 'page_num', 1 );
+		$config						= pagination_config();
+		$query_filter				= $this->build_filters();
+		$config['total_rows']		= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
+		$data['posts']				= $this->Posts_model->get_all( NULL, $query_filter, $config['per_page'], $page );
+		$config['base_url']			= base_url( '/admin/posts/?' . http_build_query_pagination() );
+		$data['stats']				= $this->Posts_model->get_counts();
+		$data['categories']			= $this->Categories_model->get_all();
+		$data['post_draft']			= get_var('post_draft');
+		$data['user_id']			= get_var('user_id');
+		$data['cat_id']				= get_var('cat_id');
+		$data['post_title']			= get_var('post_title');
 		
 		$this->pagination->initialize($config);
 		
 		$data['pagination']		= $this->pagination->create_links();
 		
-		$this->add_frame_view( 'admin/list', $data );
+		$this->add_frame_view( 'admin/posts', $data );
 	}
 	
 	public function categories()
