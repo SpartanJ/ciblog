@@ -51,3 +51,4 @@ $lang['order_by'] = 'order by';
 $lang['filter'] = 'filter';
 $lang['filter_categories'] = 'filter categories';
 $lang['search_title'] = 'search title';
+$lang['page_not_found'] = 'Page not found.';
