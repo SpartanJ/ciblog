@@ -563,6 +563,43 @@ a img { border:0; }
 	font-size:12px;
 }
 
+input[type="checkbox"]
+{
+	display:none;
+}
+
+input[type="checkbox"] + label
+{
+	cursor: pointer;
+}
+
+input[type="checkbox"] + label:before
+{
+	font-family: FontAwesome;
+	display: inline-block;
+	content: "\00a0";
+	width: 16px;
+	height: 16px;
+	background-color: #FFF;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	color: #FFF;
+	text-align: center;
+	font-size: 16px;
+	padding: 2px;
+	margin-right: 4px;
+	line-height: 16px;
+	transition: all 0.2s ease-in-out 0s;
+	cursor: pointer;
+}
+
+input[type="checkbox"]:checked + label:before
+{
+	background-color: #d9534f;
+	border: 1px solid #d9534f;
+	content: "\f00c";
+}
+
 @media only screen and (max-width: 480px)
 {
 	.styled-box

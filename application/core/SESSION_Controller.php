@@ -5,16 +5,16 @@ class SESSION_Controller extends MY_Controller
 	protected $sess			= NULL;
 	protected $user 		= NULL;
 	protected $_config		= array(
-		'driver'			=> 'files',
-		'cookie_name'		=> 'ciblog_user_session',
-		'cookie_lifetime' 	=> 0, //60*60*24*365; // 0 expires the cookie until the session is closed ( seconds until expires )
-		'expiration'		=> 0, // 0 until the browser is closed the session lives
-		'match_ip'			=> FALSE,
-		'time_to_update' 	=> 0,
-		'cookie_path'		=> '/admin',
-		'cookie_prefix'		=> '',
-		'cookie_domain'		=> '',
-		'cookie_secure'		=> FALSE
+		'driver'				=> 'files',
+		'cookie_name'			=> 'ciblog_user_session',
+		'cookie_lifetime' 		=> 0, //60*60*24*365; // 0 expires the cookie until the session is closed ( seconds until expires )
+		'cookie_path'			=> '/admin',
+		'cookie_prefix'			=> '',
+		'cookie_domain'			=> '',
+		'cookie_secure'			=> FALSE,
+		'expiration'			=> 0, // 0 until the browser is closed the session lives
+		'match_ip'				=> FALSE,
+		'sess_time_to_update' 	=> 0
 	);
 	
 	function __construct( $session_recover = TRUE )

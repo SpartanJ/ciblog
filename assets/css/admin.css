@@ -46,6 +46,16 @@
 	z-index:2;
 }
 
+.bar-edit {
+	position:fixed;
+	top: auto;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	background-color:#282B2E;
+	z-index:2;
+}
+
 .bar .container {
 	margin:0 auto;
 }
@@ -57,7 +67,7 @@
 .bar .container span {
 	display:block;
 	float:left;
-	margin: 22px 6px 0px 0;
+	margin: 16px 6px 0px 0;
 	font-weight:bold;
 	text-decoration:none;
 	color:#ffffff;
@@ -73,7 +83,7 @@
 	display:block;
 	float:left;
 	padding:15px;
-	margin:14px 5px 14px 0;
+	margin: 8px 5px 14px 0;
 	font-weight:bold;
 	text-decoration:none;
 	color:#ffffff;
@@ -616,7 +626,16 @@
 {
 	.bar
 	{
-		float: left;
 		width: 100%;
+		position: relative;
+		clear: both;
+		display: table;
+		top: auto;
+		bottom: auto;
+	}
+	
+	#content
+	{
+		margin-top: 0px;
 	}
 }
