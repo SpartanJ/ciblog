@@ -416,8 +416,6 @@
 	display: none;
 }
 
-
-
 .default_table
 {
 	font-size: 13px;
@@ -425,6 +423,7 @@
 	border-spacing: 0px;
 	margin-bottom: 8px;
 	box-sizing: border-box;
+	clear: both;
 }
 
 .default_table tr th
