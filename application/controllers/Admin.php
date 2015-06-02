@@ -352,6 +352,25 @@ class Admin extends SESSION_Controller
 		$this->add_frame_view( 'admin/users', $data );
 	}
 	
+	public function user_add()
+	{
+		$this->add_frame_view('admin/user_form' );
+	}
+	
+	public function user_edit($id)
+	{
+		$this->load->model('Users_model');
+		
+		$data = $this->Users_model->by_id($id, ARRAY_A);
+		
+		$this->add_frame_view('admin/user_form', $data );
+	}
+	
+	public function user_delete()
+	{
+		
+	}
+	
 	public function index()
 	{
 		$this->posts();

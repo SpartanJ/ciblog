@@ -25,9 +25,9 @@ class Users_model extends CI_Model
 		$this->table_name = $this->db->dbprefix . $this->table_name;
 	}
 	
-	public function by_id( $id )
+	public function by_id( $id, $output = OBJECT )
 	{
-		return $this->db->query( "SELECT * FROM {$this->table_name} WHERE user_id = ? LIMIT 1", array( $id ) )->row();
+		return $this->db->get_row( "SELECT * FROM {$this->table_name} WHERE user_id = ? LIMIT 1", $output, array( $id ) );
 	}
 	
 	public function by_user( $user, $pass )

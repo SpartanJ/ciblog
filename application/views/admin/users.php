@@ -60,7 +60,7 @@ function user_build_link_query( $query = array() )
 				<tbody>
 					<? if ( isset( $users ) ) { foreach ( $users as $user ) { ?>
 					<tr id="row_<?=$user['user_id']?>">
-						<td class="ajax-el-link" href="<?=base_url('/admin/user_edit/'.$user['user_id'])?>">
+						<td>
 							<a class="ajax-link" href="<?=base_url('/admin/user_edit/'.$user['user_id'])?>">
 								<?=$user['user_name']?>
 							</a>
