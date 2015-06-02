@@ -8,7 +8,7 @@ class SESSION_Controller extends MY_Controller
 		'driver'				=> 'files',
 		'cookie_name'			=> 'ciblog_user_session',
 		'cookie_lifetime' 		=> 0, //60*60*24*365; // 0 expires the cookie until the session is closed ( seconds until expires )
-		'cookie_path'			=> '/admin',
+		'cookie_path'			=> '/',
 		'cookie_prefix'			=> '',
 		'cookie_domain'			=> '',
 		'cookie_secure'			=> FALSE,
@@ -40,7 +40,7 @@ class SESSION_Controller extends MY_Controller
 	
 	protected function session_recover( $expire_on_close = TRUE )
 	{
-		$this->load->library( 'session', $this->_config, 'session_user' );
+		$this->load->library( 'CIBLOG_Session', $this->_config, 'session_user' );
 		
 		$this->sess = $this->session_user->all_userdata();
 		
@@ -90,6 +90,8 @@ class SESSION_Controller extends MY_Controller
 			// update the cookie expiration time
 			if ( $remember_me )
 			{
+				log_debug('session_create creating new cookie');
+				
 				setcookie(
 					$this->_config['cookie_name'],
 					session_id(),
