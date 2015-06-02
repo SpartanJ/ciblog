@@ -622,6 +622,9 @@ class CI_Session {
 	 */
 	public function sess_destroy()
 	{
+		log_debug('session destroy called by user');
+		log_backtrace();
+		
 		session_destroy();
 	}
 

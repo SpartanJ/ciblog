@@ -51,7 +51,7 @@ class SESSION_Controller extends MY_Controller
 	{
 		if ( $this->session_exists() )
 		{
-			$this->user = $this->Users_model->by_session_token( $this->sess['token'] );
+			$this->user = $this->Users_model->by_id( $this->sess['id'] );
 		}
 	}
 	
@@ -114,8 +114,8 @@ class SESSION_Controller extends MY_Controller
 		return	$this->session_exists() && 
 				isset( $this->user ) && 
 				isset( $this->user->user_session_token ) &&
-				isset( $this->sess['token'] ) &&
-				$this->user->user_session_token == $this->sess['token'];
+				isset( $this->sess['token'] )/* &&
+				$this->user->user_session_token == $this->sess['token']*/;
 	}
 	
 	protected function admin_is_logged()

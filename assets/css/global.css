@@ -646,7 +646,9 @@ input[type="checkbox"]:checked + label:before
 	.styled-box
 	{
 		width: auto;
-	}
+	
+		margin-top: 0px;
+}
 	
 	.blog_post .markdown img
 	{
