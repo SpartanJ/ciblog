@@ -2,7 +2,6 @@
 
 $lang['blog'] = 'blog';
 $lang['standalone'] = 'standalone';
-
 $lang['user_pass_incorrect'] = 'Username and/or password incorrect.';
 $lang['portfolio'] = 'portfolio';
 $lang['about_us'] = 'about us';
@@ -70,3 +69,5 @@ $lang['author'] = 'author';
 $lang['suscriber'] = 'suscriber';
 $lang['edit'] = 'edit';
 $lang['search_users'] = 'search users';
+$lang['user_add'] = 'user add';
+$lang['user_edit'] = 'user edit';
