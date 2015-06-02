@@ -362,6 +362,7 @@ class Admin extends SESSION_Controller
 		$this->load->model('Users_model');
 		
 		$data = $this->Users_model->by_id($id, ARRAY_A);
+		$data['user'] = $data;
 		
 		$this->add_frame_view('admin/user_form', $data );
 	}
