@@ -801,6 +801,31 @@ function log_info( $message )
 	log_message( 'info', $message );
 }
 
+function log_backtrace( $force = FALSE )
+{
+	if ( TRUE == config_item('log_error_print_backtrace') || $force )
+	{
+		log_message('error', 'Backtrace:' );
+		
+		$backtrace = debug_backtrace();
+		
+		if ( isset( $backtrace ) && !empty( $backtrace ) )
+		{
+			foreach ( $backtrace as $t )
+			{
+				if ( isset($t['file']) )
+				{
+					log_message('error', "file: " . $t['file'] . ":" . $t['line'] . " func: " . $t['function'] );
+				}
+				else
+				{
+					log_message('error', "file: ?:? func: " . $t['function'] );
+				}
+			}
+		}
+	}
+}
+
 class CiblogHelper
 {
 	public static function password_hash( $password )
