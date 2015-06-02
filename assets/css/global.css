@@ -139,6 +139,7 @@ body {
 	margin:0;
 	padding:0;
 	overflow-x:hidden;
+	font-family: "Open Sans",sans-serif;
 }
 
 ::-moz-selection {
@@ -607,6 +608,38 @@ input[type="checkbox"]:checked + label:before
 	box-shadow: none;
 }
 
+.form-table
+{
+	clear: both;
+	width: 100%;
+}
+
+.form-table tbody th
+{
+	color: #23282d;
+	text-align: left;
+	font-weight: normal;
+	vertical-align: top;
+	text-align: left;
+	padding: 20px 10px 20px 0;
+	width: 200px;
+	line-height: 1.3;
+	font-weight: 600;
+}
+
+.form-table tbody tr td input[type="text"],
+.form-table tbody tr td select,
+.form-table tbody tr td textarea 
+{
+	min-width: 400px;
+	background-color: #FCFCFC;
+}
+
+.form-table p, p.description, p.help, span.description {
+    font-size: 13px;
+    font-style: italic;
+}
+
 @media only screen and (max-width: 480px)
 {
 	.styled-box
@@ -617,5 +650,12 @@ input[type="checkbox"]:checked + label:before
 	.blog_post .markdown img
 	{
 		max-width: 320px;
+	}
+
+	.form-table tbody tr td input[type="text"],
+	.form-table tbody tr td select,
+	.form-table tbody tr td textarea 
+	{
+		min-width: 100%;
 	}
 }

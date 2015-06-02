@@ -98,9 +98,20 @@
 	-moz-border-radius:5px;
 	font-size:16px;
 	color:white !important;
+	transition: all 0.15s ease-in-out 0s;
 }
 
 .bar .container a:hover, .bar .container input[type=submit]:hover { background-color:red; }
+
+.bar .container a:first-of-type
+{
+	margin-left: 5px;
+}
+
+.bar .container a:last-of-type
+{
+	margin-right: 5px;
+}
 
 .admin-content {
 	width:98%;
@@ -622,21 +633,26 @@
 	background-color: red;
 }
 
+.admin-content h3
+{
+	clear: both;
+}
+
 @media only screen and (max-width: 800px)
 {
 	.bar .container a, .bar .container input[type=submit] {
 		padding: 8px;
-		margin: 23px 1px 14px 0;
+		margin: 15px 1px 14px 0;
 	}
 
 	.bar .container span {
 		padding: 0px;
-		margin: 12px 5px 14px 8px;
+		margin: 3px 5px 14px 8px;
 	}
 	
 	.bar .container span.draft_check
 	{
-		padding-top: 12px;
+		padding-top: 20px;
 	}
 	
 	.bar .container span label,

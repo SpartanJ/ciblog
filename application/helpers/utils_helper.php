@@ -857,4 +857,41 @@ class CiblogHelper
 			return lang_line_ucwords('suscriber');
 		}
 	}
+	
+	public static function get_display_names( $user )
+	{
+		$dn[] = $user['user_name'];
+		
+		if ( isset( $user['user_nickname'] ) && !in_array( $user['user_nickname'], $dn ) )
+		{
+			$dn[] = $user['user_nickname'];
+		}
+		
+		if ( isset( $user['user_firstname'] ) && !in_array( $user['user_firstname'], $dn ) )
+		{
+			$dn[] = $user['user_firstname'];
+		}
+		
+		if ( isset( $user['user_lastname'] ) && !in_array( $user['user_lastname'], $dn ) )
+		{
+			$dn[] = $user['user_lastname'];
+		}
+		
+		if ( isset( $user['user_firstname'] ) && isset( $user['user_lastname'] ) && !in_array( $user['user_firstname'] . ' ' . $user['user_lastname'], $dn ) )
+		{
+			$dn[] = $user['user_firstname'] . ' ' . $user['user_lastname'];
+		}
+		
+		if ( isset( $user['user_lastname'] ) && isset( $user['user_firstname'] ) && !in_array( $user['user_lastname'] . ' ' . $user['user_firstname'], $dn ) )
+		{
+			$dn[] = $user['user_lastname'] . ' ' . $user['user_firstname'];
+		}
+		
+		if ( isset( $user['user_display_name'] ) && !in_array( $user['user_display_name'], $dn ) )
+		{
+			$dn[] = $user['user_display_name'];
+		}
+		
+		return $dn;
+	}
 }
