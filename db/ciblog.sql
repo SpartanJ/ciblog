@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 02, 2015 at 01:30 AM
+-- Generation Time: Jun 02, 2015 at 01:41 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `cat_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cat_key` varchar(32) NOT NULL,
   `cat_name` varchar(64) NOT NULL,
-  `cat_show_dates` int(11) NOT NULL DEFAULT '1',
+  `cat_display_info` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`cat_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`cat_id`, `cat_key`, `cat_name`, `cat_show_dates`) VALUES
+INSERT INTO `categories` (`cat_id`, `cat_key`, `cat_name`, `cat_display_info`) VALUES
 (1, 'blog', 'blog', 1),
 (2, 'standalone', 'standalone', 0);
 

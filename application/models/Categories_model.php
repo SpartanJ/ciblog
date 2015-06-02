@@ -10,16 +10,16 @@ class Categories_model extends CI_Model
 		$this->table_name = $this->db->dbprefix . $this->table_name;
 	}
 	
-	function add( $key, $name, $show_dates )
+	function add( $key, $name, $display_info )
 	{
-		$this->db->query("INSERT INTO {$this->table_name} (cat_key, cat_name, cat_show_dates) VALUES (?,?,?)", array( $key, $name, $show_dates ) );
+		$this->db->query("INSERT INTO {$this->table_name} (cat_key, cat_name, cat_display_info) VALUES (?,?,?)", array( $key, $name, $display_info ) );
 		
 		return $this->db->insert_id();
 	}
 	
-	function update( $id, $key, $name, $show_dates )
+	function update( $id, $key, $name, $display_info )
 	{
-		$this->db->query("UPDATE {$this->table_name} SET cat_key = ?, cat_name = ?, cat_show_dates = ? WHERE cat_id = ?", array( $key, $name, $show_dates, $id ) );
+		$this->db->query("UPDATE {$this->table_name} SET cat_key = ?, cat_name = ?, cat_display_info = ? WHERE cat_id = ?", array( $key, $name, $display_info, $id ) );
 	}
 	
 	function can_delete( $id )

@@ -17,14 +17,14 @@ class Blog extends MY_Controller
 
 	public function index($categ = 'blog')
 	{
-		$category			= $this->Categories_model->get_by_key( $categ );
-		$data['posts']		= $this->posts_model->get_published_by_category_key($categ);
-		$data['show_date']	= true;
+		$category				= $this->Categories_model->get_by_key( $categ );
+		$data['posts']			= $this->posts_model->get_published_by_category_key($categ);
+		$data['display_info']	= true;
 		
 		if ( isset( $category ) )
 		{
-			$data['page_title'] = lang_line_category_name( $category['cat_name'] );
-			$data['show_date']	= intval( $category['cat_show_dates'] ) != 0;
+			$data['page_title'] 	= lang_line_category_name( $category['cat_name'] );
+			$data['display_info']	= intval( $category['cat_display_info'] ) != 0;
 		}
 		
 		$this->add_frame_view('blog/posts',$data);
@@ -36,9 +36,9 @@ class Blog extends MY_Controller
 
 		if( isset( $post ) )
 		{
-			$data['posts']		= array($post);
-			$data['show_date']	= intval( $post['cat_show_dates'] ) != 0;
-			$data['page_title']	= $post['post_title'];
+			$data['posts']			= array($post);
+			$data['display_info']	= intval( $post['cat_display_info'] ) != 0;
+			$data['page_title']		= $post['post_title'];
 			
 			$this->add_frame_view('blog/posts',$data);
 		}

@@ -31,7 +31,7 @@ foreach($posts as $r)
 {
 ?>
 	<div class="blog_post" id="<?=$r['post_slug']?>">
-		<?if($i==0 && $show_date){?>
+		<?if($i==0 && $display_info){?>
 		<div class="date"><?=CiblogHelper::to_blog_date($r['post_created'])?></div>
 		<?}?>
 
