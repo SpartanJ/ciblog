@@ -128,7 +128,9 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 		$this->_file_path = $this->_config['save_path'].DIRECTORY_SEPARATOR
 			.$name // we'll use the session cookie name as a prefix to avoid collisions
 			.($this->_config['match_ip'] ? md5($_SERVER['REMOTE_ADDR']) : '');
-
+		
+		log_debug('opened old session ' . $name );
+		
 		return TRUE;
 	}
 
@@ -144,6 +146,8 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 	 */
 	public function read($session_id)
 	{
+		log_debug('reading old session: ' . $session_id);
+		
 		// This might seem weird, but PHP 5.6 introduces session_reset(),
 		// which re-reads session data
 		if ($this->_file_handle === NULL)
@@ -153,6 +157,8 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 			// so we'd have to hack around this ...
 			if (($this->_file_new = ! file_exists($this->_file_path.$session_id)) === TRUE)
 			{
+				log_debug('file_new didn\'t exists in: ' . $this->_file_path.$session_id);
+				
 				if (($this->_file_handle = fopen($this->_file_path.$session_id, 'w+b')) === FALSE)
 				{
 					log_message('error', "Session: File '".$this->_file_path.$session_id."' doesn't exist and cannot be created.");
@@ -178,6 +184,8 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 
 			if ($this->_file_new)
 			{
+				log_debug('changed file permissions for ' . $this->_file_path.$session_id);
+				
 				chmod($this->_file_path.$session_id, 0600);
 				$this->_fingerprint = md5('');
 				return '';
@@ -198,7 +206,9 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 
 			$session_data .= $buffer;
 		}
-
+		
+		log_debug('readed old session data: ' . $session_data);
+		
 		$this->_fingerprint = md5($session_data);
 		return $session_data;
 	}
@@ -216,19 +226,24 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 	 */
 	public function write($session_id, $session_data)
 	{
+		log_debug('writing new session data for ' . $session_id . ' data ' . $session_data );
+		
 		// If the two IDs don't match, we have a session_regenerate_id() call
 		// and we need to close the old handle and open a new one
 		if ($session_id !== $this->_session_id && ( ! $this->close() OR $this->read($session_id) === FALSE))
 		{
+			log_debug("write failed because there's a new session id {$session_id} !== {$this->_session_id} and can't be writen"); 
 			return FALSE;
 		}
 
 		if ( ! is_resource($this->_file_handle))
 		{
+			log_error('file handle is not a resource!');
 			return FALSE;
 		}
 		elseif ($this->_fingerprint === md5($session_data))
 		{
+			log_debug('fingerprint the same as md5 session data');
 			return ($this->_file_new)
 				? TRUE
 				: touch($this->_file_path.$session_id);
@@ -257,7 +272,9 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 				return FALSE;
 			}
 		}
-
+		
+		log_debug('session writen');
+		
 		$this->_fingerprint = md5($session_data);
 		return TRUE;
 	}
@@ -273,6 +290,8 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 	 */
 	public function close()
 	{
+		log_debug('session close called for ' . $this->_session_id);
+		
 		if (is_resource($this->_file_handle))
 		{
 			flock($this->_file_handle, LOCK_UN);
@@ -297,6 +316,8 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 	 */
 	public function destroy($session_id)
 	{
+		log_debug('session destroy called for ' . $session_id);
+		
 		if ($this->close())
 		{
 			return file_exists($this->_file_path.$session_id)
@@ -331,7 +352,9 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 			log_message('debug', "Session: Garbage collector couldn't list files under directory '".$this->_config['save_path']."'.");
 			return FALSE;
 		}
-
+		
+		log_debug( "gc $maxlifetime");
+		
 		$ts = time() - $maxlifetime;
 
 		$pattern = sprintf(
@@ -352,6 +375,8 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 			}
 
 			unlink($this->_config['save_path'].DIRECTORY_SEPARATOR.$file);
+			
+			log_debug('deleted expired session: ' .$this->_config['save_path'].DIRECTORY_SEPARATOR.$file);
 		}
 
 		closedir($directory);

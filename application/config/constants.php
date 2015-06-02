@@ -43,7 +43,12 @@ define( 'PAGE_HOST'			, isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] :
 define( 'DEBUG'				, TRUE );
 
 define( 'CIBLOG_DB_PASSWORD_SALT'	, 'ciblog_salt' );
+
 define( 'CIBLOG_ADMIN_LEVEL'		, 1000  );
+define( 'CIBLOG_EDITOR_LEVEL'		, 800	);
+define( 'CIBLOG_AUTHOR_LEVEL'		, 600	);
+define( 'CIBLOG_SUSCRIBER_LEVEL'	, 0		);
+
 define( 'PAGE_TITLE'				, 'ciblog' );
 define( 'PAGE_DESCRIPTION'			, 'ciblog description' );
 define( 'PAGE_LANG'					, 'en' );

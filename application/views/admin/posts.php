@@ -14,7 +14,7 @@ function print_post($p)
 	<div class="inner">
 		<h1><a class="ajax-link" href="<?=base_url('/admin/posts')?>"><?=lang_line_upper('posts')?></a></h1>
 		
-		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('new')?></a>
+		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('add_new')?></a>
 		
 		<a class="button square-button" target="_blank" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
 		

@@ -134,6 +134,9 @@ class CI_Session {
 			)
 		)
 		{
+			log_error('unseting cookie: ' . $_COOKIE[$this->_config['cookie_name']] );
+			log_error( json_enc( $_COOKIE ) );
+			
 			unset($_COOKIE[$this->_config['cookie_name']]);
 		}
 
@@ -144,19 +147,30 @@ class CI_Session {
 			&& ($regenerate_time = config_item('sess_time_to_update')) > 0
 		)
 		{
+			log_debug('regenerated cookies __ci_last_regenerate');
+			
 			if ( ! isset($_SESSION['__ci_last_regenerate']))
 			{
 				$_SESSION['__ci_last_regenerate'] = time();
+				
+				log_debug( 'session updated __ci_last_regenerate' );
 			}
 			elseif ($_SESSION['__ci_last_regenerate'] < (time() - $regenerate_time))
 			{
 				$this->sess_regenerate((bool) config_item('sess_regenerate_destroy'));
+				
+				log_debug( 'session regenerated the session id with ' . session_id() );
 			}
 		}
 		// Another work-around ... PHP doesn't seem to send the session cookie
 		// unless it is being currently created or regenerated
 		elseif (isset($_COOKIE[$this->_config['cookie_name']]) && $_COOKIE[$this->_config['cookie_name']] === session_id())
 		{
+			log_debug('recreated cookies');
+			log_debug( json_enc( $this->_config ) );
+			
+			log_debug( json_enc( $_COOKIE ) );
+			
 			setcookie(
 				$this->_config['cookie_name'],
 				session_id(),
@@ -292,7 +306,9 @@ class CI_Session {
 			$params['cookie_secure'],
 			TRUE // HttpOnly; Yes, this is intentional and not configurable for security reasons
 		);
-
+		
+		log_debug('session _configure: ' . $params['cookie_lifetime'] . ' ' .$params['cookie_path'] . ' ' . $params['cookie_domain'] . ' ' . $params['cookie_secure'] );
+			
 		if (empty($expiration))
 		{
 			$params['expiration'] = (int) ini_get('session.gc_maxlifetime');

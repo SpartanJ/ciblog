@@ -462,19 +462,19 @@
 
 .default_table tr td.ajax-el-link
 {
-	color: #003493;
+	color: #CD2A2A;
 }
 
 .default_table tr td.ajax-el-link:hover
 {
-	background-color: #E3F5CB;
+	background-color: #F5F5F5;
 	color: #000000;
 	font-weight: bold;
 }
 
 .default_table tr
 {
-	background-color: #dbdbda;
+	background-color: #EAEAEA;
 	height: 28px;
 }
 
@@ -550,6 +550,36 @@
 	border: 0;
 	padding: 3px;
 	color: #fff;
+}
+
+.default_table tr td a
+{
+	text-decoration: none;
+	color: #CD2A2A;
+	transition: all 0.3s ease-in-out 0s;
+}
+
+.default_table tr td a:hover
+{
+	color: #FF0000;
+}
+
+.expanded_table tbody tr
+{
+	height: 56px;
+	vertical-align: middle;
+}
+
+.expanded_table tbody tr td:first-of-type a
+{
+	font-weight: bold;
+}
+
+.expanded_table tbody tr:hover td:first-of-type a:after
+{
+	font-size: 16px;
+	content: "\f040";
+	font-weight: normal;
 }
 
 .submit_btn_table {
