@@ -34,7 +34,7 @@ function categories_build_link( $order_by )
 	<div class="inner">
 		<h1><a class="ajax-link" href="<?=base_url('/admin/categories')?>"><?=lang_line_upper('categories')?></a></h1>
 		
-		<a id="add_new_but" class="button square-button"><?=lang_line_upper('new')?></a>
+		<a id="add_new_but" class="button square-button"><?=lang_line_upper('add_new')?></a>
 				
 		<div class="resize_informer">
 			<form id="table-form" action="<?=base_url('/admin/category_update')?>" method="post" style="display: none;"></form>

@@ -220,15 +220,41 @@ class SQL
 							$f	.= '( ';
 						}
 						
+						$field_names = is_array( $filter['field_name'] ) ? $filter['field_name'] : array( $filter['field_name'] );
+						$field_names_count = count( $field_names );
+						$field_names_counting = 0;
+						
 						foreach ( $values as $val )
 						{
-							$v	= isset( $filter['val_convert'] ) ? self::convert( $filter['val_convert'], $val ) : $val;
+							if ( $field_names_count > 1 )
+							{
+								$f	.= '( ';
+							}
 							
-							$f	.= self::get_filter(	isset( $filter['filter_type'] ) ? $filter['filter_type'] : SQLFilterType::EQUALS, 
-													$filter['field_name'],
-													$v,
-													isset( $filter['field_type'] ) ? $filter['field_type'] : self::guess_field_type( $v )
-							);
+							foreach ( $field_names as $field_name )
+							{
+								$v	= isset( $filter['val_convert'] ) ? self::convert( $filter['val_convert'], $val ) : $val;
+								
+								$f	.= self::get_filter(	isset( $filter['filter_type'] ) ? $filter['filter_type'] : SQLFilterType::EQUALS, 
+														$field_name,
+														$v,
+														isset( $filter['field_type'] ) ? $filter['field_type'] : self::guess_field_type( $v )
+								);
+								
+								$field_names_counting++;
+								
+								if ( $field_names_count > 1 )
+								{
+									if ( $field_names_counting < $field_names_count )
+									{
+										$f	.= ' OR ';
+									}
+									else
+									{
+										$f	.= ' )';
+									}
+								}
+							}
 							
 							$c++;
 							

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 29, 2015 at 10:51 PM
+-- Generation Time: Jun 02, 2015 at 01:30 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `post_category` int(10) unsigned NOT NULL,
   `post_draft` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `posts`
@@ -77,8 +77,7 @@ INSERT INTO `posts` (`post_id`, `post_admin_id`, `post_title`, `post_body`, `pos
 (37, 1, 'Test 6', '<p>Test 6</p>\r\n', 'test-6', '2015-05-30 01:08:16', NULL, 1, 1),
 (38, 1, 'Test 7', '<p>Test 7</p>\r\n', 'test-7', '2015-05-30 01:08:34', NULL, 1, 1),
 (39, 1, 'Test 8', '<p>Test 8</p>\r\n', 'test-8', '2015-05-30 01:08:43', NULL, 1, 1),
-(40, 1, 'Test 9', '<p>Test 9</p>\r\n', 'test-9', '2015-05-30 01:08:52', NULL, 1, 1),
-(41, 1, 'Test 10', '<p>Test 10</p>\r\n', 'test-10', '2015-05-30 01:08:59', NULL, 1, 1);
+(40, 1, 'Test 9', '<p>Test 9</p>\r\n', 'test-9', '2015-05-30 01:08:52', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -104,13 +103,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(60) NOT NULL,
   `user_password` varchar(64) NOT NULL,
-  `user_email` varchar(64) NOT NULL DEFAULT '',
-  `user_display_name` varchar(64) DEFAULT NULL,
+  `user_email` varchar(64) NOT NULL,
+  `user_url` varchar(100) NOT NULL,
+  `user_nickname` varchar(64) NOT NULL,
+  `user_display_name` varchar(128) DEFAULT NULL,
+  `user_firstname` varchar(64) NOT NULL,
+  `user_lastname` varchar(64) NOT NULL,
   `user_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_lastlogin` timestamp NULL DEFAULT NULL,
   `user_level` int(11) NOT NULL DEFAULT '0',
   `user_status` int(11) NOT NULL DEFAULT '0',
   `user_session_token` varchar(64) DEFAULT NULL,
+  `user_bio` text NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -118,8 +122,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_email`, `user_display_name`, `user_registered`, `user_lastlogin`, `user_level`, `user_status`, `user_session_token`) VALUES
-(1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', '', NULL, '0000-00-00 00:00:00', '2015-05-30 01:07:08', 1000, 0, '8d70b12042459f94d1b6cf5ef80cf37476b4797bd6dc24c03b3f483ba1995437');
+INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_email`, `user_url`, `user_nickname`, `user_display_name`, `user_firstname`, `user_lastname`, `user_registered`, `user_lastlogin`, `user_level`, `user_status`, `user_session_token`, `user_bio`) VALUES
+(1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', 'admin@ciblog', '', '', 'admin', 'Martín Lucas', 'Golini', '0000-00-00 00:00:00', '2015-06-02 02:32:41', 1000, 0, 'e1a831400497a515688e5836c5ba27a020ac53ae21d8f57f1edc59ba85118985', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -90,8 +90,6 @@ class SESSION_Controller extends MY_Controller
 			// update the cookie expiration time
 			if ( $remember_me )
 			{
-				log_debug('session_create creating new cookie');
-				
 				setcookie(
 					$this->_config['cookie_name'],
 					session_id(),

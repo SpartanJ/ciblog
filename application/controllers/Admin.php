@@ -307,11 +307,51 @@ class Admin extends SESSION_Controller
 		$this->add_frame_view( 'admin/categories', $data );
 	}
 	
+	protected function build_users_filters()
+	{
+		$filter = array(
+			array(
+				'field_name'	=>	array( 'user_display_name', 'user_name', 'user_firstname', 'user_lastname' ),
+				'filter_val'	=>	get_var( 'search_name' ),
+				'filter_type'	=>	SQLFilterType::ILIKE
+			),
+			array(
+				'field_name'	=>	'user_level',
+				'filter_val'	=>	get_var( 'user_level' )
+			),
+			array(
+				'order_by'		=> get_var_def( 'order_by', 'user_name' ),
+				'order_fields'	=> array( 'user_name', 'user_display_name', 'user_email', 'user_level' ),
+				'order_dir'		=> get_var_def( 'order_dir', 'ASC' )
+			)
+		);
+		
+		return SQL::build_query_filter( $filter );
+	}
+	
 	public function users()
 	{
 		$this->admin_session_restrict();
+		$this->load->library('pagination');
+		$this->load->model('Users_model');
+		
+		$page						= get_var_def( 'page_num', 1 );
+		$config						= pagination_config();
+		$query_filter				= $this->build_users_filters();
+		$config['total_rows']		= $data['users_count']	= $this->Users_model->count( $query_filter );
+		$config['base_url']			= base_url( '/admin/users/?' . http_build_query_pagination() );
+		$data['users']				= $this->Users_model->get_all( $query_filter, $config['per_page'], $page );
+		$data['user_level']			= get_var('user_level');
+		$data['search_name']		= get_var('search_name');
+		$data['stats']				= $this->Users_model->get_counts();
+		
+		$this->pagination->initialize($config);
+		
+		$data['pagination']		= $this->pagination->create_links();
+		
+		$this->add_frame_view( 'admin/users', $data );
 	}
-
+	
 	public function index()
 	{
 		$this->posts();

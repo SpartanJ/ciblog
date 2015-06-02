@@ -523,7 +523,10 @@ function load_library($library = '', $params = NULL, $object_name = NULL)
 function lang_line($line, $log_errors = TRUE)
 {
 	$CI =& get_instance();
-	return $CI->lang->line( $line, $log_errors );
+	
+	$lang_line = $CI->lang->line( $line, $log_errors );
+	
+	return isset( $line ) ? $lang_line : $line;
 }
 
 function lang_line_upper($line, $log_errors = TRUE)
@@ -833,5 +836,25 @@ class CiblogHelper
 	public static function to_blog_date($timestamp)
 	{
 		return unix_to_human(strtotime($timestamp), FALSE, 'eu');
+	}
+	
+	public static function get_user_role_name( $level )
+	{
+		if ( $level >= CIBLOG_ADMIN_LEVEL )
+		{
+			return lang_line_ucwords('administrator');
+		}
+		else if ( $level >= CIBLOG_EDITOR_LEVEL )
+		{
+			return lang_line_ucwords('editor');
+		}
+		else if ( $level >= CIBLOG_AUTHOR_LEVEL )
+		{
+			return lang_line_ucwords('author');
+		}
+		else
+		{
+			return lang_line_ucwords('suscriber');
+		}
 	}
 }
