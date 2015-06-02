@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 02, 2015 at 01:41 AM
+-- Generation Time: Jun 02, 2015 at 03:19 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_email`, `user_url`, `user_nickname`, `user_display_name`, `user_firstname`, `user_lastname`, `user_registered`, `user_lastlogin`, `user_level`, `user_status`, `user_session_token`, `user_bio`) VALUES
-(1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', 'admin@ciblog', '', '', 'admin', 'Martín Lucas', 'Golini', '0000-00-00 00:00:00', '2015-06-02 02:32:41', 1000, 0, 'e1a831400497a515688e5836c5ba27a020ac53ae21d8f57f1edc59ba85118985', '');
+(1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', 'admin@ciblog', '', 'Prognoz', 'admin', 'Martín Lucas', 'Golini', '0000-00-00 00:00:00', '2015-06-02 05:44:52', 1000, 0, '2ff270d868ee95d8bec829075dfc75dc30c302d5f8da1077d843ff14e7853425', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
