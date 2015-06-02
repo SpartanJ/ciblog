@@ -77,6 +77,8 @@ function categories_build_link( $order_by )
 					<? }} ?>
 				</tbody>
 			</table>
+			
+			<?=$pagination?>
 		</div>
 
 	</div>
