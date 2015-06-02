@@ -60,7 +60,7 @@
 .alertify-logs {
 	position: fixed;
 	z-index: 50000;
-	bottom: 80px;
+	top: 41px;
 	right: 10px;
 	width: 300px;
 }

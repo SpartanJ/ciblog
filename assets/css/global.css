@@ -174,6 +174,7 @@ input, button, textarea { font-family:inherit; }
 	height: 41px;
 	background-color: #282B2E;
 	z-index: 1;
+	box-shadow: 0 2px 2px rgba(0,0,0,.1);
 }
 
 .bar #logo {
@@ -581,6 +582,7 @@ input[type="checkbox"] + label:before
 	font-family: FontAwesome;
 	display: inline-block;
 	content: "\00a0";
+	font-family: "FontAwesome";
 	width: 16px;
 	height: 16px;
 	background-color: #FFF;
@@ -629,16 +631,71 @@ input[type="checkbox"]:checked + label:before
 }
 
 .form-table tbody tr td input[type="text"],
+.form-table tbody tr td input[type="password"],
 .form-table tbody tr td select,
 .form-table tbody tr td textarea 
 {
+	font-size: 14px;
 	min-width: 400px;
 	background-color: #FCFCFC;
 }
 
-.form-table p, p.description, p.help, span.description {
-    font-size: 13px;
-    font-style: italic;
+.form-table p, p.description, p.help, span.description
+{
+	font-size: 13px;
+	font-style: italic;
+	color: #666;
+}
+
+p.submit
+{
+	clear: both;
+}
+
+p.submit input[type="submit"]:hover, 
+p.submit input[type="button"]:hover
+{
+	background-color: red;
+}
+p.submit input[type="submit"], 
+p.submit input[type="button"] {
+	padding: 10px;
+	margin: 0px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #ffffff;
+	border: none;
+	cursor: pointer;
+	background-color: black;
+	border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	font-size: 12px;
+	transition: all 0.15s ease-in-out 0s;
+	float: left;
+	padding: 10px;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+@media only screen and (max-width: 800px)
+{
+	.form-table tbody tr th,
+	.form-table tbody tr td
+	{
+		display: block;
+		width: auto;
+		vertical-align: middle;
+	}
+
+	.form-table tbody tr td input[type="text"],
+	.form-table tbody tr td input[type="password"],
+	.form-table tbody tr td select,
+	.form-table tbody tr td textarea 
+	{
+		min-width: 100%;
+	}
 }
 
 @media only screen and (max-width: 480px)
@@ -653,12 +710,5 @@ input[type="checkbox"]:checked + label:before
 	.blog_post .markdown img
 	{
 		max-width: 320px;
-	}
-
-	.form-table tbody tr td input[type="text"],
-	.form-table tbody tr td select,
-	.form-table tbody tr td textarea 
-	{
-		min-width: 100%;
 	}
 }

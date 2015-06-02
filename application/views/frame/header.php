@@ -1,5 +1,5 @@
 
-<div class="bar bar-top">
+<div id="header" class="bar bar-top">
 	<div class="menu">
 		<ul	class="links">
 			<li><a class="ajax-link" href="<?=base_url('/que-podemos-hacer-por-vos')?>"><?=lang_line('about_us')?></a></li>
