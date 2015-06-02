@@ -39,7 +39,7 @@ function user_build_link_query( $query = array() )
 			<div class="general_filter">
 				<form class="ajax-get-form">
 				
-				<input type="text" name="search_name" placeholder="<?=lang_line_ucwords('search_name')?>" value="<?=$search_name?>" />
+				<input type="text" name="search_name" value="<?=$search_name?>" />
 				
 				<input type="submit" value="<?=lang_line_upper('search_users')?>" />
 				
@@ -78,6 +78,8 @@ function user_build_link_query( $query = array() )
 					<? }} ?>
 				</tbody>
 			</table>
+			
+			<?=$pagination?>
 		</div>
 
 	</div>
