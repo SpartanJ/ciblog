@@ -171,7 +171,7 @@ input, button, textarea { font-family:inherit; }
 	bottom:0px;
 	left: 0px;
 	right: 0px;
-	height: 64px;
+	height: 41px;
 	background-color: #282B2E;
 	z-index: 1;
 }
@@ -206,12 +206,13 @@ input, button, textarea { font-family:inherit; }
 .bar .menu {
 	position: relative;
 	margin: 0 auto;
-	display: table;
+	display: inline-block;
 	width: 100%;
+	line-height: 41px;
 }
 
 .bar ul.links {
-	margin: 24px auto;
+	margin: 0px auto;
 	padding: 0px;
 	width: 100%;
 	display: table;
@@ -257,7 +258,7 @@ input, button, textarea { font-family:inherit; }
 
 #content {
 	padding:0px;
-	margin-top:64px;
+	margin-top: 41px;
 }
 
 #content >h1 {
