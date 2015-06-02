@@ -392,9 +392,9 @@ class Admin extends SESSION_Controller
 		{
 			if ( $id == 0 )
 			{
-				$id = $this->Categories_model->add( $post['key'], $post['name'], isset($post['show_dates']) ? 1 : 0 );
+				$id = $this->Categories_model->add( $post['key'], $post['name'], isset($post['display_info']) ? 1 : 0 );
 				
-				$this->kajax_replace_new_ids( $id, array( 'row_', 'row_hidden_', 'row_show_dates_' ) );
+				$this->kajax_replace_new_ids( $id, array( 'row_', 'row_hidden_', 'row_display_info_' ) );
 				
 				$this->kajax->call( 'table_row_new_convert_to_id( ' . $id . ', "id", "' . 
 									base_url('/admin/category_delete/'.$id) . '", "' . 
@@ -408,7 +408,7 @@ class Admin extends SESSION_Controller
 			{
 				if ( $this->Categories_model->exists( $id )  )
 				{
-					$this->Categories_model->update( $id, $post['key'], $post['name'], isset($post['show_dates']) ? 1 : 0 );
+					$this->Categories_model->update( $id, $post['key'], $post['name'], isset($post['display_info']) ? 1 : 0 );
 					
 					$this->kajax->fancy_log_success( lang_line_ucwords('category') . " '" . $post['name'] . "' " . lang_line('saved') . '.' );
 				}

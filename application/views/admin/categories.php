@@ -16,7 +16,7 @@ function categories_build_link( $order_by )
 					<input type="text" name="name" />
 				</td>
 				<td>
-					<input class="row_show_dates_new" type="checkbox" name="show_dates"><label for="row_show_dates_new">&nbsp;</label>
+					<input class="row_display_info_new" type="checkbox" name="display_info"><label for="row_display_info_new">&nbsp;</label>
 				</td>
 			</tr>
 			<tr class="form_buttons hidden" class="row_hidden_new">
@@ -44,7 +44,7 @@ function categories_build_link( $order_by )
 					<tr>
 						<th class="ajax-el-link" data-href="<?=categories_build_link( 'cat_key' )?>"><?=lang_line_ucwords('key')?></th>
 						<th class="ajax-el-link" data-href="<?=categories_build_link( 'cat_name' )?>"><?=lang_line_ucwords('name')?></th>
-						<th><?=lang_line_ucwords('show_dates')?></th>
+						<th><?=lang_line_ucwords('display_info')?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -58,7 +58,7 @@ function categories_build_link( $order_by )
 							<input type="text" name="name" value="<?=$cat['cat_name']?>" />
 						</td>
 						<td>
-							<input id="row_show_dates_<?=$cat['cat_id']?>" type="checkbox" name="show_dates" <?=isset($cat['cat_show_dates'])&&intval($cat['cat_show_dates']!=0)?' checked="checked"':''?>><label for="row_show_dates_<?=$cat['cat_id']?>">&nbsp;</label>
+							<input id="row_display_info_<?=$cat['cat_id']?>" type="checkbox" name="display_info" <?=isset($cat['cat_display_info'])&&intval($cat['cat_display_info']!=0)?' checked="checked"':''?>><label for="row_display_info_<?=$cat['cat_id']?>">&nbsp;</label>
 						</td>
 					</tr>
 					<tr class="form_buttons hidden" id="row_hidden_<?=$cat['cat_id']?>">
@@ -93,8 +93,8 @@ function categories_build_link( $order_by )
 		{
 			var trs = $('.hidden table tbody tr').clone();
 			trs.first().attr('id','row_new').removeClass('row_new');
-			trs.first().find('.row_show_dates_new').attr('id', 'row_show_dates_new');
-			trs.first().find('.row_show_dates_new').removeClass('row_show_dates_new');
+			trs.first().find('.row_display_info_new').attr('id', 'row_display_info_new');
+			trs.first().find('.row_display_info_new').removeClass('row_display_info_new');
 			trs.last().attr('id','row_hidden_new').removeClass('row_hidden_new');
 			
 			$('#categories_list_table').prepend( trs );
