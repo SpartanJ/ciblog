@@ -561,6 +561,26 @@ function lang_line_category_name_ucwords( $name )
 	return ucwords( lang_line_category_name( $name ) );
 }
 
+function array_values_keys( $values_array, $keys_array )
+{
+	$values = array();
+	
+	foreach ( $keys_array as $k )
+	{
+		if ( isset( $values_array[$k] ) )
+		{
+			array_push( $values, $values_array[$k] );
+		}
+		else
+		{
+			log_debug( "array_values_keys key $k not found" );
+			return FALSE;
+		}
+	}
+	
+	return $values;
+}
+
 function pipe_exec( $cmd, $async = FALSE, $input='' )
 {
 	$cmd  = $cmd . ( TRUE == $async ? ' > /dev/null 2>/dev/null &' : '' );

@@ -174,7 +174,12 @@ class Kajax
 	{
 		$this->buffer .= jmethod($target,'toggleClass', jstr($class));
 	}
-
+	
+	public function resetAnim($target)
+	{
+		$this->buffer .= jelem($target).".each(function(){ $(this).width(); });\n";
+	}
+	
 	public function val($target, $val)
 	{
 		$this->buffer .= jmethod($target,'val', jstr($val));

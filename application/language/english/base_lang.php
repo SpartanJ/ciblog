@@ -78,3 +78,15 @@ $lang['nickname'] = 'nickname';
 $lang['required'] = 'required';
 $lang['display_name_as'] = 'Display name publicly as';
 $lang['contact_info'] = 'contact info';
+$lang['website'] = 'website';
+$lang['about_yourself'] = 'about yourself';
+$lang['biographical_info'] = 'biographical info';
+$lang['biographical_info_desc'] = 'Share a little biographical information to fill out your profile. This may be shown publicly.';
+$lang['new_password'] = 'new password';
+$lang['new_password_desc'] = 'If you would like to change the password type a new one. Otherwise leave this blank.';
+$lang['new_password_repeat'] = 'repeat new password';
+$lang['new_password_repeat_desc'] = 'Type your new password again.';
+$lang['update_profile'] = 'update profile';
+$lang['add_new_user'] = 'add new user';
+$lang['display_name'] = 'display name';
+

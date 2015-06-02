@@ -114,8 +114,21 @@ class SESSION_Controller extends MY_Controller
 		return	$this->session_exists() && 
 				isset( $this->user ) && 
 				isset( $this->user->user_session_token ) &&
-				isset( $this->sess['token'] )/* &&
-				$this->user->user_session_token == $this->sess['token']*/;
+				isset( $this->sess['token'] );
+	}
+	
+	protected function session_restrict( $min_level = CIBLOG_SUSCRIBER_LEVEL )
+	{
+		if ( $this->user_is_logged() && isset( $this->user->user_level ) && $this->user->user_level >= $min_level )
+		{
+			return TRUE;
+		}
+		
+		$this->session_destroy();
+		
+		$this->redirect(base_url('/admin/login'));
+		
+		return FALSE;
 	}
 	
 	protected function admin_is_logged()
@@ -124,7 +137,7 @@ class SESSION_Controller extends MY_Controller
 				isset( $this->user->user_level ) && 
 				$this->user->user_level >= CIBLOG_ADMIN_LEVEL;
 	}
-	
+
 	protected function admin_session_restrict( $min_level = CIBLOG_ADMIN_LEVEL )
 	{
 		if ( $this->admin_is_logged() && $this->user->user_level >= $min_level )

@@ -349,7 +349,7 @@ class SQL
 				}
 			}
 			
-			if ( !$ignore && $k[$i] != 'enviar' && $k[$i] != 'send' )
+			if ( !$ignore && $k[$i] != 'submit' && $k[$i] != 'send' && $k[$i] != 'kajax' )
 			{
 				$keys		.= $field_prefix.$k[$i].', ';
 				
@@ -368,7 +368,7 @@ class SQL
 		return 'INSERT INTO '.$table.' ( '.$keys.' ) VALUES ( '.$values.' )';
 	}
 
-	public static function make_insert_pdo( $table, $fields, $field_prefix='', $arr_ignore='' )
+	public static function make_insert_qb( $table, $fields, $field_prefix='', $arr_ignore='' )
 	{
 		$a = array();
 		
@@ -380,7 +380,7 @@ class SQL
 			}
 		}
 		
-		return self::make_insert( $table, $a, $arr_ignore, $field_prefix );
+		return self::make_insert( $table, $a, $field_prefix, $arr_ignore );
 	}
 
 	public static function make_update( $table, $fields, $field_id_name, $field_prefix = '', $arr_ignore='' )
@@ -447,7 +447,7 @@ class SQL
 		}
 	}
 
-	public static function make_update_pdo( $table, $fields, $field_id_name, $field_prefix='', $arr_ignore='' )
+	public static function make_update_qb( $table, $fields, $field_id_name, $field_prefix='', $arr_ignore='' )
 	{
 		$a = array();
 		
@@ -459,7 +459,7 @@ class SQL
 			}
 		}
 		
-		return self::make_update( $table, $a, $field_id_name, $arr_ignore, $field_prefix );
+		return self::make_update( $table, $a, $field_id_name, $field_prefix, $arr_ignore );
 	}
 
 	public static function make_delete( $table, $field_id_name, $field_id_value )
@@ -467,7 +467,7 @@ class SQL
 		return 'DELETE FROM '.$table.' WHERE '.$field_id_name.' = '.$field_id_value;
 	}
 
-	public static function make_delete_pdo( $table, $field_id_name )
+	public static function make_delete_qb( $table, $field_id_name )
 	{
 		return self::make_delete( $table, $field_id_name, '?' );
 	}
