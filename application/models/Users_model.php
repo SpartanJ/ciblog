@@ -30,6 +30,11 @@ class Users_model extends CI_Model
 		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE user_id = ? LIMIT 1", array( $id ) );
 	}
 	
+	function exists_username( $name )
+	{
+		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE user_name = ? LIMIT 1", array( $name ) );
+	}
+	
 	public function by_id( $id, $output = OBJECT )
 	{
 		return $this->db->get_row( "SELECT * FROM {$this->table_name} WHERE user_id = ? LIMIT 1", $output, array( $id ) );
@@ -105,16 +110,26 @@ class Users_model extends CI_Model
 	
 	public function add_from_post( $post )
 	{
-		log_debug( "SQL data:\n" . json_enc( $post ) );
+		$post['password']		= CiblogHelper::password_hash( $post['password'] );
+		$post['display_name']	= $post['nickname'] = $post['name'];
 		
-		$sql = SQL::make_insert_qb( $this->table_name, $post, 'user_', array( 'username', 'password_repeat' ) );
+		$fields = array( 'name', 'email', 'firstname', 'lastname', 'url', 'password', 'level', 'display_name', 'nickname' );
+		$values = array_values_keys( $post, $fields );
 		
-		log_debug( "SQL:\n" . $sql );
+		$this->db->query( SQL::make_insert_qb( $this->table_name, $fields, 'user_' ), $values );
 	}
 	
-	public function update_from_post( $post )
+	public function update_from_post( $post, $allow_change_role = TRUE )
 	{
-		$fields = array( 'firstname', 'lastname', 'nickname', 'display_name', 'email', 'url', 'bio', 'id' );
+		$fields = array( 'firstname', 'lastname', 'nickname', 'display_name', 'email', 'url', 'bio' );
+		
+		if ( TRUE == $allow_change_role )
+		{
+			$fields[] = 'level';
+		}
+		
+		$fields[] = 'id';
+		
 		$values = array_values_keys( $post, $fields );
 		$this->db->query( SQL::make_update_qb( $this->table_name, $fields, 'id', 'user_' ), $values );
 	}

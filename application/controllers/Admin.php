@@ -356,7 +356,9 @@ class Admin extends SESSION_Controller
 	{
 		$this->admin_session_restrict();
 		
-		$this->add_frame_view('admin/user_form' );
+		$data['roles'] = CiblogHelper::get_user_roles();
+		
+		$this->add_frame_view('admin/user_add_form', $data );
 	}
 	
 	public function user_edit($id)
@@ -367,11 +369,113 @@ class Admin extends SESSION_Controller
 		
 		$data = $this->Users_model->by_id($id, ARRAY_A);
 		$data['user'] = $data;
+		$data['roles'] = CiblogHelper::get_user_roles();
+		$data['is_admin'] = TRUE;
 		
 		$this->add_frame_view('admin/user_form', $data );
 	}
 	
-	public function user_update()
+	public function profile()
+	{
+		$this->admin_session_restrict( $this->user->user_level );
+		
+		$this->load->model('Users_model');
+		
+		$data = $this->Users_model->by_id( $this->user->user_id, ARRAY_A);
+		$data['user'] = $data;
+		$data['profile'] = TRUE;
+		
+		$this->add_frame_view('admin/user_form', $data );
+	}
+	
+	public function val_username( $str )
+	{
+		$this->load->model('Users_model');
+		
+		if ( !$this->Users_model->exists_username( $str ) )
+		{
+			return TRUE;
+		}
+		
+		$this->form_validation->set_message( 'val_username', lang_line('username_in_use') );
+		
+		return FALSE;
+	}
+	
+	public function user_insert()
+	{
+		$this->admin_session_restrict();
+		
+		$post = $this->input->post();
+		
+		$this->load->model('Users_model');
+		$this->load->library('form_validation');
+		
+		$rules	= array(
+			array(
+				'field'   => 'name', 
+				'label'   => lang_line_ucwords('username'), 
+				'rules'   => 'trim|required|min_length[4]|max_length[64]|callback_val_username'
+			),
+			array(
+				'field'   => 'email',
+				'label'   => lang_line_ucwords('email'), 
+				'rules'   => 'trim|required|valid_email|max_length[64]'
+			),
+			array(
+				'field'   => 'firstname', 
+				'label'   => lang_line_ucwords('first_name'), 
+				'rules'   => 'trim|max_length[64]'
+			),
+			array(
+				'field'   => 'lastname',
+				'label'   => lang_line_ucwords('last_name'), 
+				'rules'   => 'trim|max_length[64]'
+			),
+			array(
+				'field'   => 'url',
+				'label'   => lang_line_ucwords('biographical_info'), 
+				'rules'   => 'trim|valid_url|max_length[128]'
+			),
+			array(
+				'field'   => 'password',
+				'label'   => lang_line_ucwords('password'), 
+				'rules'   => 'required|min_length[4]'
+			),
+			array(
+				'field'   => 'password_repeat',
+				'label'   => lang_line_ucwords('new_password_repeat'), 
+				'rules'   => 'required|matches[password]'
+			)
+		);
+		
+		$id = isset( $post['id'] ) ? intval( $post['id'] ) : 0;
+		
+		$this->form_validation->set_rules( $rules );
+		
+		$form_inputs = '.form-table input, .form-table textarea, .form-table select';
+		$this->kajax->removeClass( $form_inputs, 'error' );
+		$this->kajax->resetAnim( $form_inputs );
+		
+		if ( $this->form_validation->run() != FALSE )
+		{
+			$this->Users_model->add_from_post( $post );
+			
+			$this->kajax->fancy_log_success( lang_line_ucwords('user') . " '" . $post['name'] . "' " . lang_line('added_successfuly') . '.' );
+			
+			$this->kajax->load_target(base_url('/admin/users'));
+		}
+		else
+		{
+			$this->kajax->fancy_log_error( validation_errors() );
+		}
+		
+		$this->kajax_validate_inputs( $rules );
+		
+		$this->kajax->out();
+	}
+	
+	protected function user_update_data( $allow_change_role = TRUE )
 	{
 		$this->admin_session_restrict();
 		
@@ -397,6 +501,11 @@ class Admin extends SESSION_Controller
 				'rules'   => 'trim|required|max_length[64]'
 			),
 			array(
+				'field'   => 'display_name',
+				'label'   => lang_line_ucwords('display_name'), 
+				'rules'   => 'trim|required|max_length[100]'
+			),
+			array(
 				'field'   => 'email',
 				'label'   => lang_line_ucwords('email'), 
 				'rules'   => 'trim|required|valid_email|max_length[64]'
@@ -410,45 +519,20 @@ class Admin extends SESSION_Controller
 				'field'   => 'bio',
 				'label'   => lang_line_ucwords('website'), 
 				'rules'   => 'max_length[16384]'
+			),
+			array(
+				'field'   => 'password',
+				'label'   => lang_line_ucwords('password'), 
+				'rules'   => 'min_length[4]'
+			),
+			array(
+				'field'   => 'password_repeat',
+				'label'   => lang_line_ucwords('new_password_repeat'), 
+				'rules'   => 'matches[password]'
 			)
 		);
 		
 		$id = isset( $post['id'] ) ? intval( $post['id'] ) : 0;
-		
-		if ( $id != 0 )
-		{
-			array_push( $rules, array(
-				'field'   => 'display_name',
-				'label'   => lang_line_ucwords('display_name'), 
-				'rules'   => 'trim|required|max_length[100]'
-			) );
-			
-			array_push( $rules, array(
-				'field'   => 'password',
-				'label'   => lang_line_ucwords('password'), 
-				'rules'   => 'min_length[4]'
-			) );
-			
-			array_push( $rules, array(
-				'field'   => 'password_repeat',
-				'label'   => lang_line_ucwords('new_password_repeat'), 
-				'rules'   => 'matches[password]'
-			) );
-		}
-		else
-		{
-			array_push( $rules, array(
-				'field'   => 'password',
-				'label'   => lang_line_ucwords('password'), 
-				'rules'   => 'required|min_length[4]'
-			) );
-			
-			array_push( $rules, array(
-				'field'   => 'password_repeat',
-				'label'   => lang_line_ucwords('new_password_repeat'), 
-				'rules'   => 'required|matches[password]'
-			) );
-		}
 		
 		$this->form_validation->set_rules( $rules );
 		
@@ -458,24 +542,17 @@ class Admin extends SESSION_Controller
 		
 		if ( $this->form_validation->run() != FALSE )
 		{
-			if ( $id == 0 )
+			if ( $this->Users_model->exists( $id )  )
 			{
-				$this->Users_model->add_from_post( $post );
+				$this->Users_model->update_from_post( $post, $allow_change_role );
 				
-				$this->kajax->fancy_log_success( lang_line_ucwords('user') . " '" . $post['user_name'] . "' " . lang_line('added_successfuly') . '.' );
+				$this->kajax->fancy_log_success( lang_line_ucwords('user') . " '" . $post['username'] . "' " . lang_line('saved') . '.' );
+				
+				$this->kajax->reload_target();
 			}
 			else
 			{
-				if ( $this->Users_model->exists( $id )  )
-				{
-					$this->Users_model->update_from_post( $post );
-					
-					$this->kajax->fancy_log_success( lang_line_ucwords('user') . " '" . $post['username'] . "' " . lang_line('saved') . '.' );
-				}
-				else
-				{
-					$this->kajax->fancy_log_error( lang_line_ucwords('user') . " '" . $post['username'] . "' " . lang_line('doesnt_exists') . '.' );
-				}
+				$this->kajax->fancy_log_error( lang_line_ucwords('user') . " '" . $post['username'] . "' " . lang_line('doesnt_exists') . '.' );
 			}
 		}
 		else
@@ -486,6 +563,26 @@ class Admin extends SESSION_Controller
 		$this->kajax_validate_inputs( $rules );
 		
 		$this->kajax->out();
+	}
+	
+	public function user_update()
+	{
+		$this->admin_session_restrict();
+		
+		$this->user_update_data();
+	}
+	
+	public function profile_update()
+	{
+		$this->admin_session_restrict( $this->user->user_level );
+		
+		$post = $this->input->post();
+		$id = isset( $post['id'] ) ? intval( $post['id'] ) : 0;
+		
+		if ( $this->user->user_id == $id )
+		{
+			$this->user_update_data( FALSE );
+		}
 	}
 	
 	public function user_delete()

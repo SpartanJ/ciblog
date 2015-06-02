@@ -69,8 +69,8 @@ $lang['author'] = 'author';
 $lang['suscriber'] = 'suscriber';
 $lang['edit'] = 'edit';
 $lang['search_users'] = 'search users';
-$lang['user_add'] = 'user add';
-$lang['user_edit'] = 'user edit';
+$lang['user_add'] = 'add new user';
+$lang['user_edit'] = 'edit user';
 $lang['usernames_cannot_change'] = 'Usernames cannot be changed.';
 $lang['first_name'] = 'first name';
 $lang['last_name'] = 'last name';
@@ -89,4 +89,5 @@ $lang['new_password_repeat_desc'] = 'Type your new password again.';
 $lang['update_profile'] = 'update profile';
 $lang['add_new_user'] = 'add new user';
 $lang['display_name'] = 'display name';
-
+$lang['username_in_use'] = 'The Username is already in use.';
+$lang['profile'] = 'profile';

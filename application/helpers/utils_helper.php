@@ -883,6 +883,16 @@ class CiblogHelper
 		return unix_to_human(strtotime($timestamp), FALSE, 'eu');
 	}
 	
+	public static function get_user_roles()
+	{
+		return array( 
+			'suscriber'		=> CIBLOG_SUSCRIBER_LEVEL,
+			'author'		=> CIBLOG_AUTHOR_LEVEL,
+			'editor'		=> CIBLOG_EDITOR_LEVEL,
+			'administrator'	=> CIBLOG_ADMIN_LEVEL
+		);
+	}
+	
 	public static function get_user_role_name( $level )
 	{
 		if ( $level >= CIBLOG_ADMIN_LEVEL )
@@ -912,22 +922,24 @@ class CiblogHelper
 			$dn[] = $user['user_nickname'];
 		}
 		
-		if ( isset( $user['user_firstname'] ) && !in_array( $user['user_firstname'], $dn ) )
+		if ( isset( $user['user_firstname'] ) && !empty( $user['user_firstname'] ) && !in_array( $user['user_firstname'], $dn ) )
 		{
 			$dn[] = $user['user_firstname'];
 		}
 		
-		if ( isset( $user['user_lastname'] ) && !in_array( $user['user_lastname'], $dn ) )
+		if ( isset( $user['user_lastname'] ) && !empty( $user['user_lastname'] ) && !in_array( $user['user_lastname'], $dn ) )
 		{
 			$dn[] = $user['user_lastname'];
 		}
 		
-		if ( isset( $user['user_firstname'] ) && isset( $user['user_lastname'] ) && !in_array( $user['user_firstname'] . ' ' . $user['user_lastname'], $dn ) )
+		if ( isset( $user['user_firstname'] ) && !empty( $user['user_firstname'] ) && 
+			 isset( $user['user_lastname'] ) && !empty( $user['user_lastname'] ) && !in_array( $user['user_firstname'] . ' ' . $user['user_lastname'], $dn ) )
 		{
 			$dn[] = $user['user_firstname'] . ' ' . $user['user_lastname'];
 		}
 		
-		if ( isset( $user['user_lastname'] ) && isset( $user['user_firstname'] ) && !in_array( $user['user_lastname'] . ' ' . $user['user_firstname'], $dn ) )
+		if ( isset( $user['user_lastname'] ) && isset( $user['user_lastname'] ) && 
+			 isset( $user['user_firstname'] ) && !empty( $user['user_lastname'] ) && !in_array( $user['user_lastname'] . ' ' . $user['user_firstname'], $dn ) )
 		{
 			$dn[] = $user['user_lastname'] . ' ' . $user['user_firstname'];
 		}

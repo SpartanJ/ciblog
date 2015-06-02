@@ -11,9 +11,12 @@
 
 <div class="admin-content ajax-paging">
 	<div class="inner inner-form">
-		<form class="ajax" method="post" action="<?=base_url('/admin/user_update')?>">
-		
-		<h1><?=isset($user_id)?lang_line_upper('user_edit'):lang_line_upper('user_add')?></h1>
+		<form class="ajax" method="post" action="<?=isset( $profile )?base_url('/admin/profile_update'):base_url('/admin/user_update')?>">
+		<? if ( isset( $profile ) ) { ?>
+		<h1><?=lang_line_upper('profile')?></h1>	
+		<? } else { ?>
+		<h1><?=lang_line_upper('user_edit')?></h1>
+		<? } ?>
 		
 		<h3><?=lang_line_ucwords('name')?></h3>
 		
@@ -27,6 +30,18 @@
 						<? } ?>
 					</td>
 				</tr>
+				<? if ( isset( $is_admin ) && $is_admin == TRUE ) { ?>
+				<tr>
+					<th><label for="role"><?=lang_line_ucwords('role')?></label></th>
+					<td>
+						<select name="level" id="level">
+						<? if ( isset( $roles ) ) { foreach( $roles as $role=>$level ) { ?>
+							<option value="<?=$level?>" <?=$user_level==$level?'selected="selected"':''?>><?=lang_line_ucwords($role)?></option>
+						<? } } ?>
+						</select>
+					</td>
+				</tr>
+				<? } ?>
 				<tr>
 					<th><label for="firstname"><?=lang_line_ucwords('first_name')?></label></th>
 					<td><input type="text" name="firstname" id="firstname" value="<?=ud('user_firstname')?>" /></td>
@@ -75,6 +90,7 @@
 		
 		<table class="form-table">
 			<tbody>
+				<? if ( isset( $user_id ) ) { ?>
 				<tr>
 					<th><label for="user_bio"><?=lang_line_ucwords('biographical_info')?></label></th>
 					<td>
@@ -82,6 +98,7 @@
 						<p class="description"><?=lang_line('biographical_info_desc')?></p>
 					</td>
 				</tr>
+				<? } ?>
 				<tr>
 					<th><label for="user_password"><?=lang_line_ucwords('new_password')?></label></th>
 					<td>
