@@ -193,6 +193,7 @@
 
 .admin-content li:hover {
 	background-color: #F4F4F4;
+	transition: all 0.15s ease-in-out 0s;
 }
 
 .admin-content li a {

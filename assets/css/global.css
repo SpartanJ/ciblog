@@ -330,7 +330,10 @@ a img { border:0; }
 	transition: all 0.15s ease-in-out 0s;
 }
 
-.square-button:hover { background-color:red; }
+.square-button:hover {
+	color:#fff;
+	background-color:red;
+}
 
 .big_title {
 	margin:12px 0 0 12px;
