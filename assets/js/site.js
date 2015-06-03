@@ -41,12 +41,13 @@ function placeholder_init()
 
 function minimap_init()
 {
-	if(is_mobile)
+	if( is_mobile )
 	{
 		return;
 	}
 
 	var minimap = $('#minimap');
+	
 	/*hides the minimap if window is too small*/
 	$(window).resize(function()
 	{
@@ -56,9 +57,6 @@ function minimap_init()
 		var delta_width = 100;
 
 		var r = (w/(min)-1);
-
-
-		//$('#minimap').css('right',(r*delta_right)+'px');
 
 		minimap.css('width',(Math.min(110+r*delta_width,170))+'px');
 
@@ -83,7 +81,9 @@ function minimap_init()
 	minimap.mouseenter(function()
 	{
 		mouse_over = true;
-		minimap.stop().animate({opacity:full_opacity}, anim_speed)
+		
+		minimap.stop().animate({opacity:full_opacity}, anim_speed);
+		
 		if(timeout_id != -1)
 		{
 			clearTimeout(timeout_id);
@@ -94,6 +94,7 @@ function minimap_init()
 	minimap.mouseleave(function()
 	{
 		mouse_over = false;
+		
 		minimap.stop().animate({opacity:min_opacity}, anim_speed)}
 	);
 
@@ -101,12 +102,16 @@ function minimap_init()
 	$(window).scroll(function()
 	{
 		var oneSelected = false;
-		$(".blog_post").each( function() {
+		
+		$(".blog_post").each( function()
+		{
 			name = $(this).attr('id');
 			maptag = $('a[href=#'+name+']');
-			if(isScrolledIntoView(this) && !oneSelected)
+			
+			if(scrolled_into_view(this) && !oneSelected)
 			{
 				oneSelected = true;
+				
 				if(!maptag.hasClass('selected'))
 				{
 					$('.mark',maptag).show();
@@ -114,27 +119,32 @@ function minimap_init()
 					if(!mouse_over)
 					{
 						minimap.stop().animate({opacity:change_opacity}, anim_speed);
+						
 						if(timeout_id != -1)
-						{ clearTimeout(timeout_id);	}
+						{
+							clearTimeout(timeout_id);
+						}
+						
 						timeout_id = setTimeout(function(){ minimap.stop().animate({opacity:min_opacity}, anim_speed);},fadeout_time);
 					}
 
 				}
 			}
-			else{
+			else
+			{
 				$('.mark',maptag).hide();
+				
 				maptag.removeClass('selected');
 			}
 		})
 	});
-
-
+	
 	$("#minimap").show();
 	
 	$(window).resize();
 }
 
-function isScrolledIntoView(elem)
+function scrolled_into_view(elem)
 {
 	var dT = $(window).scrollTop();
 	var dB = dT + $(window).height();

@@ -1,7 +1,7 @@
 	<li id="post_<?=$p['post_id']?>" class="<?=$p['post_draft']==1?'draft':'published'?>">
 		<a class="ajax-link" href="<?=base_url('/admin/edit/'.$p['post_id'])?>"><?=$p['post_title']?></a>
 		<em class="date">
-			<?=CiblogHelper::to_blog_date($p["post_created"])?> <?=lang_line('by')?><a class="ajax-link" href="<?=base_url('/admin/posts?user_id='.$p['user_id'])?>"><?=( ( NULL != $p['user_display_name'] ) ? $p['user_display_name'] : $p['user_name'] )?></a>
+			<?=CiblogHelper::to_blog_date($p["post_created"])?> <?=lang_line('by')?><a class="ajax-link" href="<?=base_url('/admin/posts?user_id='.$p['user_id'])?>"><?=$p['user_display_name']?></a>
 		</em>
 		<em>
 			<a class="ajax-link" href="<?=base_url('/admin/posts/?cat_id='.$p['cat_id'])?>"><?=lang_line_category_name_upper($p['cat_name'])?></a>

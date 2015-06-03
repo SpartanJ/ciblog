@@ -6,7 +6,7 @@ class Blog extends MY_Controller
 	{
 		parent::__construct();
 
-		$this->load->model('posts_model');
+		$this->load->model('Posts_model');
 		$this->load->model('Categories_model');
 	}
 
@@ -18,8 +18,8 @@ class Blog extends MY_Controller
 	public function index($categ = 'blog')
 	{
 		$category				= $this->Categories_model->get_by_key( $categ );
-		$data['posts']			= $this->posts_model->get_published_by_category_key($categ);
-		$data['display_info']	= true;
+		$data['posts']			= $this->Posts_model->get_published_by_category_key($categ, get_var('author'));
+		$data['display_info']	= TRUE;
 		
 		if ( isset( $category ) )
 		{
@@ -32,7 +32,7 @@ class Blog extends MY_Controller
 	
 	public function show($slug)
 	{
-		$post = $this->posts_model->get_slug($slug);
+		$post = $this->Posts_model->get_slug($slug);
 
 		if( isset( $post ) )
 		{

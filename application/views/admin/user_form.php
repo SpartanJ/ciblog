@@ -11,7 +11,7 @@
 
 <div class="admin-content ajax-paging">
 	<div class="inner inner-form">
-		<form class="ajax" method="post" action="<?=isset( $profile )?base_url('/admin/profile_update'):base_url('/admin/user_update')?>">
+		<form class="ajax" method="post" action="<?=isset( $profile )?base_url('/user/profile_update'):base_url('/admin/user_update')?>">
 		<? if ( isset( $profile ) ) { ?>
 		<h1><?=lang_line_upper('profile')?></h1>	
 		<? } else { ?>

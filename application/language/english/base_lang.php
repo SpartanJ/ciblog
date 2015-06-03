@@ -91,3 +91,4 @@ $lang['add_new_user'] = 'add new user';
 $lang['display_name'] = 'display name';
 $lang['username_in_use'] = 'The Username is already in use.';
 $lang['profile'] = 'profile';
+$lang['profile_saved'] = 'profile saved';

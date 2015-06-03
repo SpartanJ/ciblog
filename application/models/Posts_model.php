@@ -5,7 +5,7 @@ class Posts_model extends CI_Model
 	protected $table_name = 'posts';
 	protected $get_all_basic_fields = '
 		post_id,
-		post_admin_id,
+		post_author,
 		post_title,
 		post_slug,
 		post_created,
@@ -27,9 +27,9 @@ class Posts_model extends CI_Model
 		$this->table_name = $this->db->dbprefix . $this->table_name;
 	}
 	
-	function add( $data,$slug, $admin_id )
+	function add( $data, $slug, $author )
 	{
-		$this->db->query("INSERT INTO {$this->table_name} (post_title, post_body, post_category, post_draft, post_slug, post_admin_id, post_created) VALUES (?,?,?,?,?,?, now())", array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $admin_id ) );
+		$this->db->query("INSERT INTO {$this->table_name} (post_title, post_body, post_category, post_draft, post_slug, post_author, post_created) VALUES (?,?,?,?,?,?, now())", array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $author ) );
 		
 		return $this->db->insert_id();
 	}
@@ -56,16 +56,28 @@ class Posts_model extends CI_Model
 		return $this->db->query("SELECT * FROM {$this->table_name} INNER JOIN {$this->db->dbprefix}categories ON post_category = cat_id WHERE post_draft = 0 " . $and . " ORDER BY post_created DESC", array( $category ) )->result_array();
 	}
 	
-	function get_published_by_category_key( $cat_key = NULL )
+	function get_published_by_category_key( $cat_key = NULL, $author = NULL )
 	{
 		$and = '';
+		$params = array();
 		
 		if( isset( $cat_key ) )
 		{
-			$and = "AND cat_key = ?";
+			$and .= "AND cat_key = ?";
+			$params[] = $cat_key;
 		}
 		
-		return $this->db->query("SELECT * FROM {$this->table_name} INNER JOIN {$this->db->dbprefix}categories ON post_category = cat_id WHERE post_draft = 0 " . $and . " ORDER BY post_created DESC", array( $cat_key ) )->result_array();
+		if ( isset( $author ) )
+		{
+			$and .= "AND post_author = ?";
+			$params[] = $author;
+		}
+		
+		return $this->db->query("SELECT * FROM {$this->table_name} 
+									INNER JOIN {$this->db->dbprefix}categories ON post_category = cat_id  
+									INNER JOIN {$this->db->dbprefix}users ON post_author = user_id 
+								 WHERE post_draft = 0 "
+								 . $and . " ORDER BY post_created DESC", $params )->result_array();
 	}
 	
 	function get_rss( $category = NULL )
@@ -90,7 +102,10 @@ class Posts_model extends CI_Model
 
 	function get_slug($slug)
 	{
-		return $this->db->query("SELECT * FROM {$this->table_name} INNER JOIN {$this->db->dbprefix}categories ON post_category = cat_id WHERE post_slug = ?", array( $slug ) )->row_array();
+		return $this->db->query("SELECT * FROM {$this->table_name} 
+									INNER JOIN {$this->db->dbprefix}categories ON post_category = cat_id  
+									INNER JOIN {$this->db->dbprefix}users ON post_author = user_id
+								WHERE post_slug = ?", array( $slug ) )->row_array();
 	}
 	
 	function slug_exists_and_not_me( $slug, $post_id )
@@ -129,7 +144,7 @@ class Posts_model extends CI_Model
 		
 		$sql = 'SELECT ' . $fields_get . ' 
 				FROM ' . $this->table_name . ' 
-					INNER JOIN ' . $this->db->dbprefix . 'users ON user_id = post_admin_id 
+					INNER JOIN ' . $this->db->dbprefix . 'users ON user_id = post_author 
 					INNER JOIN ' . $this->db->dbprefix . 'categories ON cat_id = post_category ' . 
 				$where;
 		
