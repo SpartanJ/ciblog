@@ -260,9 +260,9 @@ class MY_Controller extends CI_Controller
 			
 			$hf_data = array();
 			
-			if ( isset( $data['user'] ) )
+			if ( isset( $data['_user'] ) )
 			{
-				$hf_data = $data['user'];
+				$hf_data['user'] = $data['_user'];
 			}
 			
 			if ( $show_header )

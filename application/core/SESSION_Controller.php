@@ -151,4 +151,14 @@ class SESSION_Controller extends MY_Controller
 		
 		return FALSE;
 	}
+	
+	protected function add_frame_view( $content_view, $data = array(), $show_header = TRUE, $show_footer = TRUE, $return = FALSE, $hf_folder = 'frame' )
+	{
+		if ( isset( $this->user ) )
+		{
+			$data['_user'] = $this->user;
+		}
+		
+		parent::add_frame_view( $content_view, $data, $show_header, $show_footer, $return, $hf_folder );
+	}
 }
