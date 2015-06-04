@@ -45,7 +45,7 @@ class MY_Controller extends CI_Controller
 		$this->add_js('assets/js/kajax.js');
 		$this->add_js('assets/js/site.js');
 		
-		$this->add_css('assets/css/global.css');
+		$this->add_base_css();
 		$this->add_css('assets/css/font-awesome.min.css');
 		$this->add_css('assets/libs/alertify.js/alertify.core.css');
 		$this->add_css('assets/libs/alertify.js/alertify.default.css');
@@ -53,6 +53,11 @@ class MY_Controller extends CI_Controller
 		$this->add_css('ckeditor/plugins/codesnippet/lib/highlight/styles/obsidian.css');
 		
 		$this->add_rss('/rss');
+	}
+	
+	protected function add_base_css()
+	{
+		$this->add_css('assets/css/global.css');
 	}
 
 	protected static function get_file_hash($file)
