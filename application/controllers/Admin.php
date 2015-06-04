@@ -8,11 +8,9 @@ class Admin extends USER_Controller
 		
 		$this->load->model('Posts_model');
 	}
-
-	protected function auto_add()
+	
+	protected function add_base_css()
 	{
-		parent::auto_add();
-		
 		$this->add_css('assets/css/admin.css');
 	}
 

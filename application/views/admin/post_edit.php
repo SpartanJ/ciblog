@@ -1,3 +1,5 @@
+<div class="admin-content">
+
 <? if ( !isset( $only_admin_bar ) ) { ?>
 <form class="ajax" method="post" action="<?=base_url('/admin/save')?>">
 
@@ -8,8 +10,8 @@
 
 <div id="save-success-msg"><?=lang_line_ucwords('saved')?></div>
 
-<div class="bar bar-edit">
-	<? } ?>
+<div class="admin-bar bar-edit">
+<? } ?>
 <?
 	$selected='selected="selected"';
 	$draft_checked='checked="checked"';
@@ -56,6 +58,7 @@
 
 </form>
 <? } ?>
+</div>
 
 <script>
 	$(function()
