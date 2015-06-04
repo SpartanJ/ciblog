@@ -4,6 +4,9 @@ function categories_build_link( $order_by )
 	return base_url( '/admin/categories/?' ) . http_build_query_merge_auto( array( 'order_by' => $order_by ) );
 }
 ?>
+
+<div class="ajax-paging">
+
 <div class="hidden">
 	<table>
 		<tbody>
@@ -30,7 +33,7 @@ function categories_build_link( $order_by )
 	</table>
 </div>
 
-<div class="admin-content ajax-paging">
+<div class="admin-content">
 	<div class="inner">
 		<h1><a class="ajax-link" href="<?=base_url('/admin/categories')?>"><?=lang_line_upper('categories')?></a></h1>
 		
@@ -115,3 +118,5 @@ function categories_build_link( $order_by )
 		});
 	})
 </script>
+
+</div>

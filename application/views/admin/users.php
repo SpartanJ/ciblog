@@ -81,6 +81,5 @@ function user_build_link_query( $query = array() )
 			
 			<?=$pagination?>
 		</div>
-
 	</div>
 </div> 

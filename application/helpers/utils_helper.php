@@ -693,7 +693,7 @@ function config_item_def( $item, $def = NULL )
 	return ( NULL == $conf ) ? $def : $conf;
 }
 
-function pagination_config( $per_page = 10 )
+function pagination_config( $per_page = 10, $use_content = FALSE )
 {
 	$config							= array();
 	$config['full_tag_open']		= '<div class="table_pager">';
@@ -701,7 +701,16 @@ function pagination_config( $per_page = 10 )
 	$config['num_links']			= 5;
 	$config['per_page']				= config_item_def('results_per_page', $per_page );
 	$config['use_page_numbers'] 	= TRUE;
-	$config['attributes']			= array('class' => 'ajax-paging-link');
+	
+	if ( $use_content )
+	{
+		$config['attributes']		= array('class' => 'ajax-link');
+	}
+	else
+	{
+		$config['attributes']		= array('class' => 'ajax-paging-link');
+	}
+	
 	$config['first_link']			= '&lt;&lt;';
 	$config['first_tag_open']		= '<div class="first">';
 	$config['first_tag_close']		= '</div>';

@@ -56,7 +56,7 @@ class Posts_model extends CI_Model
 		return $this->db->query("SELECT * FROM {$this->table_name} INNER JOIN {$this->db->dbprefix}categories ON post_category = cat_id WHERE post_draft = 0 " . $and . " ORDER BY post_created DESC", array( $category ) )->result_array();
 	}
 	
-	function get_published_by_category_key( $cat_key = NULL, $author = NULL )
+	function get_published_by_category_key( $cat_key = NULL, $author = NULL, $per_page = NULL, $page_num = 1 )
 	{
 		$and = '';
 		$params = array();

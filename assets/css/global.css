@@ -694,6 +694,108 @@ p.submit input[type="button"] {
 	-webkit-appearance: none;
 }
 
+.table_pager
+{
+	display: table;
+	font-weight: bold;
+	padding-right: 10px;
+	padding-bottom: 8px;
+	padding-top: 8px;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+
+.table_pager span
+{
+	width: 28px;
+	height: 28px;
+	background-color: #000;
+	float: left;
+	margin-left: 3px;
+	line-height: 28px;
+	text-align: center;
+	color: #fff;
+	border-radius: 3px;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	cursor: default;
+}
+
+.table_pager .digit, .table_pager .next, .table_pager .prev, .table_pager .first, .table_pager .last
+{
+	width: 28px;
+	height: 28px;
+	background-color: #D13D3D;
+	float: left;
+	margin-left: 3px;
+	line-height: 28px;
+	text-align: center;
+	transition: all 0.15s ease-in-out 0s;
+	border-radius: 3px;
+}
+
+.table_pager .digit a, .table_pager .next a, .table_pager .prev a, .table_pager .first a, .table_pager .last a
+{
+	color: #fff;
+	text-decoration: none;
+	display: table;
+	width: 28px;
+	height: 28px;
+}
+
+.table_pager .digit:hover, .table_pager .next:hover, .table_pager .prev:hover, .table_pager .first:hover, .table_pager .last:hover
+{
+	background-color: #FF0000;
+}
+
+input[type="checkbox"]
+{
+	display:none;
+}
+
+input[type="checkbox"] + label
+{
+	cursor: pointer;
+}
+
+input[type="checkbox"] + label:before
+{
+	font-family: FontAwesome;
+	display: inline-block;
+	content: "\00a0";
+	font-family: "FontAwesome";
+	width: 16px;
+	height: 16px;
+	background-color: #FFF;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	color: #FFF;
+	text-align: center;
+	font-size: 16px;
+	padding: 2px;
+	margin-right: 4px;
+	line-height: 16px;
+	transition: all 0.2s ease-in-out 0s;
+	cursor: pointer;
+	text-indent: 0px;
+	-webkit-appearance: none;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+
+input[type="checkbox"]:checked + label:before
+{
+	background-color: #d9534f;
+	border: 1px solid #d9534f;
+	content: "\f00c";
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
 @media only screen and (max-width: 800px)
 {
 	.form-table tbody tr th,
@@ -719,7 +821,6 @@ p.submit input[type="button"] {
 		width: 95%;
 	}
 }
-
 
 @media only screen and (max-width: 600px)
 {

@@ -199,7 +199,7 @@ class SQL
 				if (
 					( 
 						isset( $filter['field_name'] ) && isset( $filter['filter_val'] ) && 
-						( ( '' != $filter['filter_val'] && NULL != $filter['filter_val'] ) || is_array( $filter['filter_val'] ) )
+						( ( '' !== $filter['filter_val'] && NULL !== $filter['filter_val'] ) || is_array( $filter['filter_val'] ) )
 					) ||
 					( $accept_null = isset( $filter['accept_null'] ) && TRUE == $filter['accept_null'] )
 				)
