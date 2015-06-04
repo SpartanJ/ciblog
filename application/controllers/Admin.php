@@ -65,17 +65,26 @@ class Admin extends USER_Controller
 
 	public function save()
 	{
-		$this->admin_session_restrict();
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 		
 		$data			=  $this->input->post();
 		$data['draft']	= isset($data['draft']) && $data['draft'] ? '1' : '0';
 		
 		if( isset( $data['post_id'] ) )
 		{
-			$id			= $data['post_id'];
-			$slug		= $this->slug_create( $data['title'], $id );
+			$post = $this->Posts_model->get( $data['post_id'] );
 			
-			$this->Posts_model->update( $data, $slug );
+			if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $post['post_author'] == $this->user->user_id ) )
+			{
+				$id			= $data['post_id'];
+				$slug		= $this->slug_create( $data['title'], $id );
+				
+				$this->Posts_model->update( $data, $slug );
+			}
+			else
+			{
+				return;
+			}
 		}
 		else
 		{
@@ -113,22 +122,26 @@ class Admin extends USER_Controller
 
 	public function edit( $id = NULL )
 	{
-		$this->admin_session_restrict();
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 		
 		if( $id != NULL )
 		{
 			$this->load->model('Categories_model');
 			
 			$data				= $this->Posts_model->get($id);
-			$data['categories']	= $this->Categories_model->get_all();
 			
-			$this->add_frame_view('admin/post_edit',$data);
+			if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $data['post_author'] == $this->user->user_id ) )
+			{
+				$data['categories']	= $this->Categories_model->get_all();
+				
+				$this->add_frame_view('admin/post_edit',$data);
+			}
 		}
 	}
 
 	public function add()
 	{
-		$this->admin_session_restrict();
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 
 		$this->load->model('Categories_model');
 		
@@ -139,68 +152,46 @@ class Admin extends USER_Controller
 	
 	public function delete($id)
 	{
-		$this->admin_session_restrict();
-	
-		$this->Posts_model->delete($id);
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 		
-		$this->kajax->load_target(base_url('/admin'));
-		$this->kajax->out();
+		$post = $this->Posts_model->get( $id );
+		
+		if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $post['post_author'] == $this->user->user_id ) )
+		{
+			$this->Posts_model->delete($id);
+		
+			$this->kajax->load_target(base_url('/admin/posts'));
+			$this->kajax->out();
+		}
 	}
 	
 	public function draft_it( $id )
 	{
-		$this->admin_session_restrict();
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 		
-		$this->Posts_model->draft_it($id);
+		$post = $this->Posts_model->get( $id );
 		
-		$this->kajax->load_target(base_url('/admin'));
-		$this->kajax->out();
+		if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $post['post_author'] == $this->user->user_id ) )
+		{
+			$this->Posts_model->draft_it($id);
+			
+			$this->kajax->load_target(base_url('/admin/posts'));
+			$this->kajax->out();
+		}
 	}
 	
 	public function publish_it( $id )
 	{
-		$this->admin_session_restrict();
-	
-		$this->Posts_model->publish_it($id);
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 		
-		$this->kajax->load_target(base_url('/admin'));
-		$this->kajax->out();
-	}
-	
-	public function login()
-	{
-		$post = $this->input->post();
+		$post = $this->Posts_model->get( $id );
 		
-		if ( !empty( $post ) && isset( $post['user'] ) )
+		if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $post['post_author'] == $this->user->user_id ) )
 		{
-			$admin = $this->Users_model->get_admin_user( $post['user'], $post['pass'] );
-			
-			if( isset( $admin ) )
-			{
-				$this->session_create( $post['user'], $post['pass'], isset( $post['remember_me'] ) );
-				
-				$this->Users_model->update_last_login( $admin->user_id );
-				
-				$this->kajax->redirect(base_url('/admin'));
-			}
-			else
-			{
-				$this->kajax->fadeIn('.form-error',500);
-				$this->kajax->html( '.form-error', '<p>' . $this->lang->line('user_pass_incorrect') . '</p>' );
-			}
-			
+			$this->Posts_model->publish_it($id);
+		
+			$this->kajax->load_target(base_url('/admin/posts'));
 			$this->kajax->out();
-		}
-		else
-		{
-			if ( $this->admin_is_logged() )
-			{
-				redirect(base_url('/admin'));
-			}
-			else
-			{
-				$this->add_frame_view('admin/login', NULL, FALSE);
-			}
 		}
 	}
 	
@@ -243,7 +234,7 @@ class Admin extends USER_Controller
 	
 	public function posts()
 	{
-		$this->admin_session_restrict();
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
 
 		$this->load->library('pagination');
 		$this->load->model('Categories_model');
@@ -260,6 +251,7 @@ class Admin extends USER_Controller
 		$data['user_id']			= get_var('user_id');
 		$data['cat_id']				= get_var('cat_id');
 		$data['post_title']			= get_var('post_title');
+		$data['user']				= $this->user;
 		
 		$this->pagination->initialize($config);
 		

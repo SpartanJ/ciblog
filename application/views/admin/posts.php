@@ -5,7 +5,7 @@ function posts_build_link( $query = array() )
 	return base_url( '/admin/posts/?' ) . http_build_query_merge( $query, TRUE );
 }
 
-function print_post($p)
+function print_post($p,$user)
 {
 	include('post.php');
 }?>
@@ -16,7 +16,7 @@ function print_post($p)
 		
 		<a class="ajax-link button square-button" href="<?=base_url('/admin/add')?>"><?=lang_line_upper('add_new')?></a>
 		
-		<a class="button square-button" target="_blank" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a>
+<!--	<a class="button square-button" target="_blank" href="<?=base_url('/blog')?>"><?=lang_line_upper('blog')?></a> -->
 		
 		<div class="posts_filter">
 			<div class="status_filter">
@@ -51,7 +51,7 @@ function print_post($p)
 		
 		<ul>
 		<?if(isset($posts)){foreach($posts as $p){
-			print_post($p);
+			print_post($p,$user);
 		}}?>
 		</ul>
 		

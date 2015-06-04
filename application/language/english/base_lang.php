@@ -23,6 +23,7 @@ $lang['send_email'] = 'Send EMail';
 $lang['admin_login_msg'] = 'The retina scanner is under maintenance.<br/>Please use the fallback login method.';
 $lang['admin_login'] = 'ADMIN';
 $lang['admin_login_but'] = 'LOG IN';
+$lang['login'] = 'login';
 $lang['username'] = 'username';
 $lang['password'] = 'password';
 $lang['view'] = 'view';
