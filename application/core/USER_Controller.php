@@ -112,7 +112,7 @@ class USER_Controller extends SESSION_Controller
 	
 	public function profile()
 	{
-		$this->session_restrict( $this->user->user_level );
+		$this->session_restrict( CIBLOG_SUSCRIBER_LEVEL );
 		
 		$this->load->model('Users_model');
 		
