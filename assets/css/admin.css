@@ -1372,7 +1372,8 @@ p.submit input[type="button"] {
 		bottom: auto;
 	}
 	
-	.admin-content
+	.admin-content,
+	.styled-box
 	{
 		margin-top: 0px;
 	}
@@ -1380,5 +1381,10 @@ p.submit input[type="button"] {
 	.admin-content .inner
 	{
 		padding: 8px;
+	}
+	
+	.admin-bar.bar-edit
+	{
+		position: relative;
 	}
 }
