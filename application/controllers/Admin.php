@@ -571,7 +571,7 @@ class Admin extends USER_Controller
 		
 		$response = '';
 
-		if(!$this->admin_is_logged()) {
+		if(!$this->user_is_logged() || $this->user->user_level < CIBLOG_AUTHOR_LEVEL) {
 		  $fm->error($fm->lang('AUTHORIZATION_REQUIRED'));
 		}
 
