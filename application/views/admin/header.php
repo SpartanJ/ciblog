@@ -13,7 +13,24 @@
 		</ul>
 	</div>
 	
-	<div class="logout">
-		<a class="ajax-link" href="<?=base_url('/admin/logout')?>"><i class="fa fa-sign-out"></i></a>
+	<? if ( isset( $user ) ) { ?>
+	<div class="user">
+		<img src="<?=CiblogHelper::get_gravatar( $user->user_email, 32 )?>" />
+		
+		<div class="menu">
+			<div class="avatar">
+				<a class="ajax-link" href="<?=base_url('/admin/profile')?>"><img src="<?=CiblogHelper::get_gravatar( $user->user_email, 64 )?>" /></a>
+			</div>
+			<div class="options">
+				<ul>
+					<li><a class="ajax-link" href="<?=base_url('/admin/profile')?>"><?=$user->user_name?></a></li>
+					
+					<li><a class="ajax-link" href="<?=base_url('/admin/profile')?>"><?=lang_line_ucwords('edit_my_profile')?></a></li>
+					
+					<li><a class="ajax-link" href="<?=base_url('/admin/logout')?>"><?=lang_line_ucwords('log_out')?></a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
+	<? } ?>
 </div>

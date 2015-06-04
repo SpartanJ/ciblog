@@ -93,3 +93,5 @@ $lang['display_name'] = 'display name';
 $lang['username_in_use'] = 'The Username is already in use.';
 $lang['profile'] = 'profile';
 $lang['profile_saved'] = 'profile saved';
+$lang['edit_my_profile'] = 'edit my profile';
+$lang['log_out'] = 'log out';

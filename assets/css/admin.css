@@ -357,7 +357,7 @@ input, button, textarea {
 	-moz-animation-timing-function:linear;
 }
 
-.admin-bar .menu {
+.admin-bar > .menu {
 	position: relative;
 	margin: 0 auto;
 	display: inline-block;
@@ -646,6 +646,86 @@ input, button, textarea {
 .admin-bar .logout a:hover { 
 	text-decoration:underline;
 	color: red; 
+}
+
+.admin-bar > .user
+{
+	position: absolute;
+	right: 8px;
+	top: 0px;
+	padding-top: 4px;
+	z-index: 2;
+}
+
+.admin-bar .user > img
+{
+	border: 1px solid #82878c;
+	cursor: pointer;
+}
+
+.admin-bar .user a
+{
+	text-decoration:none;
+	color:#FFF;
+}
+
+.admin-bar .user a:hover
+{
+	color: red; 
+}
+
+.admin-bar .user:hover .menu
+{
+	display: block;
+	visibility: visible;
+	opacity: 1;
+	right: 0px;
+}
+
+.admin-bar .user .menu
+{
+	position: absolute;
+	width: 200px;
+	height: 100px;
+	top: 41px;
+	right: -200px;
+	background-color: #424242;
+	-webkit-box-shadow: 0 3px 5px rgba(0,0,0,.2);
+	box-shadow: 0 3px 5px rgba(0,0,0,.2);
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+	transition: all 0.15s ease-in-out 0s;
+}
+
+.admin-bar .user .menu .avatar
+{
+	float: left;
+	width: 80px;
+}
+
+.admin-bar .user .menu .avatar a > img
+{
+	margin-left: 8px;
+	margin-top: 18px;
+}
+
+.admin-bar .user .menu .options
+{
+	float: left;
+	margin-left: 8px;
+}
+
+.admin-bar .user .menu .options ul, .admin-bar .user .menu .options ul li
+{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	text-indent: 0;
+	z-index: 99999;
+	font-size: 12px;
+	line-height: 33px;
 }
 
 .admin-content li span {
@@ -1274,7 +1354,7 @@ p.submit input[type="button"] {
 		display: table-cell;
 	}
 
-	.logout
+	.user
 	{
 		display: none;
 	}
