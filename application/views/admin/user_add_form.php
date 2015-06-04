@@ -1,5 +1,5 @@
 
-<div class="admin-content ajax-paging">
+<div class="admin-content">
 	<div class="inner inner-form">
 		<form class="ajax" method="post" action="<?=base_url('/admin/user_insert')?>">
 		

@@ -14,18 +14,54 @@ class Blog extends MY_Controller
 	{
 		parent::auto_add();
 	}
+	
+	protected function build_filters( $category )
+	{
+		$filter = array(
+			array(
+				'field_name'	=> 'cat_key',
+				'filter_val'	=> $category
+			),
+			array(
+				'field_name'	=> 'post_author',
+				'filter_val'	=> get_var( 'author' )
+			),
+			array(
+				'field_name'	=> 'post_draft',
+				'filter_val'	=> 0,
+				'field_type'	=> SQLFieldType::INT
+			),
+			array(
+				'order_by'		=> get_var_def( 'order_by', 'post_created' ),
+				'order_fields'	=> array( 'post_id', 'post_created', 'post_updated', 'cat_key' ),
+				'order_dir'		=> get_var_def( 'order_dir', 'DESC' )
+			)
+		);
+		
+		return SQL::build_query_filter( $filter );
+	}
 
 	public function index($categ = 'blog')
 	{
-		$category				= $this->Categories_model->get_by_key( $categ );
-		$data['posts']			= $this->Posts_model->get_published_by_category_key($categ, get_var('author'));
-		$data['display_info']	= TRUE;
+		$this->load->library('pagination');
+		
+		$page						= get_var_def( 'page_num', 1 );
+		$config						= pagination_config( 5, TRUE );
+		$query_filter				= $this->build_filters( $categ );
+		$config['total_rows']		= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
+		$data['posts']				= $this->Posts_model->get_all(NULL, $query_filter, $config['per_page'], $page, '*' );
+		$config['base_url']			= base_url( '/' . $categ . '/?' . http_build_query_pagination() );
+		$data['display_info']		= TRUE;
 		
 		if ( isset( $category ) )
 		{
 			$data['page_title'] 	= lang_line_category_name( $category['cat_name'] );
 			$data['display_info']	= intval( $category['cat_display_info'] ) != 0;
 		}
+		
+		$this->pagination->initialize($config);
+		
+		$data['pagination']		= $this->pagination->create_links();
 		
 		$this->add_frame_view('blog/posts',$data);
 	}

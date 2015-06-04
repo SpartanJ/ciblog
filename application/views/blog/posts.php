@@ -11,6 +11,7 @@ if(count($posts)>1)
 		$len_arr[$r['post_id']] = $len;
 	}
 ?>
+<div class="ajax-paging">
 
 <ul id="minimap">
 	<?foreach($posts as $r) {
@@ -27,8 +28,7 @@ if(count($posts)>1)
 }
 
 $i=0;
-foreach($posts as $r)
-{
+if(isset($posts)){foreach($posts as $r){
 ?>
 	<div class="blog_post <?=count($posts)==1?'blog_post_lonely':''?>" id="<?=$r['post_slug']?>">
 		<h1><a name="<?=$r['post_slug']?>" href="<?=base_url('blog/'.$r['post_slug'])?>"><?=$r['post_title']?></a></h1>
@@ -41,13 +41,17 @@ foreach($posts as $r)
 	</div>
 <?
 	$i++;
-}?>
+}}?>
+
+<?=isset($pagination)?$pagination:''?>
 
 <script>
-	$( function()
+	$(function()
 	{
 		highlight_init();
 		
 		minimap_init();
 	});
 </script>
+
+</div>
