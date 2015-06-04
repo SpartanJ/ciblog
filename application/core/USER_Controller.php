@@ -4,8 +4,6 @@ class USER_Controller extends SESSION_Controller
 {
 	protected function user_update_data( $allow_change_role = TRUE, $is_profile = FALSE )
 	{
-		$this->admin_session_restrict();
-		
 		$post = $this->input->post();
 		
 		$this->load->model('Users_model');
@@ -101,7 +99,7 @@ class USER_Controller extends SESSION_Controller
 	
 	public function profile_update()
 	{
-		$this->admin_session_restrict( $this->user->user_level );
+		$this->session_restrict( CIBLOG_SUSCRIBER_LEVEL );
 		
 		$post = $this->input->post();
 		$id = isset( $post['id'] ) ? intval( $post['id'] ) : 0;
@@ -114,7 +112,7 @@ class USER_Controller extends SESSION_Controller
 	
 	public function profile()
 	{
-		$this->admin_session_restrict( $this->user->user_level );
+		$this->session_restrict( $this->user->user_level );
 		
 		$this->load->model('Users_model');
 		
@@ -123,5 +121,72 @@ class USER_Controller extends SESSION_Controller
 		$data['profile'] = TRUE;
 		
 		$this->add_frame_view('admin/user_form', $data );
+	}
+	
+	public function login()
+	{
+		$post = $this->input->post();
+		
+		if ( !empty( $post ) && isset( $post['user'] ) )
+		{
+			$user = $this->Users_model->get_user( $post['user'], $post['pass'] );
+			
+			if( isset( $user ) )
+			{
+				$this->session_create( $post['user'], $post['pass'], isset( $post['remember_me'] ) );
+				
+				$this->Users_model->update_last_login( $user->user_id );
+				
+				if ( $user->user_level > CIBLOG_SUSCRIBER_LEVEL )
+				{
+					$this->kajax->redirect(base_url('/admin'));
+				}
+				else
+				{
+					$this->kajax->redirect(base_url('/user/profile'));
+				}
+			}
+			else
+			{
+				$this->kajax->fadeIn('.form-error',500);
+				$this->kajax->html( '.form-error', '<p>' . $this->lang->line('user_pass_incorrect') . '</p>' );
+			}
+			
+			$this->kajax->out();
+		}
+		else
+		{
+			if ( $this->user_is_logged() )
+			{
+				if ( $this->user->user_level > CIBLOG_SUSCRIBER_LEVEL )
+				{
+					if ( $this->is_kajax_request() )
+					{
+						$this->kajax->redirect(base_url('/admin'));
+						$this->kajax->out();
+					}
+					else
+					{
+						redirect('/admin');
+					}
+				}
+				else
+				{
+					if ( $this->is_kajax_request() )
+					{
+						$this->kajax->redirect(base_url('/user/profile'));
+						$this->kajax->out();
+					}
+					else
+					{
+						redirect(base_url('/user/profile'));
+					}
+				}
+			}
+			else
+			{
+				$this->add_frame_view('admin/login', NULL, FALSE);
+			}
+		}
 	}
 }

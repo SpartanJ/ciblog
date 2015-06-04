@@ -126,7 +126,7 @@ class SESSION_Controller extends MY_Controller
 		
 		$this->session_destroy();
 		
-		$this->redirect(base_url('/admin/login'));
+		$this->redirect(base_url('/user/login'));
 		
 		return FALSE;
 	}

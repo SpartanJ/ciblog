@@ -260,6 +260,11 @@ class MY_Controller extends CI_Controller
 			
 			$hf_data = array();
 			
+			if ( isset( $data['user'] ) )
+			{
+				$hf_data = $data['user'];
+			}
+			
 			if ( $show_header )
 			{
 				$frame_data['header']	= $this->load->view('/' . $hf_folder . '/header', $hf_data, TRUE);

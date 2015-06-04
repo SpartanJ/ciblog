@@ -50,9 +50,9 @@ class Users_model extends CI_Model
 		return $this->db->query( "SELECT * FROM {$this->table_name} WHERE user_session_token = ? LIMIT 1", array( $token ) )->row();
 	}
 	
-	public function get_admin_user( $user, $pass )
+	public function get_user( $user, $pass )
 	{
-		return $this->db->query( "SELECT * FROM {$this->table_name} WHERE user_name = ? AND user_password = ? AND user_level >= 1000 LIMIT 1", array( strtolower( $user ), CiblogHelper::password_hash( $pass ) ) )->row();
+		return $this->db->query( "SELECT * FROM {$this->table_name} WHERE user_name = ? AND user_password = ? LIMIT 1", array( strtolower( $user ), CiblogHelper::password_hash( $pass ) ) )->row();
 	}
 	
 	public function update_session_token( $id, $token )
@@ -126,6 +126,12 @@ class Users_model extends CI_Model
 		if ( TRUE == $allow_change_role )
 		{
 			$fields[] = 'level';
+		}
+		
+		if ( isset( $post['password'] ) && !empty( $post['password'] ) )
+		{
+			$fields[]			= 'password';
+			$post['password']	= CiblogHelper::password_hash( $post['password'] );
 		}
 		
 		$fields[] = 'id';
