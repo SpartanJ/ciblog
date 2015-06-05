@@ -107,14 +107,7 @@ class SQL
 	
 	public static function escape_string( $str )
 	{
-		if ( self::is_using_postgresql() )
-		{
-			return pg_escape_string( $str );
-		}
-		else
-		{
-			return mysql_real_escape_string( $str );
-		}
+		return db()->escape_str( $str );
 	}
 	
 	public static function get_filter( $filter_type, $field_name, $filter_val, $field_type )
