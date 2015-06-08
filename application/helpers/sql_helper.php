@@ -181,6 +181,7 @@ class SQL
 		$qf		= '';
 		$or		= '';
 		$join	= '';
+		$group	= '';
 		
 		if ( !empty( $fields ) )
 		{
@@ -297,8 +298,13 @@ class SQL
 					$join_on	= $filter['on'];
 					$join		.= ' ' . $join_type . ' JOIN ' . $filter['join'] . ' ON ' . $join_on . ' ';
 				}
+				else if ( isset( $filter['group_by'] ) )
+				{
+					$group_by	= is_array( $filter['group_by'] ) ? implode( ', ', $filter['group_by'] ) : $filter['group_by'];
+					$group		= ' GROUP BY ' . $group_by . ' ';
+				}
 			}
-	
+			
 			if ( $is_or )
 			{
 				$qf	.= ' ) ';
@@ -316,7 +322,7 @@ class SQL
 			}
 		}
 		
-		return array( 'filter' => $qf, 'order' => $or, 'join' => $join );
+		return array( 'filter' => $qf, 'order' => $or, 'join' => $join, 'group' => $group );
 	}
 	
 	public static function make_insert( $table, $fields, $field_prefix = '', $arr_ignore = '', $no_slashes = FALSE )
@@ -613,11 +619,12 @@ class SQL
 				}
 			}
 			
-			$where .= $filter['filter'] . (  $is_count ? '' : isset( $filter['order'] ) ? $filter['order'] : '' );
+			$where .= $filter['filter'] .	( isset( $filter['group'] ) ? $filter['group'] : '' ) . 
+											(  $is_count ? '' : isset( $filter['order'] ) ? $filter['order'] : '' );
 		}
 	}
 	
-	function create_or_sql_from_exploded_str( $str, $field, $explode_char = '-' )
+	public static function create_or_sql_from_exploded_str( $str, $field, $explode_char = '-' )
 	{
 		$sql_str	= '';
 		$ids		= explode( $explode_char, $str );
@@ -640,7 +647,7 @@ class SQL
 		return $sql_str;
 	}
 	
-	function arr_to_ints( $arr )
+	public static function arr_to_ints( $arr )
 	{
 		foreach( $arr as &$v )
 		{
