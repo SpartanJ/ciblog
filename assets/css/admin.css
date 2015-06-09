@@ -728,6 +728,15 @@ input, button, textarea {
 	line-height: 33px;
 }
 
+.admin-bar .user .menu .options ul li a span
+{
+	font-size: 10px;
+	clear: both;
+	color: #CCC;
+	display: table;
+	line-height: 0px;
+}
+
 .admin-content li span {
 	display: none;
 }

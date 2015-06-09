@@ -23,7 +23,14 @@
 			</div>
 			<div class="options">
 				<ul>
-					<li><a class="ajax-link" href="<?=base_url('/admin/profile')?>"><?=$user->user_name?></a></li>
+					<li><a class="ajax-link" href="<?=base_url('/admin/profile')?>">
+						<? if ( $user->user_display_name != $user->user_name ) { ?>
+						<?=$user->user_display_name?>
+						<span><?=$user->user_name?></span>
+						<? } else { ?>
+						<?=$user->user_name?>
+						<? } ?>
+					</a></li>
 					
 					<li><a class="ajax-link" href="<?=base_url('/admin/profile')?>"><?=lang_line_ucwords('edit_my_profile')?></a></li>
 					
