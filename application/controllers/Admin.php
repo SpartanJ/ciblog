@@ -95,7 +95,7 @@ class Admin extends USER_Controller
 		
 		if ( $this->is_kajax_request() )
 		{
-			$this->kajax->script("$('#save-success-msg').fadeIn(500).delay(500).fadeOut(500);");
+			$this->kajax->script("$('.save-success-msg').fadeIn(500).delay(500).fadeOut(500);");
 			
 			if ( isset( $added ) )
 			{

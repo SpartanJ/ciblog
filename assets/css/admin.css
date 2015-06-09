@@ -686,6 +686,7 @@ input, button, textarea {
 {
 	position: absolute;
 	width: auto;
+	min-width: 220px;
 	min-height: 100px;
 	top: 41px;
 	right: -200px;
@@ -1176,7 +1177,7 @@ input, button, textarea {
 	clear: both;
 }
 
-#save-success-msg
+.save-success-msg
 {
 	position:fixed;
 	bottom:0px;
