@@ -21,9 +21,15 @@ function categories_build_link( $order_by )
 				<td>
 					<input class="row_display_info_new" type="checkbox" name="display_info"><label for="row_display_info_new">&nbsp;</label>
 				</td>
+				<td>
+					<input class="row_in_menu_new" type="checkbox" name="in_menu"><label for="row_in_menu_new">&nbsp;</label>
+				</td>
+				<td>
+					<input type="text" name="order" value="0" />
+				</td>
 			</tr>
 			<tr class="form_buttons hidden" class="row_hidden_new">
-				<td colspan="3" align="center">
+				<td colspan="5" align="center">
 					<button class="submit_btn_table cancel_btn" value="cancel"><span><?=lang_line_upper('cancel')?></span></button>
 					
 					<button class="submit_btn_table save_btn" value="submit"><span><?=lang_line_upper('save')?></span></button>
@@ -48,6 +54,8 @@ function categories_build_link( $order_by )
 						<th class="ajax-el-link" data-href="<?=categories_build_link( 'cat_key' )?>"><?=lang_line_ucwords('key')?></th>
 						<th class="ajax-el-link" data-href="<?=categories_build_link( 'cat_name' )?>"><?=lang_line_ucwords('name')?></th>
 						<th><?=lang_line_ucwords('display_info')?></th>
+						<th><?=lang_line_ucwords('in_menu')?></th>
+						<th><?=lang_line_ucwords('order')?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,9 +71,15 @@ function categories_build_link( $order_by )
 						<td>
 							<input id="row_display_info_<?=$cat['cat_id']?>" type="checkbox" name="display_info" <?=isset($cat['cat_display_info'])&&intval($cat['cat_display_info']!=0)?' checked="checked"':''?>><label for="row_display_info_<?=$cat['cat_id']?>">&nbsp;</label>
 						</td>
+						<td>
+							<input id="row_in_menu_<?=$cat['cat_id']?>" type="checkbox" name="in_menu" <?=isset($cat['cat_in_menu'])&&intval($cat['cat_in_menu']!=0)?' checked="checked"':''?>><label for="row_in_menu_<?=$cat['cat_id']?>">&nbsp;</label>
+						</td>
+						<td>
+							<input type="text" name="order" value="<?=$cat['cat_order']?>" />
+						</td>
 					</tr>
 					<tr class="form_buttons hidden" id="row_hidden_<?=$cat['cat_id']?>">
-						<td colspan="3" align="center">
+						<td colspan="5" align="center">
 							<button class="submit_btn_table delete_btn" 
 									data-text="<?=lang_line('admin_confirm_delete_category')?>"
 									data-href="<?=base_url('/admin/category_delete/'.$cat['cat_id'])?>">
@@ -98,6 +112,8 @@ function categories_build_link( $order_by )
 			trs.first().attr('id','row_new').removeClass('row_new');
 			trs.first().find('.row_display_info_new').attr('id', 'row_display_info_new');
 			trs.first().find('.row_display_info_new').removeClass('row_display_info_new');
+			trs.first().find('.row_in_menu_new').attr('id', 'row_in_menu_new');
+			trs.first().find('.row_in_menu_new').removeClass('row_in_menu_new');
 			trs.last().attr('id','row_hidden_new').removeClass('row_hidden_new');
 			
 			$('#categories_list_table').prepend( trs );

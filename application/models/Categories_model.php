@@ -10,16 +10,16 @@ class Categories_model extends CI_Model
 		$this->table_name = $this->db->dbprefix . $this->table_name;
 	}
 	
-	function add( $key, $name, $display_info )
+	function add( $key, $name, $display_info, $in_menu, $order )
 	{
-		$this->db->query("INSERT INTO {$this->table_name} (cat_key, cat_name, cat_display_info) VALUES (?,?,?)", array( $key, $name, $display_info ) );
+		$this->db->query("INSERT INTO {$this->table_name} (cat_key, cat_name, cat_display_info, cat_in_menu, cat_order) VALUES (?,?,?,?,?)", array( $key, $name, $display_info, $in_menu, $order ) );
 		
 		return $this->db->insert_id();
 	}
 	
-	function update( $id, $key, $name, $display_info )
+	function update( $id, $key, $name, $display_info, $in_menu, $order )
 	{
-		$this->db->query("UPDATE {$this->table_name} SET cat_key = ?, cat_name = ?, cat_display_info = ? WHERE cat_id = ?", array( $key, $name, $display_info, $id ) );
+		$this->db->query("UPDATE {$this->table_name} SET cat_key = ?, cat_name = ?, cat_display_info = ?, cat_in_menu = ?, cat_order = ? WHERE cat_id = ?", array( $key, $name, $display_info, $in_menu, $order, $id ) );
 	}
 	
 	function can_delete( $id )
@@ -84,5 +84,35 @@ class Categories_model extends CI_Model
 	function get_by_key( $key )
 	{
 		return $this->db->query("SELECT * FROM {$this->table_name} WHERE cat_key = ? LIMIT 1", array( $key ) )->row_array();
+	}
+	
+	function get_menu_sections( $output = ARRAY_A )
+	{
+		$sql = "
+			(
+				SELECT 
+					post_id AS id, 
+					COALESCE(post_menu_title,post_title) AS title, 
+					post_order AS `order`, 
+					post_slug AS slug, 
+					0 AS is_category 
+				FROM {$this->db->dbprefix}posts 
+				WHERE post_in_menu = 1 
+			)
+			UNION
+			( 
+				SELECT 
+					cat_id AS id, 
+					cat_name AS title, 
+					cat_order AS `order`, 
+					cat_key AS slug, 
+					1 AS is_category 
+				FROM {$this->table_name} 
+				WHERE 
+					cat_in_menu = 1 
+			)
+			ORDER BY `order` ASC";
+			
+		return $this->db->get_results( $sql, $output );
 	}
 }

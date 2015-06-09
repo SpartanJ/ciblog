@@ -10,20 +10,30 @@ class MY_Controller extends CI_Controller
 	public static $JS_USE_CACHED	= FALSE; // Loads the already cached site/libs
 	public static $JS_PATH			= './';
 
-	function __construct()
-	{
-		parent::__construct();
-		
-		$this->auto_add();
-	}
-
 	protected $a_css		= array();
 	protected $a_ext_css	= array();
 	protected $a_js			= array();
 	protected $a_ext_js		= array();
 	protected $a_og			= array();
 	protected $a_rss		= array();
-
+	protected $sections		= NULL;
+	
+	function __construct()
+	{
+		parent::__construct();
+		
+		$this->load_menu();
+		
+		$this->auto_add();
+	}
+	
+	protected function load_menu()
+	{
+		$this->load->model('Categories_model');
+		
+		$this->sections = $this->Categories_model->get_menu_sections();
+	}
+	
 	public function error_404()
 	{
 		$this->output->set_status_header('404');
@@ -258,7 +268,7 @@ class MY_Controller extends CI_Controller
 			$frame_data['og']			= $this->render_og();
 			$frame_data['page_title']	= isset($data['page_title']) ? ' - '.$data['page_title'] : '';
 			
-			$hf_data = array();
+			$hf_data['sections'] = $this->sections;
 			
 			if ( isset( $data['_user'] ) )
 			{

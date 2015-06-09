@@ -493,6 +493,11 @@ class Admin extends USER_Controller
 				'field'   => 'name',
 				'label'   => lang_line_ucwords('name'), 
 				'rules'   => 'trim|required|max_length[64]'
+			),
+			array(
+				'field'   => 'order',
+				'label'   => lang_line_ucwords('order'), 
+				'rules'   => 'trim|required|integer'
 			)
 		);
 		
@@ -504,9 +509,9 @@ class Admin extends USER_Controller
 		{
 			if ( $id == 0 )
 			{
-				$id = $this->Categories_model->add( $post['key'], $post['name'], isset($post['display_info']) ? 1 : 0 );
+				$id = $this->Categories_model->add( $post['key'], $post['name'], isset($post['display_info']) ? 1 : 0, isset($post['in_menu']) ? 1 : 0, $post['order'] );
 				
-				$this->kajax_replace_new_ids( $id, array( 'row_', 'row_hidden_', 'row_display_info_' ) );
+				$this->kajax_replace_new_ids( $id, array( 'row_', 'row_hidden_', 'row_display_info_', 'row_in_menu_' ) );
 				
 				$this->kajax->call( 'table_row_new_convert_to_id( ' . $id . ', "id", "' . 
 									base_url('/admin/category_delete/'.$id) . '", "' . 
@@ -520,7 +525,7 @@ class Admin extends USER_Controller
 			{
 				if ( $this->Categories_model->exists( $id )  )
 				{
-					$this->Categories_model->update( $id, $post['key'], $post['name'], isset($post['display_info']) ? 1 : 0 );
+					$this->Categories_model->update( $id, $post['key'], $post['name'], isset($post['display_info']) ? 1 : 0, isset($post['in_menu']) ? 1 : 0, $post['order'] );
 					
 					$this->kajax->fancy_log_success( lang_line_ucwords('category') . " '" . $post['name'] . "' " . lang_line('saved') . '.' );
 				}
