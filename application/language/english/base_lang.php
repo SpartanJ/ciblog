@@ -97,3 +97,4 @@ $lang['edit_my_profile'] = 'edit my profile';
 $lang['log_out'] = 'log out';
 $lang['in_menu'] = 'in menu';
 $lang['order'] = 'order';
+$lang['advanced'] = 'advanced';

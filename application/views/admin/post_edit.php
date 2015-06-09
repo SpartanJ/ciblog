@@ -8,7 +8,7 @@
 	<textarea name="body" class="body" placeholder="<?=lang_line('write_something')?>"><?=isset($post_body)?htmlspecialchars($post_body):''?></textarea>
 </div>
 
-<div id="save-success-msg"><?=lang_line_ucwords('saved')?></div>
+<div class="save-success-msg"><?=lang_line_ucwords('saved')?></div>
 
 <div class="admin-bar bar-edit">
 <? } ?>
@@ -49,6 +49,8 @@
 			<?if(isset($post_id)){?>
 				<a id="preview_slug" target="_blank" href="<?=base_url('/blog/'.$post_slug)?>"><?=lang_line_ucwords('preview')?></a>
 			<?}?>
+			
+			<input type="submit" value="<?=lang_line_ucwords('advanced')?>"></input>
 			
 			<input type="submit" value="<?=lang_line_ucwords('save')?>"></input>
 		</div>
