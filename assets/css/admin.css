@@ -667,6 +667,7 @@ input, button, textarea {
 {
 	text-decoration:none;
 	color:#FFF;
+	white-space: nowrap;
 }
 
 .admin-bar .user a:hover
@@ -676,7 +677,6 @@ input, button, textarea {
 
 .admin-bar .user:hover .menu
 {
-	display: block;
 	visibility: visible;
 	opacity: 1;
 	right: 0px;
@@ -685,35 +685,37 @@ input, button, textarea {
 .admin-bar .user .menu
 {
 	position: absolute;
-	width: 200px;
-	height: 100px;
+	width: auto;
+	min-height: 100px;
 	top: 41px;
 	right: -200px;
 	background-color: #424242;
 	-webkit-box-shadow: 0 3px 5px rgba(0,0,0,.2);
 	box-shadow: 0 3px 5px rgba(0,0,0,.2);
-	display: block;
+	display: table;
 	visibility: hidden;
 	opacity: 0;
 	transition: all 0.15s ease-in-out 0s;
+	padding: 8px;     box-sizing: border-box;
 }
 
 .admin-bar .user .menu .avatar
 {
-	float: left;
-	width: 80px;
-}
-
-.admin-bar .user .menu .avatar a > img
-{
-	margin-left: 8px;
-	margin-top: 18px;
+	width: auto;
+	display: table-cell;
+	vertical-align: middle;
 }
 
 .admin-bar .user .menu .options
 {
+	display: table-cell;
+	width: auto;
+	padding-left: 8px;
+}
+
+.admin-bar .user .menu .options ul
+{
 	float: left;
-	margin-left: 8px;
 }
 
 .admin-bar .user .menu .options ul, .admin-bar .user .menu .options ul li
@@ -735,6 +737,7 @@ input, button, textarea {
 	color: #CCC;
 	display: table;
 	line-height: 0px;
+	white-space: nowrap;
 }
 
 .admin-content li span {
