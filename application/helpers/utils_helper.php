@@ -526,7 +526,7 @@ function lang_line($line, $log_errors = TRUE)
 	
 	$lang_line = $CI->lang->line( $line, $log_errors );
 	
-	return isset( $line ) ? $lang_line : $line;
+	return !empty($lang_line) ? $lang_line : $line;
 }
 
 function lang_line_upper($line, $log_errors = TRUE)
