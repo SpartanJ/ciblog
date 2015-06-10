@@ -29,14 +29,25 @@ class Posts_model extends CI_Model
 	
 	function add( $data, $slug, $author )
 	{
-		$this->db->query("INSERT INTO {$this->table_name} (post_title, post_body, post_category, post_draft, post_slug, post_author, post_created) VALUES (?,?,?,?,?,?, now())", array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $author ) );
+		$in_menu = isset($data['in_menu'])?1:0;
+		
+		$this->db->query("INSERT INTO {$this->table_name} 
+							(post_title, post_body, post_category, post_draft, post_slug, post_author, post_in_menu, post_order, post_menu_title, post_created) 
+							VALUES (?,?,?,?,?,?,?,?, now())", 
+							array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $author, $in_menu, $data['order'], $data['menu_title'] )
+		);
 		
 		return $this->db->insert_id();
 	}
 	
 	function update( $data, $slug, $update_timestamp = FALSE )
 	{
-		$this->db->query("UPDATE {$this->table_name} SET post_title = ?, post_body = ?, post_category = ?, post_draft = ?, post_slug = ?, post_updated = NOW() WHERE post_id = ?", array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $data['post_id'] ) );
+		$in_menu = isset($data['in_menu'])?1:0;
+		
+		$this->db->query("UPDATE {$this->table_name} 
+							SET post_title = ?, post_body = ?, post_category = ?, post_draft = ?, 
+								post_slug = ?, post_in_menu = ?, post_order = ?, post_menu_title = ?, post_updated = NOW() WHERE post_id = ?", 
+						array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $in_menu, $data['order'], $data['menu_title'], $data['post_id'] ) );
 	}
 	
 	function get_drafts()

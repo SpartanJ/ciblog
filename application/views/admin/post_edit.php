@@ -3,6 +3,34 @@
 <? if ( !isset( $only_admin_bar ) ) { ?>
 <form class="ajax" method="post" action="<?=base_url('/admin/save')?>">
 
+<div class="hidden">
+	<div class="post_advanced">
+		<h4><?=lang_line_ucwords('post_options')?></h4>
+		
+		<div class="inner inner-form">
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th><label for="user_email"><?=lang_line_ucwords('in_menu')?></label></th>
+						<td>
+							<input id="post_in_menu" type="checkbox" name="in_menu" <?=isset($post_in_menu)&&intval($post_in_menu!=0)?' checked="checked"':''?>>
+							<label for="post_in_menu">&nbsp;</label>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="post_order"><?=lang_line_ucwords('order')?></label></th>
+						<td><input type="text" name="order" id="post_order" value="<?=$post_order?>" /></td>
+					</tr>
+					<tr>
+						<th><label for="post_order"><?=lang_line_ucwords('menu_title')?></label></th>
+						<td><input type="text" name="menu_title" id="post_menu_title" value="<?=$post_menu_title?>" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
 <div class="admin-editor">
 	<input type="text" name="title" class="title" placeholder="<?=lang_line_ucwords('title')?>" value="<?=isset($post_title)?$post_title:''?>">
 	<textarea name="body" class="body" placeholder="<?=lang_line('write_something')?>"><?=isset($post_body)?htmlspecialchars($post_body):''?></textarea>
@@ -50,7 +78,7 @@
 				<a id="preview_slug" target="_blank" href="<?=base_url('/blog/'.$post_slug)?>"><?=lang_line_ucwords('preview')?></a>
 			<?}?>
 			
-			<input type="submit" value="<?=lang_line_ucwords('advanced')?>"></input>
+			<input type="button" value="<?=lang_line_ucwords('advanced')?>" onclick="post_advanced_dialog();"></input>
 			
 			<input type="submit" value="<?=lang_line_ucwords('save')?>"></input>
 		</div>
@@ -63,6 +91,17 @@
 </div>
 
 <script>
+	function post_advanced_dialog()
+	{
+		if ( !modal_dialog_is_open() )
+		{
+			modal_dialog_inline( $('.post_advanced'), {
+				width: '80%',
+				height: '90%'
+			});
+		}
+	}
+	
 	$(function()
 	{
 		editor_init("<?=base_url()?>");

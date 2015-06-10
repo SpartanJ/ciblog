@@ -98,3 +98,5 @@ $lang['log_out'] = 'log out';
 $lang['in_menu'] = 'in menu';
 $lang['order'] = 'order';
 $lang['advanced'] = 'advanced';
+$lang['post_options'] = 'post options';
+$lang['menu_title'] = 'menu title';
