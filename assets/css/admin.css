@@ -1326,7 +1326,6 @@ p.submit input[type="button"] {
 /**** MODAL DIALOG ****/
 .modal_dialog
 {
-	display: none;
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -1335,6 +1334,9 @@ p.submit input[type="button"] {
 	background: rgba(0,0,0,0.8);
 	z-index: 9999;
 	cursor: pointer;
+	visibility: hidden;
+	opacity: 0;
+	transition: all 0.3s ease-in-out 0s;
 }
 
 .modal_dialog > div
@@ -1350,6 +1352,21 @@ p.submit input[type="button"] {
 	cursor: default;
 	border: 2px solid #000;
 	box-sizing: border-box;
+	transition: all 0.3s ease-in-out 0s;
+	transform: translateY(10%) rotateX(40deg);
+}
+
+.modal_dialog.modal_dialog_visible
+{
+	opacity: 1;
+	visibility: visible;
+}
+
+.modal_dialog.modal_dialog_visible > div
+{
+	visibility: visible;
+	opacity: 1;
+	transform: translateY(0%) rotateX(0deg);
 }
 
 .modal_dialog div.cont

@@ -232,18 +232,27 @@ function modal_dialog_create( modal_dialog_opts )
 	return md;
 }
 
+function modal_dialog_get_transition_duration()
+{
+	var tdparent	= $('.modal_dialog').css('transition-duration');
+	var tdchild		= $('.modal_dialog > div').css('transition-duration');
+	return parseInt( parseFloat( tdparent > tdchild ? tdparent : tdchild ) * 1000 );
+}
+
 function modal_dialog_open( modal_dialog_opts )
 {
 	var md = modal_dialog_create( modal_dialog_opts );
 	
-	md.hide().fadeIn(200);
+	$('.modal_dialog, .modal_dialog > div').each(function(){ $(this).width(); });
 	
-	md.find('> div').hide().fadeIn(400, function()
+	md.addClass('modal_dialog_visible');
+	
+	setTimeout(function()
 	{
 		md.addClass('modal_dialog_ready');
-		
-		_modal_is_open = true;
-	});
+	}, modal_dialog_get_transition_duration() );
+	
+	_modal_is_open = true;
 	
 	setTimeout(function()
 	{
@@ -261,17 +270,19 @@ function modal_dialog_close()
 	
 	if ( md.length > 0 )
 	{
-		md.fadeOut( 200, function()
+		md.removeClass('modal_dialog_ready');
+		
+		md.removeClass('modal_dialog_visible');
+		
+		_modal_is_open = false;
+
+		setTimeout(function()
 		{
 			_modal_dialog_callbacks_close_fire();
 			
 			md.find('.cont').empty();
-			
-			md.removeClass('modal_dialog_ready');
-			
-			_modal_is_open = false;
-		} );
-		
+		}, modal_dialog_get_transition_duration() );
+
 		$(document).unbind("keydown.modal_dialog");
 	}
 }
