@@ -97,7 +97,9 @@
 		{
 			modal_dialog_inline( $('.post_advanced'), {
 				width: '80%',
-				height: '90%'
+				height: '90%',
+				header: '',
+				footer: ''
 			});
 		}
 	}
