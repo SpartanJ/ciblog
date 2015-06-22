@@ -134,12 +134,14 @@ class Admin extends USER_Controller
 		if( $id != NULL )
 		{
 			$this->load->model('Categories_model');
+			$this->load->model('PostTags_model');
 			
-			$data				= $this->Posts_model->get($id);
+			$data = $this->Posts_model->get($id);
 			
 			if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $data['post_author'] == $this->user->user_id ) )
 			{
 				$data['categories']	= $this->Categories_model->get_all();
+				$data['tags'] = $this->PostTags_model->get_post_tags( $id );
 				
 				$this->add_frame_view('admin/post_edit',$data);
 			}
@@ -469,6 +471,71 @@ class Admin extends USER_Controller
 	public function user_delete()
 	{
 		$this->admin_session_restrict();
+	}
+	
+	public function post_tag_add()
+	{
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
+		
+		$posts = $this->input->post();
+		
+		if ( isset( $posts['post_id'] ) && isset( $posts['tags'] ) )
+		{
+			$this->load->model('PostTags_model');
+			
+			$id = intval( $posts['post_id'] );
+			$tags = trim( $posts['tags'] );
+			
+			$post = $this->Posts_model->get( $id );
+			
+			if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $post['post_author'] == $this->user->user_id ) )
+			{
+				if ( !empty( $tags ) )
+				{
+					$tagsarr = explode( ',', $tags );
+					
+					if ( isset( $tagsarr ) && !empty( $tagsarr ) )
+					{
+						foreach ( $tagsarr as $tag )
+						{
+							$tag = trim( $tag );
+							
+							if ( !$this->PostTags_model->exists( $id, $tag ) )
+							{
+								$ptag_id = $this->PostTags_model->add( $id, $tag );
+								
+								$this->kajax->call( "tag_add( {$ptag_id}, '{$tag}', '" . base_url('/admin/post_tag_delete/'.$ptag_id) . "'  )" );
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		$this->kajax->out();
+	}
+	
+	public function post_tag_delete( $ptag_id )
+	{
+		$this->session_restrict( CIBLOG_AUTHOR_LEVEL );
+		
+		$this->load->model('PostTags_model');
+		
+		$id = $this->PostTags_model->get_post_id_from_tag_id( $ptag_id );
+		
+		if ( isset( $id ) )
+		{
+			$post = $this->Posts_model->get( $id );
+		
+			if ( $this->user->user_level >= CIBLOG_EDITOR_LEVEL || ( $this->user->user_level >= CIBLOG_AUTHOR_LEVEL && $post['post_author'] == $this->user->user_id ) )
+			{
+				$this->PostTags_model->delete( $ptag_id );
+				
+				$this->kajax->remove( '#ptag_id_' . $ptag_id );
+			}
+		}
+		
+		$this->kajax->out();
 	}
 	
 	public function index()

@@ -110,6 +110,11 @@ class SQL
 		return db()->escape_str( $str );
 	}
 	
+	public static function get_ilike()
+	{
+		return ( self::is_using_postgresql() ? 'ILIKE' : 'LIKE' );
+	}
+	
 	public static function get_filter( $filter_type, $field_name, $filter_val, $field_type )
 	{
 		switch ( $filter_type )
@@ -126,7 +131,7 @@ class SQL
 			case SQLFilterType::LIKE:
 			case SQLFilterType::ILIKE:
 			{
-				$like	= SQLFilterType::LIKE == $filter_type ? 'LIKE' : ( self::is_using_postgresql() ? 'ILIKE' : 'LIKE' );
+				$like	= SQLFilterType::LIKE == $filter_type ? 'LIKE' : $this->get_ilike();
 				$val	= self::cast_to_field_type( $field_type, $filter_val, $filter_type );
 				
 				if ( !empty( $val ) )
