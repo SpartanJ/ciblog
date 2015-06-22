@@ -410,3 +410,17 @@ function table_register( form_table )
 		}
 	);
 }
+
+function tag_add( id, name, url_delete )
+{
+	var tag = $('.tag_base').clone();
+	
+	tag.removeClass('tag_base');
+	tag.attr('id', 'ptag_id_' + id);
+	tag.find('span').text( name );
+	tag.find('a').attr('href', url_delete );
+	
+	$('.post_tags .tags').append( tag );
+	
+	kajax_init( $('#ptag_id_' + id ) );
+}

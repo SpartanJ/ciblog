@@ -4,6 +4,8 @@
 <form class="ajax" method="post" action="<?=base_url('/admin/save')?>">
 
 <div class="hidden">
+	<div class="tag tag_base"><span></span> <a href="#" class="ajax-eval-link"><i class="fa fa-times-circle"></i></a></div>
+	
 	<div class="post_advanced">
 		<h4><?=lang_line_ucwords('post_options')?></h4>
 		
@@ -28,6 +30,22 @@
 				</tbody>
 			</table>
 		</div>
+		
+		<div class="inner post_tags">
+			<h3><?=lang_line_ucwords('tags')?></h3>
+			
+			<input type="text" id="tags_input" name="tags" />
+			
+			<input id="tag_add_button" type="button" value="<?=lang_line_ucwords('add')?>" />
+			
+			<p><?=lang_line('separate_tags')?></p>
+			
+			<div class="tags">
+			<? if ( isset( $tags ) ) { foreach ( $tags as $tag ) { ?>
+			<div class="tag" id="ptag_id_<?=$tag['ptag_id']?>"><span><?=$tag['ptag_name']?></span> <a href="<?=base_url('/admin/post_tag_delete/'.$tag['ptag_id'])?>" class="ajax-eval-link"><i class="fa fa-times-circle"></i></a></div>
+			<? }} ?>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -50,7 +68,7 @@
 	}
 ?>
 	<?if(isset($post_id)){?>
-		<input type="hidden" name="post_id" value="<?=$post_id?>"/>
+		<input type="hidden" id="post_id" name="post_id" value="<?=$post_id?>"/>
 	<?}?>
 	<div class="container">
 		<div class="left">
@@ -104,8 +122,37 @@
 		}
 	}
 	
+	function tag_add_from_input()
+	{
+		var tagstxt = $('#tags_input').val();
+		
+		kajax_eval( '<?=base_url('/admin/post_tag_add')?>', 
+			{
+				post_id: <?=$post_id?>, 
+				tags: tagstxt
+			},
+			function(res)
+			{
+				$('#tags_input').val('');
+			}
+		);
+	}
+	
 	$(function()
 	{
 		editor_init("<?=base_url()?>");
+		
+		$('#tag_add_button').unbind('click').bind('click', function()
+		{
+			tag_add_from_input();
+		});
+		
+		$('#tags_input').keypress(function(event)
+		{
+			if (event.keyCode == 13)
+			{
+				tag_add_from_input();
+			}
+		});
 	});
 </script>

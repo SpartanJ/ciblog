@@ -100,3 +100,6 @@ $lang['order'] = 'order';
 $lang['advanced'] = 'advanced';
 $lang['post_options'] = 'post options';
 $lang['menu_title'] = 'menu title';
+$lang['tags'] = 'tags';
+$lang['separate_tags'] = 'Separate tags with commas';
+$lang['add'] = 'add';
