@@ -605,8 +605,6 @@ class SQL
 			$where = 'WHERE ' . $where;
 		}
 		
-		$where = $join . $where;
-		
 		if ( NULL != $filter )
 		{
 			if ( '' != $filter['filter'] )
@@ -627,6 +625,8 @@ class SQL
 			$where .= $filter['filter'] .	( isset( $filter['group'] ) ? $filter['group'] : '' ) . 
 											(  $is_count ? '' : isset( $filter['order'] ) ? $filter['order'] : '' );
 		}
+		
+		$where = $join . $where;
 	}
 	
 	public static function create_or_sql_from_exploded_str( $str, $field, $explode_char = '-' )

@@ -15,7 +15,7 @@ class Blog extends MY_Controller
 		parent::auto_add();
 	}
 	
-	protected function build_filters( $category )
+	protected function build_filters( $category, $tag = NULL )
 	{
 		$filter = array(
 			array(
@@ -38,6 +38,22 @@ class Blog extends MY_Controller
 			)
 		);
 		
+		if ( NULL != $tag )
+		{
+			$join = array(
+				array(
+					'field_name'	=> 'ptag_name',
+					'filter_val'	=> $tag
+				), 
+				array(
+					'join'			=> 'post_tags',
+					'on'			=> 'ptag_post_id = post_id'
+				)
+			);
+			
+			$filter = array_merge( $join, $filter );
+		}
+		
 		return SQL::build_query_filter( $filter );
 	}
 
@@ -49,9 +65,10 @@ class Blog extends MY_Controller
 		$config						= pagination_config( 5, TRUE );
 		$query_filter				= $this->build_filters( $categ );
 		$config['total_rows']		= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
-		$data['posts']				= $this->Posts_model->get_all(NULL, $query_filter, $config['per_page'], $page, '*' );
+		$data['posts']				= $this->Posts_model->get_all(NULL, $query_filter, $config['per_page'], $page, '*');
 		$config['base_url']			= base_url( '/' . $categ . '/?' . http_build_query_pagination() );
 		$data['display_info']		= TRUE;
+		$category					= $this->Categories_model->get_by_key( $categ );
 		
 		if ( isset( $category ) )
 		{
@@ -82,5 +99,24 @@ class Blog extends MY_Controller
 		{
 			$this->error_404();
 		}
+	}
+	
+	public function tag($tag)
+	{
+		$this->load->library('pagination');
+		
+		$page						= get_var_def( 'page_num', 1 );
+		$config						= pagination_config( 5, TRUE );
+		$query_filter				= $this->build_filters( NULL, urldecode( $tag ) );
+		$config['total_rows']		= $data['posts_count']	= $this->Posts_model->count( NULL, $query_filter );
+		$data['posts']				= $this->Posts_model->get_all(NULL, $query_filter, $config['per_page'], $page, '*');
+		$config['base_url']			= base_url( '/tag/' . $tag . '/?' . http_build_query_pagination() );
+		$data['display_info']		= TRUE;
+		
+		$this->pagination->initialize($config);
+		
+		$data['pagination']		= $this->pagination->create_links();
+		
+		$this->add_frame_view('blog/posts',$data);
 	}
 }
