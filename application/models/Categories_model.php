@@ -39,6 +39,11 @@ class Categories_model extends CI_Model
 		return FALSE;
 	}
 	
+	function name_exists( $name )
+	{
+		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE cat_name = ? LIMIT 1", array( $name ) );
+	}
+	
 	function exists( $id )
 	{
 		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE cat_id = ? LIMIT 1", array( $id ) );
