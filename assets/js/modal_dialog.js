@@ -322,6 +322,8 @@ function modal_dialog_ajax_get( uri, data, modal_dialog_opts )
 	
 	md.find('.cont').html( modal_dialog_loading_div );
 	
+	modal_dialog_open( modal_dialog_opts );
+	
 	$.get( uri, data, function( res )
 	{
 		if ( res )
@@ -331,8 +333,6 @@ function modal_dialog_ajax_get( uri, data, modal_dialog_opts )
 			cont.empty();
 			
 			cont.html( res );
-			
-			modal_dialog_open( modal_dialog_opts );
 			
 			if ( 'undefined' != typeof modal_dialog_opts )
 			{
