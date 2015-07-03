@@ -309,8 +309,10 @@ function modal_dialog_close_timeout( time )
 	}, time);
 }
 
-function modal_dialog_ajax_get( uri, data, modal_dialog_opts )
+function modal_dialog_ajax( type, uri, data, modal_dialog_opts )
 {
+	var rtype = 'undefined' == typeof type ? 'GET' : type.toUpperCase();
+	
 	_modal_dialog_callbacks_close_fire();
 	
 	var md = modal_dialog_create( modal_dialog_opts );
@@ -324,25 +326,91 @@ function modal_dialog_ajax_get( uri, data, modal_dialog_opts )
 	
 	modal_dialog_open( modal_dialog_opts );
 	
-	$.get( uri, data, function( res )
-	{
-		if ( res )
+	$.ajax({
+		type: rtype,
+		url: uri,
+		data: data,
+		success: function( res )
 		{
-			var cont = md.find('.cont');
-			
-			cont.empty();
-			
-			cont.html( res );
-			
-			if ( 'undefined' != typeof modal_dialog_opts )
+			if ( res )
 			{
-				if ( 'onComplete' in modal_dialog_opts )
+				var cont = md.find('.cont');
+				
+				cont.empty();
+				
+				cont.html( res );
+				
+				if ( 'undefined' != typeof modal_dialog_opts )
 				{
-					modal_dialog_opts.onComplete( md, res );
+					if ( 'onComplete' in modal_dialog_opts )
+					{
+						modal_dialog_opts.onComplete( md, res );
+					}
 				}
 			}
 		}
 	});
+}
+
+function modal_dialog_ajax_get( uri, data, modal_dialog_opts )
+{
+	modal_dialog_ajax( 'GET', uri, data, modal_dialog_opts );
+}
+
+function modal_dialog_ajax_post( uri, data, modal_dialog_opts )
+{
+	modal_dialog_ajax( 'POST', uri, data, modal_dialog_opts );
+}
+
+function modal_dialog_ajax_json( type, uri, data, success, modal_dialog_opts )
+{
+	var rtype = 'undefined' == typeof type ? 'GET' : type.toUpperCase();
+	
+	_modal_dialog_callbacks_close_fire();
+	
+	var md = modal_dialog_create( modal_dialog_opts );
+	
+	if ( !uri.startsWith( 'http' ) && !uri.startsWith('//') )
+	{
+		uri = page_url + uri;
+	}
+	
+	md.find('.cont').html( modal_dialog_loading_div );
+	
+	modal_dialog_open( modal_dialog_opts );
+	
+	$.ajax({
+		type: rtype,
+		url: uri,
+		data: data,
+		success: function( res )
+		{
+			if ( res )
+			{
+				var cont = md.find('.cont');
+				
+				success( cont, res );
+				
+				if ( 'undefined' != typeof modal_dialog_opts )
+				{
+					if ( 'onComplete' in modal_dialog_opts )
+					{
+						modal_dialog_opts.onComplete( md, res );
+					}
+				}
+			}
+		}
+	});
+}
+
+function modal_dialog_ajax_json_get( uri, data, success, modal_dialog_opts )
+{
+	modal_dialog_ajax_json( 'GET', uri, data, success, modal_dialog_opts );
+}
+
+function modal_dialog_ajax_json_post( uri, data, success, modal_dialog_opts )
+{
+	modal_dialog_ajax_json( 'POST', uri, data, success, modal_dialog_opts );
 }
 
 function modal_dialog_inline( target, modal_dialog_opts )
