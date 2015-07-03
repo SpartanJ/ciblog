@@ -17,20 +17,21 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=7
+current_page=0
 FILE_NAME_0=14087;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fglobal.css;0;4
 FILE_NAME_1=15395;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fadmin.css;0;4
 FILE_NAME_2=4294;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Flanguage%2Fenglish%2Fbase_lang.php;0;4
-FILE_NAME_3=12903;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
+FILE_NAME_3=19403;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
 FILE_NAME_4=8608;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fjs%2Fadmin.js;0;4
-FILE_NAME_5=1183;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Fpost_edit.php;0;4
+FILE_NAME_5=1821;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Fpost_edit.php;0;4
 FILE_NAME_6=1393;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fconfig%2Froutes.php;0;4
-FILE_NAME_7=2771;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FBlog.php;0;4
+FILE_NAME_7=2541;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FBlog.php;0;4
 FILE_NAME_8=503;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FError.php;0;4
-FILE_NAME_9=1984;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fmodels%2FCategories_model.php;0;4
+FILE_NAME_9=871;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fmodels%2FCategories_model.php;0;4
 FILE_NAME_10=5491;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fmodels%2FPosts_model.php;0;4
 FILE_NAME_11=1146;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fmodels%2FPosttags_model.php;0;4
-FILE_NAME_12=14206;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Fsql_helper.php;0;4
+FILE_NAME_12=14238;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Fsql_helper.php;0;4
+FILE_NAME_13=21971;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fhelpers%2Futils_helper.php;0;4
 
 [gproject]
 source_patterns=*.php;*.js;*.css;*.xml;
