@@ -21,16 +21,16 @@
 					</tr>
 					<tr>
 						<th><label for="post_order"><?=lang_line_ucwords('order')?></label></th>
-						<td><input type="text" name="order" id="post_order" value="<?=$post_order?>" /></td>
+						<td><input type="text" name="order" id="post_order" value="<?=isset($post_order)?$post_order:'0'?>" /></td>
 					</tr>
 					<tr>
 						<th><label for="post_order"><?=lang_line_ucwords('menu_title')?></label></th>
-						<td><input type="text" name="menu_title" id="post_menu_title" value="<?=$post_menu_title?>" /></td>
+						<td><input type="text" name="menu_title" id="post_menu_title" value="<?=isset($post_menu_title)?$post_menu_title:''?>" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		
+		<?if(isset($post_id)){?>
 		<div class="inner post_tags">
 			<h3><?=lang_line_ucwords('tags')?></h3>
 			
@@ -46,6 +46,7 @@
 			<? }} ?>
 			</div>
 		</div>
+		<?}?>
 	</div>
 </div>
 
@@ -122,8 +123,10 @@
 		}
 	}
 	
+	<?if(isset($post_id)){?>
 	function tag_add_from_input()
 	{
+
 		var tagstxt = $('#tags_input').val();
 		
 		kajax_eval( '<?=base_url('/admin/post_tag_add')?>', 
@@ -137,11 +140,12 @@
 			}
 		);
 	}
+	<?}?>
 	
 	$(function()
 	{
 		editor_init("<?=base_url()?>");
-		
+		<?if(isset($post_id)){?>
 		$('#tag_add_button').unbind('click').bind('click', function()
 		{
 			tag_add_from_input();
@@ -154,5 +158,6 @@
 				tag_add_from_input();
 			}
 		});
+		<?}?>
 	});
 </script>
