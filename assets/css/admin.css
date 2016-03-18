@@ -182,8 +182,8 @@ a:hover
 	color:#ffffff;
 }
 
-input, button, textarea {
-	font-family:inherit; 
+input, button, textarea, select {
+	font-family:inherit;
 	-webkit-appearance: none;
 }
 
@@ -925,7 +925,7 @@ input, button, textarea {
 .admin-bar select
 {
 	background-color: #F2F2F2;
-	padding: 8px;
+	padding: 9px;
 	font-size: 12px;
 	border: 1px solid #A9A9A9;
 	-webkit-appearance: none;
