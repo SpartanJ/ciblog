@@ -267,8 +267,10 @@ class MY_Controller extends CI_Controller
 			$frame_data['js']			= $this->render_ext_js() . $this->render_js(); //external js first, usuarlly local js depend on those
 			$frame_data['og']			= $this->render_og();
 			$frame_data['page_title']	= isset($data['page_title']) ? ' - '.$data['page_title'] : '';
+			$frame_data['clean_view']	= null !== get_var( 'clean_view' );
 			
-			$hf_data['sections'] = $this->sections;
+			$hf_data['clean_view']		= $frame_data['clean_view'];
+			$hf_data['sections'] 		= $this->sections;
 			
 			if ( isset( $data['_user'] ) )
 			{
