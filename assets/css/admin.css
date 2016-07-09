@@ -1543,6 +1543,11 @@ p.submit input[type="button"] {
 	color: red;
 }
 
+.admin-content input.button.delete_user_button
+{
+	margin-left: 24px;
+}
+
 @media only screen and (max-width: 800px)
 {
 	.form-table tbody tr th,

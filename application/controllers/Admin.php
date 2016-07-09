@@ -471,6 +471,32 @@ class Admin extends USER_Controller
 	public function user_delete()
 	{
 		$this->admin_session_restrict();
+		
+		$this->load->model('Users_model');
+		
+		$id = get_var( 'user_id' );
+		
+		if ( $this->Users_model->exists( $id )  )
+		{
+			if ( $this->user->user_id != $id )
+			{
+				$this->Users_model->delete( $id );
+				
+				$this->kajax->fancy_log_success( lang_line_ucwords('user_deleted_successfuly') );
+				
+				$this->kajax->redirect( base_url('/admin/users') );
+			}
+			else
+			{
+				$this->kajax->fancy_log_error( lang_line('you_cant_erase_your_own_user') );
+			}
+		}
+		else
+		{
+			$this->kajax->fancy_log_error( lang_line_ucwords('user') . " '" . $post['username'] . "' " . lang_line('doesnt_exists') . '.' );
+		}
+		
+		$this->kajax->out();
 	}
 	
 	public function post_tag_add()

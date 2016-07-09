@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.9
--- http://www.phpmyadmin.net
+-- version 4.6.3
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2015 at 03:32 AM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
+-- Generation Time: Jul 09, 2016 at 07:26 AM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 5.6.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `ciblog`
@@ -26,17 +26,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `categories`
 --
 
-CREATE TABLE IF NOT EXISTS `categories` (
-  `cat_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `categories` (
+  `cat_id` int(10) UNSIGNED NOT NULL,
   `cat_key` varchar(32) NOT NULL,
   `cat_name` varchar(64) NOT NULL,
   `cat_display_info` int(11) NOT NULL DEFAULT '1',
   `cat_in_menu` int(11) NOT NULL DEFAULT '0',
-  `cat_order` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`cat_id`),
-  KEY `cat_key` (`cat_key`),
-  KEY `cat_in_menu` (`cat_in_menu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  `cat_order` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `categories`
@@ -52,24 +49,20 @@ INSERT INTO `categories` (`cat_id`, `cat_key`, `cat_name`, `cat_display_info`, `
 -- Table structure for table `posts`
 --
 
-CREATE TABLE IF NOT EXISTS `posts` (
-  `post_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `post_id` int(11) NOT NULL,
   `post_author` int(11) DEFAULT NULL,
   `post_title` varchar(128) NOT NULL DEFAULT '""',
   `post_body` text NOT NULL,
   `post_slug` varchar(64) NOT NULL,
   `post_created` timestamp NULL DEFAULT NULL,
   `post_updated` timestamp NULL DEFAULT NULL,
-  `post_category` int(10) unsigned NOT NULL,
+  `post_category` int(10) UNSIGNED NOT NULL,
   `post_draft` tinyint(1) NOT NULL DEFAULT '1',
   `post_in_menu` int(11) NOT NULL DEFAULT '0',
   `post_order` int(11) NOT NULL DEFAULT '0',
-  `post_menu_title` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`post_id`),
-  KEY `post_created` (`post_created`),
-  KEY `post_updated` (`post_updated`),
-  KEY `post_in_menu` (`post_in_menu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+  `post_menu_title` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `posts`
@@ -87,7 +80,8 @@ INSERT INTO `posts` (`post_id`, `post_author`, `post_title`, `post_body`, `post_
 (37, 1, 'Test 6', '<p>Test 6</p>\r\n', 'test-6', '2015-05-30 01:08:16', NULL, 1, 1, 0, 0, NULL),
 (38, 1, 'Test 7', '<p>Test 7</p>\r\n', 'test-7', '2015-05-30 01:08:34', NULL, 1, 1, 0, 0, NULL),
 (39, 1, 'Test 8', '<p>Test 8</p>\r\n', 'test-8', '2015-05-30 01:08:43', NULL, 1, 1, 0, 0, NULL),
-(40, 1, 'Test 9', '<p>Test 9</p>\r\n', 'test-9', '2015-05-30 01:08:52', '2015-06-03 03:07:54', 1, 1, 0, 0, NULL);
+(40, 1, 'Test 9', '<p>Test 9</p>\r\n', 'test-9', '2015-05-30 01:08:52', '2015-06-03 03:07:54', 1, 1, 0, 0, NULL),
+(41, 1, 'Tests', '<p>test</p>\r\n', 'tests', '2016-07-09 05:44:01', NULL, 1, 1, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -95,14 +89,11 @@ INSERT INTO `posts` (`post_id`, `post_author`, `post_title`, `post_body`, `post_
 -- Table structure for table `post_tags`
 --
 
-CREATE TABLE IF NOT EXISTS `post_tags` (
-  `ptag_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ptag_post_id` int(10) unsigned NOT NULL,
-  `ptag_name` varchar(64) NOT NULL,
-  PRIMARY KEY (`ptag_id`),
-  KEY `ptag_post_id` (`ptag_post_id`,`ptag_name`),
-  KEY `ptag_post_id_2` (`ptag_post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+CREATE TABLE `post_tags` (
+  `ptag_id` int(10) UNSIGNED NOT NULL,
+  `ptag_post_id` int(10) UNSIGNED NOT NULL,
+  `ptag_name` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -110,8 +101,8 @@ CREATE TABLE IF NOT EXISTS `post_tags` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
   `user_name` varchar(60) NOT NULL,
   `user_password` varchar(64) NOT NULL,
   `user_email` varchar(64) NOT NULL,
@@ -125,19 +116,88 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_level` int(11) NOT NULL DEFAULT '0',
   `user_status` int(11) NOT NULL DEFAULT '0',
   `user_session_token` varchar(64) DEFAULT NULL,
-  `user_bio` text NOT NULL,
-  PRIMARY KEY (`user_id`),
-  KEY `user_level` (`user_level`),
-  KEY `user_status` (`user_status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  `user_bio` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_email`, `user_url`, `user_nickname`, `user_display_name`, `user_firstname`, `user_lastname`, `user_registered`, `user_lastlogin`, `user_level`, `user_status`, `user_session_token`, `user_bio`) VALUES
-(1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', 'spartanj@gmail.com', '', 'Prognoz', 'Martín Lucas Golini', 'Martín Lucas', 'Golini', '0000-00-00 00:00:00', '2015-06-12 02:27:25', 1000, 0, 'fa4fbabcc269c54c898f3e4a1989671fd0da9cc2280d8b8efffe49ddda28233b', ''),
+(1, 'admin', '1be32e923d8956de2472f93317c98dfd0dda54c31d12c0248804f45cdf5a86fe', 'spartanj@gmail.com', '', 'Prognoz', 'Martín Lucas Golini', 'Martín Lucas', 'Golini', '0000-00-00 00:00:00', '2016-07-09 06:54:54', 1000, 0, '897df17066855cc20cbb7d9746fa354c8c9e73540c8f1c2b333ef84ff7bfe038', ''),
 (2, 'test', '97dd7e318d49ec3770b992589721ee62e6a19abcb60921690875479928b1f912', 'test@test.com', '', 'Doe', 'test', 'John', 'Doe', '2015-06-02 22:17:19', NULL, 800, 0, NULL, '');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`cat_id`),
+  ADD KEY `cat_key` (`cat_key`),
+  ADD KEY `cat_in_menu` (`cat_in_menu`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`post_id`),
+  ADD KEY `post_created` (`post_created`),
+  ADD KEY `post_updated` (`post_updated`),
+  ADD KEY `post_in_menu` (`post_in_menu`),
+  ADD KEY `post_author` (`post_author`);
+
+--
+-- Indexes for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  ADD PRIMARY KEY (`ptag_id`),
+  ADD KEY `ptag_post_id` (`ptag_post_id`,`ptag_name`),
+  ADD KEY `ptag_post_id_2` (`ptag_post_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD KEY `user_level` (`user_level`),
+  ADD KEY `user_status` (`user_status`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `cat_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+--
+-- AUTO_INCREMENT for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  MODIFY `ptag_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_author_fk` FOREIGN KEY (`post_author`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
