@@ -33,7 +33,7 @@ class Posts_model extends CI_Model
 		
 		$this->db->query("INSERT INTO {$this->table_name} 
 							(post_title, post_body, post_category, post_draft, post_slug, post_author, post_in_menu, post_order, post_menu_title, post_created) 
-							VALUES (?,?,?,?,?,?,?,?, now())", 
+							VALUES (?,?,?,?,?,?,?,?,?, now())", 
 							array( $data['title'], $data['body'], $data['category'], $data['draft'], $slug, $author, $in_menu, $data['order'], $data['menu_title'] )
 		);
 		
