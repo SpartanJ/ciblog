@@ -16,11 +16,13 @@
 <?=$css?>
 </head>
 <body>
+<?if ( !$clean_view ) { ?>
 <?if (isset($header)){echo $header;}?>
-
+<? } ?>
 	<div id="content"><?=$content?></div>
-
+<?if ( !$clean_view ) { ?>
 <?if (isset($footer)){echo $footer;}?>
+<? } ?>
 
 <?=$js /*newest optimizationr recomendations, states that is best to load js at the end, so we do.*/?>
 <script type="text/javascript">$.each(q,function(i,f){$(f)});</script><?/*MAGIC #2*/?>
