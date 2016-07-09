@@ -122,6 +122,8 @@
 			<input type="hidden" name="username" id="username" value="<?=$user_name?>" />
 			
 			<input type="submit" name="submit" class="button button-primary" value="<?=lang_line_ucwords('update_profile')?>">
+			
+			<input type="button" name="delete" class="button button-primary ajax-eval-fancy-confirm-link delete_user_button" value="<?=lang_line_ucwords('delete_user')?>" data-text="<?=lang_line('admin_confirm_delete_user')?>" data-href="<?=base_url('/admin/user_delete?user_id='.$user_id)?>">
 		<? } else { ?>
 			<input type="submit" name="submit" class="button button-primary" value="<?=lang_line_ucwords('add_new_user')?>">
 		<? } ?>

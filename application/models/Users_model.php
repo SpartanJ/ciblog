@@ -30,6 +30,11 @@ class Users_model extends CI_Model
 		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE user_id = ? LIMIT 1", array( $id ) );
 	}
 	
+	function delete( $id )
+	{
+		$this->db->query( "DELETE FROM {$this->table_name} WHERE user_id = ?", array( $id ) );
+	}
+	
 	function exists_username( $name )
 	{
 		return $this->db->get_var( "SELECT 1 FROM {$this->table_name} WHERE user_name = ? LIMIT 1", array( $name ) );

@@ -103,3 +103,7 @@ $lang['menu_title'] = 'menu title';
 $lang['tags'] = 'tags';
 $lang['separate_tags'] = 'Separate tags with commas';
 $lang['add'] = 'add';
+$lang['admin_confirm_delete_user'] = 'Are you sure you wan\'t to delete this user?<br/><p style=\'color: red\'>All posts from this user will be also deleted.</p>';
+$lang['delete_user'] = 'delete user';
+$lang['user_deleted_successfuly'] = 'user deleted successfuly';
+$lang['you_cant_erase_your_own_user'] = 'You can\'t delete your own user';
