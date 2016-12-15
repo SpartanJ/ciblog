@@ -318,7 +318,7 @@ class array_sorter
 	* @param string $key array key to sort by
 	* @param boolean $asc sort order (ascending or descending)
 	*/
-	function array_sorter(&$array, $key, $asc=true)
+	function __construct(&$array, $key, $asc=true)
 	{
 		$this->sarray = $array;
 		$this->skey = $key;
