@@ -372,13 +372,14 @@ $config['proxy_ips'] = '';
 | for base controllers and some third-party libraries.
 |
 */
-function __autoload($class)
+function autoload_func($class)
 {
 	if(strpos($class, 'CI_') !== 0)
 	{
 		@include_once( APPPATH . 'core/'. $class . EXT );
 	}
 }
+spl_autoload_register( 'autoload_func' );
 
 /*timezone settings*/
 date_default_timezone_set('America/Argentina/Buenos_Aires');

@@ -1,5 +1,5 @@
 <?
-if(count($posts)>1)
+if(isset($posts)&&count($posts)>1)
 {
 	$total = 0;
 	$len_arr = array();
