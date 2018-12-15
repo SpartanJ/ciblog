@@ -10,10 +10,27 @@ class SQLFilterType
 	const BIGGER_OR_EQ	= 5;
 	const SMALLER_OR_EQ	= 6;
 	const UNEQUALS		= 7;
+	const EQUALS_ANY	= 8;
+	const EQUALS_ALL	= 9;
+	const UNEQUALS_ANY	= 10;
+	const UNEQUALS_ALL	= 11;
+	const LIKE_ANY		= 12;
+	const LIKE_ALL		= 13;
+	const ILIKE_ANY		= 14;
+	const ILIKE_ALL		= 15;
+	const BIGGER_ANY	= 16;
+	const BIGGER_ALL	= 17;
+	const SMALLER_ANY	= 18;
+	const SMALLER_ALL	= 19;
+	const BIGGER_OR_EQ_ANY = 20;
+	const BIGGER_OR_EQ_ALL = 21;
+	const SMALLER_OR_EQ_ANY = 22;
+	const SMALLER_OR_EQ_ALL = 23;
 }
 
 class SQLConvertType
 {
+	const NONE			= -1;
 	const DECHEX		= 0;
 	const HEXDEC		= 1;
 	const STRING		= 2;
@@ -96,23 +113,36 @@ class SQL
 	{
 		switch ( $filter_type )
 		{
-			case SQLFilterType::EQUALS:			return ' = ';
-			case SQLFilterType::BIGGER:			return ' > ';
-			case SQLFilterType::SMALLER:		return ' < ';
-			case SQLFilterType::BIGGER_OR_EQ:	return ' >= ';
-			case SQLFilterType::SMALLER_OR_EQ:	return ' <= ';
-			case SQLFilterType::UNEQUALS:		return ' != ';
+			case SQLFilterType::EQUALS:				return ' = ';
+			case SQLFilterType::LIKE:				return ' LIKE ';
+			case SQLFilterType::ILIKE:				return ' ILIKE ';
+			case SQLFilterType::BIGGER:				return ' > ';
+			case SQLFilterType::SMALLER:			return ' < ';
+			case SQLFilterType::BIGGER_OR_EQ:		return ' >= ';
+			case SQLFilterType::SMALLER_OR_EQ:		return ' <= ';
+			case SQLFilterType::UNEQUALS:			return ' != ';
+			case SQLFilterType::EQUALS_ANY:			return ' = ANY ';
+			case SQLFilterType::EQUALS_ALL:			return ' = ALL ';
+			case SQLFilterType::UNEQUALS_ANY:		return ' != ANY ';
+			case SQLFilterType::UNEQUALS_ALL:		return ' != ALL ';
+			case SQLFilterType::LIKE_ANY:			return ' LIKE ANY ';
+			case SQLFilterType::LIKE_ALL:			return ' LIKE ALL ';
+			case SQLFilterType::ILIKE_ANY:			return ' ILIKE ANY ';
+			case SQLFilterType::ILIKE_ALL:			return ' ILIKE ALL ';
+			case SQLFilterType::BIGGER_ANY:			return ' > ANY ';
+			case SQLFilterType::BIGGER_ALL:			return ' > ALL ';
+			case SQLFilterType::SMALLER_ANY:		return ' < ANY ';
+			case SQLFilterType::SMALLER_ALL:		return ' < ALL ';
+			case SQLFilterType::BIGGER_OR_EQ_ANY: 	return ' >= ANY ';
+			case SQLFilterType::BIGGER_OR_EQ_ALL: 	return ' >= ALL ';
+			case SQLFilterType::SMALLER_OR_EQ_ANY: 	return ' <= ANY ';
+			case SQLFilterType::SMALLER_OR_EQ_ALL: 	return ' <= ALL ';
 		}
 	}
 	
 	public static function escape_string( $str )
 	{
 		return db()->escape_str( $str );
-	}
-	
-	public static function get_ilike()
-	{
-		return ( self::is_using_postgresql() ? 'ILIKE' : 'LIKE' );
 	}
 	
 	public static function get_filter( $filter_type, $field_name, $filter_val, $field_type )
@@ -131,7 +161,7 @@ class SQL
 			case SQLFilterType::LIKE:
 			case SQLFilterType::ILIKE:
 			{
-				$like	= SQLFilterType::LIKE == $filter_type ? 'LIKE' : $this->get_ilike();
+				$like	= SQLFilterType::LIKE == $filter_type ? 'LIKE' : 'ILIKE';
 				$val	= self::cast_to_field_type( $field_type, $filter_val, $filter_type );
 				
 				if ( !empty( $val ) )
@@ -144,6 +174,35 @@ class SQL
 					}
 					
 					return $field_name . $explicit_cast . " $like '%" . $val . "%'";
+				}
+				
+				return '';
+			}
+			case SQLFilterType::EQUALS_ANY:
+			case SQLFilterType::EQUALS_ALL:
+			case SQLFilterType::UNEQUALS_ANY:
+			case SQLFilterType::UNEQUALS_ALL:
+			case SQLFilterType::BIGGER_ANY:
+			case SQLFilterType::BIGGER_ALL:
+			case SQLFilterType::SMALLER_ANY:
+			case SQLFilterType::SMALLER_ALL:
+			case SQLFilterType::BIGGER_OR_EQ_ANY:
+			case SQLFilterType::BIGGER_OR_EQ_ALL:
+			case SQLFilterType::SMALLER_OR_EQ_ANY:
+			case SQLFilterType::SMALLER_OR_EQ_ALL:
+			{
+				return self::cast_to_field_type( $field_type, $filter_val ) . self::get_op_symbol( $filter_type ) . ' ( ' . $field_name . ' ) ';
+			}
+			case SQLFilterType::LIKE_ANY:
+			case SQLFilterType::LIKE_ALL:
+			case SQLFilterType::ILIKE_ANY:
+			case SQLFilterType::ILIKE_ALL:
+			{
+				$val	= self::cast_to_field_type( $field_type, $filter_val, $filter_type );
+				
+				if ( !empty( $val ) )
+				{
+					return "'%" . $val . "%' " . self::get_op_symbol( $filter_type ) . ' ( ' . $field_name . ' ) ';
 				}
 				
 				return '';
@@ -205,7 +264,14 @@ class SQL
 				{
 					if ( isset( $accept_null ) && TRUE == $accept_null && NULL == $filter['filter_val'] )
 					{
-						$f	= $filter['field_name'] . ' IS NULL';
+						if ( isset( $filter['compare_string'] ) )
+						{
+							$f	= $filter['field_name'] . ( SQLFilterType::UNEQUALS == $filter['filter_type'] ? ' <> \'\'' : ' = \'\'' );
+						}
+						else
+						{
+							$f	= $filter['field_name'] . ( isset( $filter['filter_type'] ) && SQLFilterType::UNEQUALS == $filter['filter_type'] ? ' IS NOT NULL' : ' IS NULL' );
+						}
 					}
 					else
 					{
@@ -234,23 +300,26 @@ class SQL
 							{
 								$v	= isset( $filter['val_convert'] ) ? self::convert( $filter['val_convert'], $val ) : $val;
 								
-								$f	.= self::get_filter(	isset( $filter['filter_type'] ) ? $filter['filter_type'] : SQLFilterType::EQUALS, 
-														$field_name,
-														$v,
-														isset( $filter['field_type'] ) ? $filter['field_type'] : self::guess_field_type( $v )
-								);
-								
-								$field_names_counting++;
-								
-								if ( $field_names_count > 1 )
+								if ( NULL != $v || '0' === $val || ( 0 === $val && isset($filter['field_type']) && $filter['field_type'] == SQLFieldType::INT ) )
 								{
-									if ( $field_names_counting < $field_names_count )
+									$f	.= self::get_filter(	isset( $filter['filter_type'] ) ? $filter['filter_type'] : SQLFilterType::EQUALS, 
+															$field_name,
+															$v,
+															isset( $filter['field_type'] ) ? $filter['field_type'] : self::guess_field_type( $v )
+									);
+									
+									$field_names_counting++;
+									
+									if ( $field_names_count > 1 )
 									{
-										$f	.= ' OR ';
-									}
-									else
-									{
-										$f	.= ' )';
+										if ( $field_names_counting < $field_names_count )
+										{
+											$f	.= ' OR ';
+										}
+										else
+										{
+											$f	.= ' )';
+										}
 									}
 								}
 							}
@@ -271,37 +340,85 @@ class SQL
 						}
 					}
 					
-					$is_or	= isset( $filter['concat_op'] );
-					
-					$qf 	.= ( $is_or ? ' ( ' : '' ) . $f . self::get_bool_concat_op( $is_or ? $filter['concat_op'] : $bool_concat_op );
-					
-					if ( !$is_or && $was_or )
+					if ( '' != $f )
 					{
-						$qf	.= ' ) ';
-					}
+						$is_or	= isset( $filter['concat_op'] );
+						
+						$qf 	.= ( $is_or ? ' ( ' : '' ) . $f . self::get_bool_concat_op( $is_or ? $filter['concat_op'] : $bool_concat_op );
+						
+						if ( !$is_or && $was_or )
+						{
+							$qf	.= ' ) ';
+						}
 					
-					$was_or	= $is_or;
+						$was_or	= $is_or;
+					}
 				}
 				else if ( isset( $filter['order_by'] ) )
 				{
-					if ( isset( $filter['order_fields'] ) )
-					{
-						$order_k			= array_search( $filter['order_by'], $filter['order_fields'] );
-						$order_by			= NULL == $order_k ? $filter['order_fields'][0] : $filter['order_fields'][ $order_k ];
-						$filter['order_by']	= $order_by;
-					}
-					
 					$sorts		= array( 'ASC', 'DESC' );
-					$sort_k		= array_search( isset( $filter['order_dir'] ) ? strtoupper( $filter['order_dir'] ): 'ASC', $sorts );
-					$order_dir	= NULL == $sort_k ? $sorts[0] : $sorts[ $sort_k ];
 					
-					$or 		.= $filter['order_by'] . ' ' . $order_dir . ( isset( $filter['null_order'] ) ? ' NULLS ' . $filter['null_order'] : '' ) . ', ';
+					if ( is_array( $filter['order_by'] ) && ( $order_size = count( $filter['order_by'] ) ) ==  count( $filter['order_dir'] ) )
+					{
+						for ( $i = 0; $i < $order_size; $i++ )
+						{
+							if ( isset( $filter['order_fields'] ) )
+							{
+								$order_k				= array_search( $filter['order_by'][$i], $filter['order_fields'] );
+								$order_by				= FALSE === $order_k ? NULL : $filter['order_fields'][ $order_k ];
+								
+								if ( !isset( $order_by ) )
+								{
+									continue;
+								}
+							}
+							else
+							{
+								$order_by 	= $filter['order_by'][$i];
+							}
+							
+							if ( NULL != $filter['order_dir'][$i] && '' != $filter['order_dir'][$i] )
+							{
+								$sort_k		= array_search( isset( $filter['order_dir'][$i] ) ? strtoupper( $filter['order_dir'][$i] ): 'ASC', $sorts );
+								$order_dir	= FALSE === $sort_k ? $sorts[0] : $sorts[ $sort_k ];
+							}
+							else
+							{
+								$order_dir	= '';
+							}
+							
+							$or 		.= $order_by . ' ' . $order_dir;
+							
+							if ( $i < $order_size - 1 )
+							{
+								$or .= ', ';
+							}
+						}
+						
+						$or	.= ( isset( $filter['null_order'] ) ? ' NULLS ' . $filter['null_order'] : '' ) . ', ';
+					}
+					else
+					{
+						if ( isset( $filter['order_fields'] ) )
+						{
+							$order_k			= array_search( $filter['order_by'], $filter['order_fields'] );
+							$order_by			= FALSE === $order_k ? $filter['order_fields'][0] : $filter['order_fields'][ $order_k ];
+							$filter['order_by']	= $order_by;
+						}
+						
+						$sort_k		= array_search( isset( $filter['order_dir'] ) ? strtoupper( $filter['order_dir'] ): 'ASC', $sorts );
+						$order_dir	= FALSE === $sort_k ? $sorts[0] : $sorts[ $sort_k ];
+					
+						$or 		.= $filter['order_by'] . ' ' . $order_dir . ( isset( $filter['null_order'] ) ? ' NULLS ' . $filter['null_order'] : '' ) . ', ';
+					}
 				}
 				else if ( isset( $filter['join'] ) && isset( $filter['on'] ) )
 				{
-					$join_type	= isset( $filter['type'] ) ? $filter['type'] : 'INNER';
-					$join_on	= $filter['on'];
-					$join		.= ' ' . $join_type . ' JOIN ' . $filter['join'] . ' ON ' . $join_on . ' ';
+					$join_type		= isset( $filter['type'] ) ? $filter['type'] : 'INNER';
+					$join_lateral	= isset( $filter['lateral'] ) && $filter['lateral'] == TRUE ? ' LATERAL ' : '';
+					$join_on		= $filter['on'];
+					
+					$join		.= ' ' . $join_type . ' JOIN ' . $join_lateral . $filter['join'] . ' ON ' . $join_on . ' ';
 				}
 				else if ( isset( $filter['group_by'] ) )
 				{
@@ -330,7 +447,7 @@ class SQL
 		return array( 'filter' => $qf, 'order' => $or, 'join' => $join, 'group' => $group );
 	}
 	
-	public static function make_insert( $table, $fields, $field_prefix = '', $arr_ignore = '', $no_slashes = FALSE )
+	public static function make_insert( $table, $fields, $arr_ignore = '', $field_prefix = '', $no_slashes = FALSE )
 	{
 		$k		= array_keys( $fields );
 		$v		= array_values( $fields );
@@ -353,7 +470,7 @@ class SQL
 				}
 			}
 			
-			if ( !$ignore && $k[$i] != 'submit' && $k[$i] != 'send' && $k[$i] != 'kajax' )
+			if ( !$ignore && $k[$i] != 'enviar' && $k[$i] != 'send' )
 			{
 				$keys		.= $field_prefix.$k[$i].', ';
 				
@@ -372,7 +489,7 @@ class SQL
 		return 'INSERT INTO '.$table.' ( '.$keys.' ) VALUES ( '.$values.' )';
 	}
 
-	public static function make_insert_qb( $table, $fields, $field_prefix='', $arr_ignore='' )
+	public static function make_insert_pdo( $table, $fields, $arr_ignore='', $field_prefix='' )
 	{
 		$a = array();
 		
@@ -384,10 +501,10 @@ class SQL
 			}
 		}
 		
-		return self::make_insert( $table, $a, $field_prefix, $arr_ignore );
+		return self::make_insert( $table, $a, $arr_ignore, $field_prefix );
 	}
 
-	public static function make_update( $table, $fields, $field_id_name, $field_prefix = '', $arr_ignore='' )
+	public static function make_update( $table, $fields, $field_id_name, $arr_ignore='', $field_prefix = '' )
 	{
 		if ( !is_array( $fields ) )
 		{
@@ -451,7 +568,7 @@ class SQL
 		}
 	}
 
-	public static function make_update_qb( $table, $fields, $field_id_name, $field_prefix='', $arr_ignore='' )
+	public static function make_update_pdo( $table, $fields, $field_id_name, $arr_ignore='', $field_prefix='' )
 	{
 		$a = array();
 		
@@ -463,7 +580,7 @@ class SQL
 			}
 		}
 		
-		return self::make_update( $table, $a, $field_id_name, $field_prefix, $arr_ignore );
+		return self::make_update( $table, $a, $field_id_name, $arr_ignore, $field_prefix );
 	}
 
 	public static function make_delete( $table, $field_id_name, $field_id_value )
@@ -471,20 +588,14 @@ class SQL
 		return 'DELETE FROM '.$table.' WHERE '.$field_id_name.' = '.$field_id_value;
 	}
 
-	public static function make_delete_qb( $table, $field_id_name )
+	public static function make_delete_pdo( $table, $field_id_name )
 	{
 		return self::make_delete( $table, $field_id_name, '?' );
 	}
 	
-	public static function is_using_postgresql()
-	{
-		global $db;
-		return $db['default']['dbdriver'] == 'postgre' || ( isset( $db['default']['dsn'] ) && FALSE !== strpos( $db['default']['dsn'], 'pgsql' ) );
-	}
-	
 	public static function from_unix_time( $time )
 	{
-		if ( self::is_using_postgresql() )
+		if ( defined( 'USE_POSTGRES' ) )
 		{
 			return 'to_timestamp('.$time.')::TIMESTAMP';
 		}
@@ -494,7 +605,7 @@ class SQL
 
 	public static function time_diff( $start, $end )
 	{
-		if ( self::is_using_postgresql() )
+		if ( defined( 'USE_POSTGRES' ) )
 		{
 			return '( ' . $start . ' - ' . $end . ' )';
 		}
@@ -504,7 +615,7 @@ class SQL
 
 	public static function time_to_sec( $time )
 	{
-		if ( self::is_using_postgresql() )
+		if ( defined( 'USE_POSTGRES' ) )
 		{
 			return ' EXTRACT( EPOCH FROM ' . $time . ' )::bigint';
 		}
@@ -524,7 +635,7 @@ class SQL
 
 	public static function unix_timestamp( $str = 'now()' )
 	{	
-		if ( self::is_using_postgresql() )
+		if ( defined( 'USE_POSTGRES' ) )
 		{
 			return "($str)::abstime::int4";
 		}
@@ -534,22 +645,42 @@ class SQL
 
 	public static function get_days_back( $days = 31 )
 	{
-		if ( self::is_using_postgresql() )
+		if ( defined( 'USE_POSTGRES' ) )
 		{
 			return 'NOW() - INTERVAL \''. ( (string) $days ) .' day\'';
 		}
 		
 		return 'DATE_SUB(NOW(), INTERVAL '. ( (string) $days ) .' DAY)';
 	}
+	
+	public static function get_days_future( $days = 31 )
+	{
+		if ( defined( 'USE_POSTGRES' ) )
+		{
+			return 'NOW() + INTERVAL \''. ( (string) $days ) .' day\'';
+		}
+		
+		return 'DATE_ADD(NOW(), INTERVAL '. ( (string) $days ) .' DAY)';
+	}
 
 	public static function get_seconds_back( $seconds = 30 )
 	{
-		if ( self::is_using_postgresql() )
+		if ( defined( 'USE_POSTGRES' ) )
 		{
 			return 'NOW() - INTERVAL \''. ( (string) $seconds ) .' SECOND\'';
 		}
 		
 		return 'DATE_SUB(NOW(), INTERVAL '. ( (string) $seconds ) .' SECOND)';
+	}
+	
+	public static function get_seconds_future( $seconds = 30 )
+	{
+		if ( defined( 'USE_POSTGRES' ) )
+		{
+			return 'NOW() + INTERVAL \''. ( (string) $seconds ) .' SECOND\'';
+		}
+		
+		return 'DATE_ADD(NOW(), INTERVAL '. ( (string) $seconds ) .' SECOND)';
 	}
 
 	public static function get_31_days_back()
@@ -559,7 +690,7 @@ class SQL
 	
 	public static function format_timestamp( $field )
 	{
-		if ( self::is_using_postgresql() )
+		if ( defined('USE_POSTGRES' ) )
 		{
 			return "to_char($field,'YYYY-MM-DD HH24:MI:SS')";
 		}
@@ -567,7 +698,7 @@ class SQL
 		return $field;
 	}
 	
-	public static function get_or_filter( $filter, $field_name )
+	public static function get_op_filter( $filter, $field_name, $convert_type = SQLConvertType::NONE, $op = ' OR ' )
 	{
 		$where = '';
 		
@@ -577,18 +708,24 @@ class SQL
 			{
 				foreach ( $filter AS $field_id )
 				{
-					$where .= "$field_name = $field_id OR ";
+					$v	= self::convert( $convert_type, $field_id );
+					$f	= self::get_filter( SQLFilterType::EQUALS, $field_name, $v, self::guess_field_type( $v ) );
+					
+					$where .= $f . $op;
 				}
 				
-				$where = substr( $where, 0, strlen($where) - 3 );
+				$where = substr( $where, 0, strlen($where) - 4 );
 				
 				$where = ' ( ' . $where . ' ) ';
 			}
 			else
 			{
-				if ( 0 != intval( $filter ) )
+				$v	= self::convert( $convert_type, $filter );
+				
+				if ( 0 != intval( $v ) )
 				{
-					$where = "$field_name = $filter ";
+					$f	= self::get_filter( SQLFilterType::EQUALS, $field_name, $v, self::guess_field_type( $v ) );
+					$where = $f . ' ';
 				}
 			}
 		}
@@ -596,60 +733,60 @@ class SQL
 		return $where;
 	}
 	
+	public static function get_or_filter( $filter, $field_name, $convert_type = SQLConvertType::NONE )
+	{
+		return self::get_op_filter( $filter, $field_name, $convert_type, ' OR ' );
+	}
+	
+	public static function get_and_filter( $filter, $field_name, $convert_type = SQLConvertType::NONE )
+	{
+		return self::get_op_filter( $filter, $field_name, $convert_type, ' AND ' );
+	}
+	
 	public static function prepare_filter( &$where, $filter = NULL, $is_count = FALSE )
 	{
-		$join	= isset( $filter['join'] ) ? $filter['join'] : '';
+		$owhere		= $where;
+		$join		= isset( $filter['join'] ) ? $filter['join'] : '';
+		$has_where	= ( isset( $where ) && '' != $where ) || ( isset( $filter['filter'] ) && '' != $filter['filter'] );
 		
-		if ( '' != $where )
+		if ( $has_where && -1 == str_starts_with( 'WHERE', $where ) )
 		{
 			$where = 'WHERE ' . $where;
 		}
 		
-		if ( NULL != $filter )
+		$where = $join . $where;
+		
+		if ( isset( $filter['filter'] ) && '' != $filter['filter'] )
 		{
-			if ( '' != $filter['filter'] )
+			if ( '' != $owhere )
 			{
-				if ( -1 == str_starts_with( 'WHERE', $where ) )
-				{
-					$where = 'WHERE ' . $where;
-				}
-				else
-				{
-					if ( isset( $filter['filter'] ) && '' != $filter['filter'] )
-					{
-						$where .= ' AND ';
-					}
-				}
+				$where .= ' AND ';
 			}
-			
-			$where .= $filter['filter'] .	( isset( $filter['group'] ) ? $filter['group'] : '' ) . 
-											(  $is_count ? '' : isset( $filter['order'] ) ? $filter['order'] : '' );
 		}
 		
-		$where = $join . $where;
+		$where .= ( isset( $filter['filter'] ) ? $filter['filter'] : '' ) .	( isset( $filter['group'] ) ? $filter['group'] : '' ) . 
+																			(  $is_count ? '' : isset( $filter['order'] ) ? $filter['order'] : '' );
 	}
 	
-	public static function create_or_sql_from_exploded_str( $str, $field, $explode_char = '-' )
+	public static function build_filter( $filter, $where = '', $is_count = FALSE, $bool_concat_op = SQLBoolOp::BOOL_AND )
 	{
-		$sql_str	= '';
-		$ids		= explode( $explode_char, $str );
-		$first		= true;
+		$query_filter = SQL::build_query_filter( $filter, $bool_concat_op );
 		
-		foreach ( $ids as $id )
-		{
-			if ( $first )
-			{
-				$first		= false;
-			}
-			else
-			{
-				$sql_str	.= ' OR ';
-			}
-			
-			$sql_str .= $field . ' = \'' . $id . '\'';
-		}
+		$twhere = $where;
 		
-		return $sql_str;
+		SQL::prepare_filter( $twhere, $query_filter, $is_count );
+		
+		return $twhere;
+	}
+	
+	public static function get_or_filter_exploded( $filter, $field_name, $explode_char = ',', $convert_type = SQLConvertType::NONE )
+	{
+		return self::get_or_filter( explode( $explode_char, $filter ), $field_name, $convert_type );
+	}
+	
+	public static function get_and_filter_exploded( $filter, $field_name, $explode_char = ',', $convert_type = SQLConvertType::NONE )
+	{
+		return self::get_and_filter( explode( $explode_char, $filter ), $field_name, $convert_type );
 	}
 	
 	public static function arr_to_ints( $arr )
@@ -660,5 +797,70 @@ class SQL
 		}
 		
 		return $arr;
+	}
+	
+	public static function data_from_prefix( $array, $prefix )
+	{
+		$ret = array();
+		
+		if ( isset( $array ) )
+		{
+			if ( !is_array( $array ) )
+			{
+				$array = get_object_vars( $array );
+			}
+			
+			if ( is_array( $array ) )
+			{
+				foreach ( $array as $key=>$val )
+				{
+					if ( -1 != str_starts_with( $prefix, $key ) )
+					{
+						$ret[$key] = $val;
+					}
+				}
+			}
+		}
+		
+		return !empty( $ret ) ? $ret : NULL;
+	}
+	
+	public static function arr_to_str( $array )
+	{
+		return str_replace( array( '{', '}' ), array( '', '' ), $array );
+	}
+	
+	public static function timestamp_to_db_format( $epoch )
+	{
+		$date = new DateTime();
+		$date->setTimestamp( $epoch );
+		return $date->format('Y-m-d H:i:s');
+	}
+	
+	public static function byte_array_to_bytea( $barray )
+	{
+		return '\\x' . byte_array_to_hexa( $barray );
+	}
+	
+	public static function bytea_to_byte_array( $bytea )
+	{
+		$raw = array();
+		$count = strlen( $bytea );
+		
+		if ( $count > 2 )
+		{
+			$bytea = substr( $bytea, 2 );
+			$count -= 2;
+			
+			if ( $count % 2 == 0 )
+			{
+				for ( $i = 0; $i < $count; $i+=2 )
+				{
+					$raw[] = hexdec( substr( $bytea, $i, 2 ) );
+				}
+			}
+		}
+		
+		return $raw;
 	}
 }
