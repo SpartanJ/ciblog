@@ -8,7 +8,7 @@ indent_mode=2
 
 [project]
 name=CIBlog
-base_path=/home/lampp/htdocs/ciblog
+base_path=/home/programming/ciblog/
 description=
 file_patterns=*.php;*.js;*.css;*.htaccess;*.sh;*.sql;*.less;
 
@@ -17,15 +17,8 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=7
-FILE_NAME_0=14087;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fglobal.css;0;4
-FILE_NAME_1=27647;CSS;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fassets%2Fcss%2Fadmin.css;0;4
-FILE_NAME_2=4294;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Flanguage%2Fenglish%2Fbase_lang.php;0;4
-FILE_NAME_3=12305;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
-FILE_NAME_4=521;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fmodels%2FPosts_model.php;0;4
-FILE_NAME_5=22640;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fhelpers%2Futils_helper.php;0;4
-FILE_NAME_6=105;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fcontrollers%2FUser.php;0;4
-FILE_NAME_7=4245;PHP;0;EUTF-8;1;1;0;%2Fhome%2Flampp%2Fhtdocs%2Fciblog%2Fapplication%2Fviews%2Fadmin%2Fuser_form.php;0;4
+current_page=0
+FILE_NAME_0=0;None;0;EUTF-8;1;1;0;%2Fsrv%2Fwww%2Fhtdocs%2FphpPgAdmin%2F.git%2FHEAD;0;4
 
 [gproject]
 source_patterns=*.php;*.js;*.css;*.xml;
