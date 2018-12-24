@@ -48,6 +48,8 @@ define( 'CIBLOG_ADMIN_LEVEL'		, 1000  );
 define( 'CIBLOG_EDITOR_LEVEL'		, 800	);
 define( 'CIBLOG_AUTHOR_LEVEL'		, 600	);
 define( 'CIBLOG_SUSCRIBER_LEVEL'	, 0		);
+define( 'CIBLOG_RECAPTCHA_SITE_KEY'	, '6LcZJRUUAAAAAFODJ5M-c8rpGJNmp5hOdLgPcJ6F' );
+define( 'CIBLOG_RECAPTCHA_SECRET'	, '6LcZJRUUAAAAAOrm6qa2FJDQO3hW1LJiGNku-oX8' );
 
 define( 'PAGE_TITLE'				, 'ciblog' );
 define( 'PAGE_DESCRIPTION'			, 'ciblog description' );

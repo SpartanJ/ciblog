@@ -107,3 +107,4 @@ $lang['admin_confirm_delete_user'] = 'Are you sure you wan\'t to delete this use
 $lang['delete_user'] = 'delete user';
 $lang['user_deleted_successfuly'] = 'user deleted successfuly';
 $lang['you_cant_erase_your_own_user'] = 'You can\'t delete your own user';
+$lang['invalid_captcha_validation'] = 'Invalid captcha validation';
