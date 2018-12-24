@@ -39,7 +39,7 @@
 */
 
 $route['default_controller']	= 'blog';
-$route['404_override']			= 'error';
+$route['404_override']			= 'find';
 $route['blog/(:any)']			= "blog/show/$1";
 $route['section/(:any)']		= "blog/show/$1";
 $route['tag/(:any)']			= "blog/tag/$1";

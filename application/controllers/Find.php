@@ -2,7 +2,7 @@
 
 require_once('Blog.php');
 
-class Error extends Blog
+class Find extends Blog
 {
 	public function index($empty='')
 	{

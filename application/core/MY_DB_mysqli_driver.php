@@ -1,7 +1,7 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-define('OBJECT','OBJECT',true);
-define('ARRAY_A','ARRAY_A',true);
+define('OBJECT','OBJECT');
+define('ARRAY_A','ARRAY_A');
 
 class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
 {
