@@ -29,6 +29,25 @@ class Contact extends MY_Controller
 		$this->email->send();
 	}
 	
+	protected function verify_recaptcha( $secret, $response )
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,"secret={$secret}&response={$response}");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		curl_close ($ch);
+		$resp = json_decode($server_output);
+		
+		if ( null != $resp && isset($resp->success) && $resp->success == true )
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public function mail()
 	{
 		$arr = $this->input->post();
@@ -41,12 +60,21 @@ class Contact extends MY_Controller
 		
 		if ( $this->form_validation->run() )
 		{
-			$subject = PAGE_TITLE . ' ' . lang_line('email_from') . ' ' . $arr['name'];
-			
-			$this->send_mail( $subject, $arr['message'], $arr['name'], $arr['mail'] );
-			
-			$this->kajax->html( '#contact-box', '<div style="padding:30px;"><strong><p>' . lang_line('mail_send_success') . '</p><p>' . lang_line('thanks_for_contacting_us') . '.</p><p>' . lang_line('in_touch_soon') . '</p></strong></div>' );
-			$this->kajax->out();
+			if ( $this->verify_recaptcha( CIBLOG_RECAPTCHA_SECRET, $arr['g-recaptcha-response'] ) )
+			{
+				$subject = PAGE_TITLE . ' ' . lang_line('email_from') . ' ' . $arr['name'];
+				
+				$this->send_mail( $subject, $arr['message'], $arr['name'], $arr['mail'] );
+				
+				$this->kajax->html( '#contact-box', '<div style="padding:30px;"><strong><p>' . lang_line('mail_send_success') . '</p><p>' . lang_line('thanks_for_contacting_us') . '.</p><p>' . lang_line('in_touch_soon') . '</p></strong></div>' );
+				$this->kajax->out();
+			}
+			else
+			{
+				$this->kajax->fadeIn('.form-error',500);
+				$this->kajax->html( '.form-error', lang_line('invalid_captcha_validation') );
+				$this->kajax->out();
+			}
 		}
 		else
 		{

@@ -17,8 +17,21 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=0;None;0;EUTF-8;1;1;0;%2Fsrv%2Fwww%2Fhtdocs%2FphpPgAdmin%2F.git%2FHEAD;0;4
+current_page=12
+FILE_NAME_0=14483;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fsystem%2Fcore%2FCodeIgniter.php;0;4
+FILE_NAME_1=128;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcore%2FMY_DB_mysqli_driver.php;0;4
+FILE_NAME_2=102;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcontrollers%2FBlog.php;0;4
+FILE_NAME_3=178;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcore%2FMY_Controller.php;0;4
+FILE_NAME_4=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcontrollers%2FUser.php;0;4
+FILE_NAME_5=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcontrollers%2FRss.php;0;4
+FILE_NAME_6=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcontrollers%2FContact.php;0;4
+FILE_NAME_7=11832;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcontrollers%2FAdmin.php;0;4
+FILE_NAME_8=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcore%2FSESSION_Controller.php;0;4
+FILE_NAME_9=2353;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcore%2FUSER_Controller.php;0;4
+FILE_NAME_10=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fcontrollers%2FFind.php;0;4
+FILE_NAME_11=3762;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fmodels%2FUsers_model.php;0;4
+FILE_NAME_12=19456;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fhelpers%2Futils_helper.php;0;4
+FILE_NAME_13=1731;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fprogramming%2Fciblog%2Fapplication%2Fconfig%2Fconstants.php;0;4
 
 [gproject]
 source_patterns=*.php;*.js;*.css;*.xml;

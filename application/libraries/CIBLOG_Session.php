@@ -64,7 +64,7 @@ class CIBLOG_Session extends CI_Session {
 		}
 
 		// Sanitize the cookie, because apparently PHP doesn't do that for userspace handlers
-		if (isset($_COOKIE[$this->_config['cookie_name']])
+		/*if (isset($_COOKIE[$this->_config['cookie_name']])
 			&& (
 				! is_string($_COOKIE[$this->_config['cookie_name']])
 				OR ! preg_match('/^[0-9a-f]{40}$/', $_COOKIE[$this->_config['cookie_name']])
@@ -75,7 +75,7 @@ class CIBLOG_Session extends CI_Session {
 			log_message('error', json_enc( $_COOKIE ) );
 			
 			unset($_COOKIE[$this->_config['cookie_name']]);
-		}
+		}*/
 
 		session_start();
 
