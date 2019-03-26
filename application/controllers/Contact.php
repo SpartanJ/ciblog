@@ -17,9 +17,9 @@ class Contact extends MY_Controller
 
 		$this->email->initialize( $config );
 
-		$this->email->from( $mail, $name );
-		
+		$this->email->from( 'info@ensoft.dev' );
 		$this->email->to( 'info@ensoft.dev' );
+		$this->email->reply_to( $mail, $name );
 		
 		$this->email->subject( $subject );
 
