@@ -19,7 +19,7 @@ class Contact extends MY_Controller
 
 		$this->email->from( $mail, $name );
 		
-		$this->email->to( 'webmaster@ensoft.dev' );
+		$this->email->to( 'info@ensoft.dev' );
 		$this->email->cc( 'martin.golini@gmail.com' );
 		
 		$this->email->subject( $subject );
