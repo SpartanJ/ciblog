@@ -394,6 +394,7 @@ input, button, textarea, select {
 	width:98%;
 	position:relative;
 	margin:0px auto;
+	max-width: 1280px;
 }
 
 .admin-editor input[type="text"].title {
@@ -632,11 +633,12 @@ input, button, textarea, select {
 }
 
 .admin-content .inner {
-	float:left;
 	width:100%;
 	padding: 8px 20px 20px 20px;
 	box-sizing:border-box;
 	color:#000;
+	max-width: 1280px;
+	margin: 0 auto;
 }
 
 .admin-bar .logout {

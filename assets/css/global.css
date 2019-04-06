@@ -347,6 +347,7 @@ a img { border:0; }
 	margin: 51px auto;
 	width:98%;
 	border-bottom:1px solid #e0e0e0;
+	max-width: 1280px;
 }
 
 .blog_post .date {
@@ -532,6 +533,7 @@ a img { border:0; }
 	padding:20px 0 20px 0;
 	margin:0;
 	border-right:1px solid #e0e0e0;
+	z-index: 50;
 }
 
 #minimap li .mark
