@@ -4,7 +4,9 @@
 <form class="ajax" id="form-contact" action="<?=base_url('/contact/mail')?>" method="post" accept-charset="utf-8">
 <ul class="stylish-form">
 	<li>
-		<h1 class="mail_icon"><?=lang_line_upper('contact_us')?></h1>
+		<div>
+			<h1 class="mail_icon"><?=lang_line_upper('contact_us')?></h1>
+		</div>
 		<p><?=lang_line('contact_form_txt')?></p>
 	</li>
 	<li><input name="name" type="text" placeholder="<?=lang_line_ucwords('name')?>"/></li>
