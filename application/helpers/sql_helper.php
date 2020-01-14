@@ -765,7 +765,7 @@ class SQL
 		}
 		
 		$where .= ( isset( $filter['filter'] ) ? $filter['filter'] : '' ) .	( isset( $filter['group'] ) ? $filter['group'] : '' ) . 
-																			(  $is_count ? '' : isset( $filter['order'] ) ? $filter['order'] : '' );
+																			(  $is_count ? '' : ( isset( $filter['order'] ) ? $filter['order'] : '' ) );
 	}
 	
 	public static function build_filter( $filter, $where = '', $is_count = FALSE, $bool_concat_op = SQLBoolOp::BOOL_AND )
