@@ -1,7 +1,0 @@
-syntax: glob
-.geanyproject
-.idea/**
-assets/cache/**
-assets/photos/**
-assets/blog/**
-application/logs/log*
