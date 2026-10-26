@@ -149,7 +149,7 @@ class Posts_model extends CI_Model
 	{
 		$fields_get = NULL == $fields_get ? $this->get_all_basic_fields : $fields_get;
 		$where		= self::get_category_filter( $filter_category );
-		$is_count	= -1 != str_starts_with( 'COUNT', $fields_get );
+		$is_count	= -1 != utils_str_starts_with( 'COUNT', $fields_get );
 		
 		SQL::prepare_filter( $where, $filter, $is_count );
 		

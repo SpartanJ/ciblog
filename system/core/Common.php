@@ -594,6 +594,12 @@ if ( ! function_exists('_error_handler'))
 	 */
 	function _error_handler($severity, $message, $filepath, $line)
 	{
+		// Ensoft PHP 8.3 deprecation compatibility; preserve other error handling.
+		if ($severity === E_DEPRECATED || $severity === E_USER_DEPRECATED)
+		{
+			return TRUE;
+		}
+
 		$is_error = (((E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
 		// When an error occurred, set the status header to '500 Internal Server Error'

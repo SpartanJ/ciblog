@@ -244,7 +244,7 @@ function rand_string( $length, $charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk
 	return $str;
 }
 
-function str_starts_with( $start, $str )
+function utils_str_starts_with( $start, $str )
 {
 	$pos = -1;
 	$start_size = strlen( $start );
@@ -470,7 +470,7 @@ function days_diff( $date_start, $date_end )
 
 function uri_starts_with( $uri )
 {
-	return -1 != str_starts_with( $uri, $_SERVER['REQUEST_URI'] );
+	return -1 != utils_str_starts_with( $uri, $_SERVER['REQUEST_URI'] );
 }
 
 function trace_json( $arr )

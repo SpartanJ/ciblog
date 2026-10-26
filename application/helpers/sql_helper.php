@@ -749,7 +749,7 @@ class SQL
 		$join		= isset( $filter['join'] ) ? $filter['join'] : '';
 		$has_where	= ( isset( $where ) && '' != $where ) || ( isset( $filter['filter'] ) && '' != $filter['filter'] );
 		
-		if ( $has_where && -1 == str_starts_with( 'WHERE', $where ) )
+		if ( $has_where && -1 == utils_str_starts_with( 'WHERE', $where ) )
 		{
 			$where = 'WHERE ' . $where;
 		}
@@ -814,7 +814,7 @@ class SQL
 			{
 				foreach ( $array as $key=>$val )
 				{
-					if ( -1 != str_starts_with( $prefix, $key ) )
+					if ( -1 != utils_str_starts_with( $prefix, $key ) )
 					{
 						$ret[$key] = $val;
 					}

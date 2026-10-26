@@ -74,7 +74,7 @@ class Users_model extends CI_Model
 	{
 		$fields_get = NULL == $fields_get ? $this->get_all_basic_fields : $fields_get;
 		$where		= '';
-		$is_count	= -1 != str_starts_with( 'COUNT', $fields_get );
+		$is_count	= -1 != utils_str_starts_with( 'COUNT', $fields_get );
 		
 		SQL::prepare_filter( $where, $filter, $is_count );
 		

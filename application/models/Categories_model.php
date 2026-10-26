@@ -52,7 +52,7 @@ class Categories_model extends CI_Model
 	function get_all( $filter = NULL, $per_page = NULL, $page_num = 1, $fields_get = '*' )
 	{
 		$where		= '';
-		$is_count	= -1 != str_starts_with( 'COUNT', $fields_get );
+		$is_count	= -1 != utils_str_starts_with( 'COUNT', $fields_get );
 		
 		SQL::prepare_filter( $where, $filter, $is_count );
 		
