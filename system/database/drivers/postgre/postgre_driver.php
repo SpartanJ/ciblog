@@ -379,13 +379,13 @@ class CI_DB_postgre_driver extends CI_DB {
 		$table	= (func_num_args() > 0) ? func_get_arg(0) : NULL;
 		$column	= (func_num_args() > 1) ? func_get_arg(1) : NULL;
 
-		if ($table === NULL && $v >= '8.1')
+		if ($table === NULL && version_compare($v, '8.1', '>='))
 		{
 			$sql = 'SELECT LASTVAL() AS ins_id';
 		}
 		elseif ($table !== NULL)
 		{
-			if ($column !== NULL && $v >= '8.0')
+			if ($column !== NULL && version_compare($v, '8.0', '>='))
 			{
 				$sql = 'SELECT pg_get_serial_sequence(\''.$table."', '".$column."') AS seq";
 				$query = $this->query($sql);
